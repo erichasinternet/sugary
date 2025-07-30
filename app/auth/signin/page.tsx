@@ -35,7 +35,7 @@ export default function SignIn() {
       <div className="max-w-md w-full space-y-8 p-8">
         <div>
           <Link href="/" className="text-2xl font-bold block text-center mb-2">
-            FeatureLoop
+            Sugary
           </Link>
           <h2 className="text-center text-3xl font-bold">
             Sign in to your account

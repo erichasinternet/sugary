@@ -78,7 +78,7 @@ export default function ConfirmSubscription({
                 href="/"
                 className="text-blue-600 hover:text-blue-500 font-medium"
               >
-                Visit FeatureLoop
+                Visit Sugary
               </Link>
             </div>
           </div>
@@ -106,7 +106,7 @@ export default function ConfirmSubscription({
               href="/"
               className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg"
             >
-              Go to FeatureLoop
+              Go to Sugary
             </Link>
           </div>
         </div>
@@ -136,7 +136,7 @@ export default function ConfirmSubscription({
             href="/"
             className="text-blue-600 hover:text-blue-500 font-medium"
           >
-            Go to FeatureLoop
+            Go to Sugary
           </Link>
         </div>
       </div>

@@ -92,11 +92,11 @@ export default function Onboarding() {
                   placeholder="your-company"
                 />
                 <span className="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-600 text-gray-500 dark:text-gray-400 text-sm">
-                  .featureloop.com
+                  .sugary.dev
                 </span>
               </div>
               <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                This will be used in your feature URLs (e.g., yourcompany.featureloop.com/feature-name)
+                This will be used in your feature URLs (e.g., yourcompany.sugary.dev/feature-name)
               </p>
             </div>
 

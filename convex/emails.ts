@@ -15,7 +15,7 @@ export const sendConfirmationEmail = action({
     const confirmationUrl = `${process.env.SITE_URL}/confirm/${confirmationToken}`;
     
     await resend.emails.send({
-      from: "FeatureLoop <noreply@featureloop.com>",
+      from: "Sugary <noreply@sugary.dev>",
       to: [email],
       subject: `Confirm your interest in ${featureTitle}`,
       html: `
@@ -39,7 +39,7 @@ export const sendConfirmationEmail = action({
           <hr style="margin: 30px 0; border: none; border-top: 1px solid #e5e7eb;">
           
           <p style="color: #6b7280; font-size: 14px;">
-            This email was sent by FeatureLoop on behalf of ${companyName}. 
+            This email was sent by Sugary on behalf of ${companyName}. 
             If you didn't sign up for this, you can safely ignore this email.
           </p>
         </div>
@@ -61,7 +61,7 @@ export const sendFeatureUpdateEmail = action({
     // Send individual emails to avoid issues with bulk sending
     const emailPromises = emails.map(email => 
       resend.emails.send({
-        from: "FeatureLoop <noreply@featureloop.com>",
+        from: "Sugary <noreply@sugary.dev>",
         to: [email],
         subject: `Update: ${updateTitle} - ${featureTitle}`,
         html: `
@@ -81,7 +81,7 @@ export const sendFeatureUpdateEmail = action({
             <hr style="margin: 30px 0; border: none; border-top: 1px solid #e5e7eb;">
             
             <p style="color: #6b7280; font-size: 14px;">
-              This email was sent by FeatureLoop on behalf of ${companyName}.
+              This email was sent by Sugary on behalf of ${companyName}.
               ${unsubscribeUrl ? `<a href="${unsubscribeUrl}" style="color: #6b7280;">Unsubscribe</a>` : ''}
             </p>
           </div>

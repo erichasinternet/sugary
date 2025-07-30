@@ -8,7 +8,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold">FeatureLoop</h1>
+              <h1 className="text-2xl font-bold">Sugary</h1>
             </div>
             <div className="flex items-center gap-4">
               <Link
@@ -59,7 +59,7 @@ export default function Home() {
         {/* Features Section */}
         <div id="demo" className="py-20">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">How FeatureLoop Works</h2>
+            <h2 className="text-3xl font-bold mb-4">How Sugary Works</h2>
             <p className="text-xl text-foreground/70 max-w-2xl mx-auto">
               Simple workflow to capture, track, and nurture feature interest
             </p>
@@ -72,7 +72,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-semibold mb-2">Create Feature Links</h3>
               <p className="text-foreground/70">
-                Create unique URLs for each feature like <code className="bg-foreground/10 px-2 py-1 rounded">yourcompany.featureloop.com/api-webhooks</code>
+                Create unique URLs for each feature like <code className="bg-foreground/10 px-2 py-1 rounded">yourcompany.sugary.dev/api-webhooks</code>
               </p>
             </div>
             
@@ -117,7 +117,7 @@ export default function Home() {
       <footer className="border-t border-foreground/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center text-foreground/60">
-            <p>&copy; 2024 FeatureLoop. Built for founders who listen to their users.</p>
+            <p>&copy; 2024 Sugary. Built for founders who listen to their users.</p>
           </div>
         </div>
       </footer>

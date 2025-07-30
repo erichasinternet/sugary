@@ -71,7 +71,7 @@ export default function FeatureSignup({
               href="/"
               className="text-blue-600 hover:text-blue-500 font-medium"
             >
-              Go to FeatureLoop
+              Go to Sugary
             </Link>
           </div>
         </div>
@@ -125,7 +125,7 @@ export default function FeatureSignup({
               href="/"
               className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
             >
-              Powered by FeatureLoop
+              Powered by Sugary
             </Link>
           </div>
         </div>

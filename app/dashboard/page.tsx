@@ -23,7 +23,7 @@ export default function Dashboard() {
       <div className="px-4 py-6">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            Welcome to FeatureLoop!
+            Welcome to Sugary!
           </h2>
           <p className="text-gray-600 dark:text-gray-300 mb-8">
             First, let's set up your company to start tracking feature requests.
@@ -178,7 +178,7 @@ export default function Dashboard() {
                               {feature.title}
                             </div>
                             <div className="text-sm text-gray-500 dark:text-gray-400">
-                              {company.slug}.featureloop.com/{feature.slug}
+                              {company.slug}.sugary.dev/{feature.slug}
                             </div>
                           </div>
                         </div>

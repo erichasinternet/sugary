@@ -19,7 +19,7 @@ export function DashboardNav() {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link href="/dashboard" className="text-xl font-bold text-gray-900 dark:text-white">
-              FeatureLoop
+              Sugary
             </Link>
             <div className="hidden sm:ml-8 sm:flex sm:space-x-8">
               <Link

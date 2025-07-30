@@ -44,7 +44,7 @@ export default function FeatureDetail({
   }
 
   const { subscribers, company, ...feature } = featureData;
-  const featureUrl = `${company.slug}.featureloop.com/${feature.slug}`;
+  const featureUrl = `${company.slug}.sugary.dev/${feature.slug}`;
 
   return (
     <div className="px-4 py-6">

@@ -125,7 +125,7 @@ export default function NewFeature() {
               </label>
               <div className="mt-1 flex rounded-md shadow-sm">
                 <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-600 text-gray-500 dark:text-gray-400 text-sm">
-                  {company.slug}.featureloop.com/
+                  {company.slug}.sugary.dev/
                 </span>
                 <input
                   type="text"
