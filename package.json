@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@convex-dev/resend": "^0.1.7",
     "convex": "^1.25.4",
     "next": "15.4.5",
     "react": "19.1.0",
