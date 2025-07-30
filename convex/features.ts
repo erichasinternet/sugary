@@ -1,6 +1,7 @@
 import { query, mutation } from "./_generated/server";
 import { auth } from "./auth";
 import { v } from "convex/values";
+import { internal } from "./_generated/api";
 
 export const getMyFeatures = query({
   args: {},
@@ -144,5 +145,57 @@ export const getFeatureDetails = query({
       company,
       subscribers,
     };
+  },
+});
+
+export const sendFeatureUpdate = mutation({
+  args: {
+    featureId: v.id("features"),
+    title: v.string(),
+    content: v.string(),
+  },
+  handler: async (ctx, { featureId, title, content }) => {
+    const userId = await auth.getUserId(ctx);
+    if (!userId) throw new Error("Not authenticated");
+    
+    const feature = await ctx.db.get(featureId);
+    if (!feature) throw new Error("Feature not found");
+    
+    // Verify user owns this feature's company
+    const company = await ctx.db.get(feature.companyId);
+    if (!company || company.ownerId !== userId) {
+      throw new Error("Not authorized to update this feature");
+    }
+    
+    // Get confirmed subscribers
+    const subscribers = await ctx.db
+      .query("subscribers")
+      .withIndex("by_feature", (q) => q.eq("featureId", featureId))
+      .filter((q) => q.eq(q.field("confirmed"), true))
+      .collect();
+      
+    const confirmedEmails = subscribers.map(s => s.email);
+    
+    if (confirmedEmails.length > 0) {
+      // Schedule the update email
+      await ctx.scheduler.runAfter(0, internal.emails.sendFeatureUpdateEmail, {
+        emails: confirmedEmails,
+        featureTitle: feature.title,
+        companyName: company.name,
+        updateTitle: title,
+        updateContent: content,
+      });
+    }
+    
+    // Store the update in the database
+    const updateId = await ctx.db.insert("updates", {
+      featureId,
+      title,
+      content,
+      sentAt: Date.now(),
+      recipientCount: confirmedEmails.length,
+    });
+    
+    return { updateId, recipientCount: confirmedEmails.length };
   },
 });

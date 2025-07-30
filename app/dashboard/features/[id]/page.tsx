@@ -1,10 +1,11 @@
 "use client";
 
-import { use } from "react";
+import { use, useState } from "react";
 import { useQuery } from "convex/react";
 import Link from "next/link";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
+import { SendUpdateModal } from "@/app/components/SendUpdateModal";
 
 export default function FeatureDetail({ 
   params 
@@ -14,6 +15,7 @@ export default function FeatureDetail({
   const { id } = use(params);
   const featureId = id as Id<"features">;
   const featureData = useQuery(api.features.getFeatureDetails, { featureId });
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
 
   if (featureData === undefined) {
     return (
@@ -73,7 +75,10 @@ export default function FeatureDetail({
               }`}>
                 {feature.status.replace('_', ' ')}
               </span>
-              <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg text-sm">
+              <button 
+                onClick={() => setShowUpdateModal(true)}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg text-sm"
+              >
                 Send Update
               </button>
             </div>
@@ -229,6 +234,14 @@ export default function FeatureDetail({
           )}
         </div>
       </div>
+
+      <SendUpdateModal
+        isOpen={showUpdateModal}
+        onClose={() => setShowUpdateModal(false)}
+        featureId={featureId}
+        featureTitle={feature.title}
+        subscriberCount={subscribers.filter(s => s.confirmed).length}
+      />
     </div>
   );
 }

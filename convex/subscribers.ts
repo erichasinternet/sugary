@@ -1,5 +1,6 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { internal } from "./_generated/api";
 
 export const subscribe = mutation({
   args: {
@@ -23,7 +24,7 @@ export const subscribe = mutation({
     // Generate confirmation token
     const confirmationToken = crypto.randomUUID();
     
-    return await ctx.db.insert("subscribers", {
+    const subscriberId = await ctx.db.insert("subscribers", {
       email,
       featureId,
       context,
@@ -31,6 +32,23 @@ export const subscribe = mutation({
       confirmationToken,
       subscribedAt: Date.now(),
     });
+    
+    // Get feature and company info for the email
+    const feature = await ctx.db.get(featureId);
+    if (feature) {
+      const company = await ctx.db.get(feature.companyId);
+      if (company) {
+        // Schedule confirmation email
+        await ctx.scheduler.runAfter(0, internal.emails.sendConfirmationEmail, {
+          email,
+          featureTitle: feature.title,
+          companyName: company.name,
+          confirmationToken,
+        });
+      }
+    }
+    
+    return subscriberId;
   },
 });
 
