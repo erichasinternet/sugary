@@ -7,8 +7,10 @@ import { api } from "@/convex/_generated/api";
 export default function Dashboard() {
   const features = useQuery(api.features.getMyFeatures);
   const company = useQuery(api.companies.getMyCompany);
+  const signupTrends = useQuery(api.analytics.getSignupTrends);
+  const topFeatures = useQuery(api.analytics.getTopFeatures);
 
-  if (features === undefined || company === undefined) {
+  if (features === undefined || company === undefined || signupTrends === undefined || topFeatures === undefined) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
@@ -197,6 +199,79 @@ export default function Dashboard() {
           )}
         </div>
       </div>
+
+      {/* Analytics Section */}
+      {company && features.length > 0 && (
+        <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Signup Trends */}
+          <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+              Signups Last 30 Days
+            </h3>
+            {signupTrends.length > 0 ? (
+              <div className="space-y-2">
+                {signupTrends.slice(-7).map((day) => (
+                  <div key={day.date} className="flex justify-between items-center">
+                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                      {new Date(day.date).toLocaleDateString()}
+                    </span>
+                    <span className="text-sm font-medium text-gray-900 dark:text-white">
+                      {day.count} signups
+                    </span>
+                  </div>
+                ))}
+                <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
+                  <div className="flex justify-between items-center font-medium">
+                    <span className="text-gray-900 dark:text-white">Total (30 days)</span>
+                    <span className="text-gray-900 dark:text-white">
+                      {signupTrends.reduce((sum, day) => sum + day.count, 0)} signups
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <p className="text-gray-500 dark:text-gray-400 text-sm">
+                No signups in the last 30 days
+              </p>
+            )}
+          </div>
+
+          {/* Top Features */}
+          <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+              Most Requested Features
+            </h3>
+            {topFeatures.length > 0 ? (
+              <div className="space-y-3">
+                {topFeatures.map((feature, index) => (
+                  <div key={feature.slug} className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <span className="text-sm font-medium text-gray-500 dark:text-gray-400 w-6">
+                        #{index + 1}
+                      </span>
+                      <div className="ml-3">
+                        <div className="text-sm font-medium text-gray-900 dark:text-white">
+                          {feature.title}
+                        </div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 capitalize">
+                          {feature.status.replace('_', ' ')}
+                        </div>
+                      </div>
+                    </div>
+                    <span className="text-sm font-medium text-gray-900 dark:text-white">
+                      {feature.subscriberCount} subscribers
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-500 dark:text-gray-400 text-sm">
+                No features with subscribers yet
+              </p>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
