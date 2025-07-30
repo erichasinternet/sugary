@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@convex-dev/auth": "^0.0.87",
     "@convex-dev/resend": "^0.1.7",
     "convex": "^1.25.4",
     "next": "15.4.5",
