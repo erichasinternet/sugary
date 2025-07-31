@@ -16,7 +16,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run dev` - Start development server with Turbopack (opens at http://localhost:3000)
 - `npm run build` - Build the application for production
 - `npm start` - Start production server
-- `npm run lint` - Run ESLint for code quality checks
+- `npm run lint` - Run Biome formatter, linter, and import sorting checks
+- `npm run lint:fix` - Apply Biome fixes, formatting, and import sorting
 
 ### Convex Backend
 - `npx convex -h` - View all available Convex CLI commands
@@ -61,7 +62,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 1. Run `npm run dev` for frontend development
 2. Run `npx convex dev` in separate terminal for backend functions
 3. Convex functions auto-deploy during development
-4. Use `npm run lint` before committing changes
+4. Use `npm run lint:fix` before committing changes
 
 ### Core Features
 - **Public Feature Pages**: `[company]/[feature-slug]` routes for end-user signups
