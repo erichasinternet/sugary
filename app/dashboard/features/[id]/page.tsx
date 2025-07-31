@@ -1,19 +1,15 @@
-"use client";
+'use client';
 
-import { use, useState } from "react";
-import { useQuery } from "convex/react";
-import Link from "next/link";
-import { api } from "@/convex/_generated/api";
-import { Id } from "@/convex/_generated/dataModel";
-import { SendUpdateModal } from "@/app/components/SendUpdateModal";
+import { useQuery } from 'convex/react';
+import Link from 'next/link';
+import { use, useState } from 'react';
+import { SendUpdateModal } from '@/app/components/SendUpdateModal';
+import { api } from '@/convex/_generated/api';
+import type { Id } from '@/convex/_generated/dataModel';
 
-export default function FeatureDetail({ 
-  params 
-}: { 
-  params: Promise<{ id: string }> 
-}) {
+export default function FeatureDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const featureId = id as Id<"features">;
+  const featureId = id as Id<'features'>;
   const featureData = useQuery(api.features.getFeatureDetails, { featureId });
   const [showUpdateModal, setShowUpdateModal] = useState(false);
 
@@ -32,10 +28,7 @@ export default function FeatureDetail({
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
             Feature not found
           </h2>
-          <Link
-            href="/dashboard"
-            className="text-blue-600 hover:text-blue-500"
-          >
+          <Link href="/dashboard" className="text-blue-600 hover:text-blue-500">
             ← Back to Dashboard
           </Link>
         </div>
@@ -51,31 +44,29 @@ export default function FeatureDetail({
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <Link
-            href="/dashboard"
-            className="text-blue-600 hover:text-blue-500 text-sm font-medium"
-          >
+          <Link href="/dashboard" className="text-blue-600 hover:text-blue-500 text-sm font-medium">
             ← Back to Dashboard
           </Link>
           <div className="mt-4 sm:flex sm:items-center sm:justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                {feature.title}
-              </h1>
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                {featureUrl}
-              </p>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{feature.title}</h1>
+              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{featureUrl}</p>
             </div>
             <div className="mt-4 sm:mt-0 flex items-center gap-3">
-              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${
-                feature.status === 'completed' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' :
-                feature.status === 'in_progress' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' :
-                feature.status === 'cancelled' ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300' :
-                'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
-              }`}>
+              <span
+                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${
+                  feature.status === 'completed'
+                    ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
+                    : feature.status === 'in_progress'
+                      ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'
+                      : feature.status === 'cancelled'
+                        ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300'
+                        : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+                }`}
+              >
                 {feature.status.replace('_', ' ')}
               </span>
-              <button 
+              <button
                 onClick={() => setShowUpdateModal(true)}
                 className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg text-sm"
               >
@@ -123,7 +114,7 @@ export default function FeatureDetail({
                       Confirmed
                     </dt>
                     <dd className="text-lg font-medium text-gray-900 dark:text-white">
-                      {subscribers.filter(s => s.confirmed).length}
+                      {subscribers.filter((s) => s.confirmed).length}
                     </dd>
                   </dl>
                 </div>
@@ -162,12 +153,8 @@ export default function FeatureDetail({
         {/* Feature Description */}
         {feature.description && (
           <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 mb-8">
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
-              Description
-            </h3>
-            <p className="text-gray-600 dark:text-gray-300">
-              {feature.description}
-            </p>
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Description</h3>
+            <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
           </div>
         )}
 
@@ -178,7 +165,7 @@ export default function FeatureDetail({
               Subscribers ({subscribers.length})
             </h3>
           </div>
-          
+
           {subscribers.length === 0 ? (
             <div className="px-6 py-12 text-center">
               <p className="text-gray-500 dark:text-gray-400 mb-4">
@@ -200,9 +187,11 @@ export default function FeatureDetail({
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       <div className="flex-shrink-0">
-                        <div className={`w-3 h-3 rounded-full ${
-                          subscriber.confirmed ? 'bg-green-400' : 'bg-yellow-400'
-                        }`}></div>
+                        <div
+                          className={`w-3 h-3 rounded-full ${
+                            subscriber.confirmed ? 'bg-green-400' : 'bg-yellow-400'
+                          }`}
+                        ></div>
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900 dark:text-white">
@@ -216,11 +205,13 @@ export default function FeatureDetail({
                       </div>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        subscriber.confirmed 
-                          ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
-                          : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'
-                      }`}>
+                      <span
+                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          subscriber.confirmed
+                            ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
+                            : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'
+                        }`}
+                      >
                         {subscriber.confirmed ? 'Confirmed' : 'Pending'}
                       </span>
                       <span className="text-xs text-gray-400 dark:text-gray-500">
@@ -240,7 +231,7 @@ export default function FeatureDetail({
         onClose={() => setShowUpdateModal(false)}
         featureId={featureId}
         featureTitle={feature.title}
-        subscriberCount={subscribers.filter(s => s.confirmed).length}
+        subscriberCount={subscribers.filter((s) => s.confirmed).length}
       />
     </div>
   );

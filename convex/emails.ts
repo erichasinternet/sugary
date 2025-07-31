@@ -1,28 +1,25 @@
-import { components } from "./_generated/api";
-import { Resend } from "@convex-dev/resend";
-import { internalAction } from "./_generated/server";
-import { v } from "convex/values";
+import { Resend } from '@convex-dev/resend';
+import { v } from 'convex/values';
+import { components } from './_generated/api';
+import { internalAction } from './_generated/server';
 
 const resend = new Resend(components.resend);
 
 export const sendConfirmationEmail = internalAction({
-	args: {
-		email: v.string(),
-		featureTitle: v.string(),
-		companyName: v.string(),
-		confirmationToken: v.string(),
-	},
-	handler: async (
-		ctx,
-		{ email, featureTitle, companyName, confirmationToken },
-	) => {
-		const confirmationUrl = `${process.env.SITE_URL}/confirm/${confirmationToken}`;
+  args: {
+    email: v.string(),
+    featureTitle: v.string(),
+    companyName: v.string(),
+    confirmationToken: v.string(),
+  },
+  handler: async (ctx, { email, featureTitle, companyName, confirmationToken }) => {
+    const confirmationUrl = `${process.env.SITE_URL}/confirm/${confirmationToken}`;
 
-		await resend.sendEmail(ctx, {
-			from: "Sugary <noreply@sugary.dev>",
-			to: email,
-			subject: `Confirm your interest in ${featureTitle}`,
-			html: `
+    await resend.sendEmail(ctx, {
+      from: 'Sugary <noreply@sugary.dev>',
+      to: email,
+      subject: `Confirm your interest in ${featureTitle}`,
+      html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2>Thanks for your interest in ${featureTitle}!</h2>
           
@@ -48,37 +45,30 @@ export const sendConfirmationEmail = internalAction({
           </p>
         </div>
       `,
-		});
-	},
+    });
+  },
 });
 
 export const sendFeatureUpdateEmail = internalAction({
-	args: {
-		emails: v.array(v.string()),
-		featureTitle: v.string(),
-		companyName: v.string(),
-		updateTitle: v.string(),
-		updateContent: v.string(),
-		unsubscribeUrl: v.optional(v.string()),
-	},
-	handler: async (
-		ctx,
-		{
-			emails,
-			featureTitle,
-			companyName,
-			updateTitle,
-			updateContent,
-			unsubscribeUrl,
-		},
-	) => {
-		// Send individual emails to avoid issues with bulk sending
-		const emailPromises = emails.map((email) =>
-			resend.sendEmail(ctx, {
-				from: "Sugary <noreply@sugary.dev>",
-				to: email,
-				subject: `Update: ${updateTitle} - ${featureTitle}`,
-				html: `
+  args: {
+    emails: v.array(v.string()),
+    featureTitle: v.string(),
+    companyName: v.string(),
+    updateTitle: v.string(),
+    updateContent: v.string(),
+    unsubscribeUrl: v.optional(v.string()),
+  },
+  handler: async (
+    ctx,
+    { emails, featureTitle, companyName, updateTitle, updateContent, unsubscribeUrl },
+  ) => {
+    // Send individual emails to avoid issues with bulk sending
+    const emailPromises = emails.map((email) =>
+      resend.sendEmail(ctx, {
+        from: 'Sugary <noreply@sugary.dev>',
+        to: email,
+        subject: `Update: ${updateTitle} - ${featureTitle}`,
+        html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <h2>${updateTitle}</h2>
             
@@ -88,9 +78,9 @@ export const sendFeatureUpdateEmail = internalAction({
             
             <div style="background-color: #f8fafc; border-left: 4px solid #2563eb; padding: 16px; margin: 20px 0;">
               ${updateContent
-								.split("\n")
-								.map((line) => `<p>${line}</p>`)
-								.join("")}
+                .split('\n')
+                .map((line) => `<p>${line}</p>`)
+                .join('')}
             </div>
             
             <p>Thanks for your patience as we build this feature!</p>
@@ -99,15 +89,15 @@ export const sendFeatureUpdateEmail = internalAction({
             
             <p style="color: #6b7280; font-size: 14px;">
               This email was sent by Sugary on behalf of ${companyName}.
-              ${unsubscribeUrl ? `<a href="${unsubscribeUrl}" style="color: #6b7280;">Unsubscribe</a>` : ""}
+              ${unsubscribeUrl ? `<a href="${unsubscribeUrl}" style="color: #6b7280;">Unsubscribe</a>` : ''}
             </p>
           </div>
         `,
-			}),
-		);
+      }),
+    );
 
-		await Promise.all(emailPromises);
+    await Promise.all(emailPromises);
 
-		return { sent: emails.length };
-	},
+    return { sent: emails.length };
+  },
 });

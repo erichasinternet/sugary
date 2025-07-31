@@ -1,31 +1,31 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useAuthActions } from "@convex-dev/auth/react";
+import { useAuthActions } from '@convex-dev/auth/react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function SignUp() {
   const { signIn } = useAuthActions();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    setError("");
-    
+    setError('');
+
     const formData = new FormData(e.currentTarget);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-    const name = formData.get("name") as string;
-    
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+    const name = formData.get('name') as string;
+
     try {
-      await signIn("password", { email, password, flow: "signUp", name });
-      router.push("/dashboard");
+      await signIn('password', { email, password, flow: 'signUp', name });
+      router.push('/dashboard');
     } catch (error) {
-      setError(error instanceof Error ? error.message : "An error occurred");
+      setError(error instanceof Error ? error.message : 'An error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -38,27 +38,22 @@ export default function SignUp() {
           <Link href="/" className="text-2xl font-bold block text-center mb-2">
             Sugary
           </Link>
-          <h2 className="text-center text-3xl font-bold">
-            Create your account
-          </h2>
+          <h2 className="text-center text-3xl font-bold">Create your account</h2>
           <p className="mt-2 text-center text-sm text-foreground/60">
-            Or{" "}
-            <Link
-              href="/auth/signin"
-              className="font-medium text-blue-600 hover:text-blue-500"
-            >
+            Or{' '}
+            <Link href="/auth/signin" className="font-medium text-blue-600 hover:text-blue-500">
               sign in to your existing account
             </Link>
           </p>
         </div>
-        
+
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {error && (
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded">
               {error}
             </div>
           )}
-          
+
           <div className="space-y-4">
             <div>
               <label htmlFor="name" className="block text-sm font-medium">
@@ -73,7 +68,7 @@ export default function SignUp() {
                 placeholder="Enter your full name"
               />
             </div>
-            
+
             <div>
               <label htmlFor="email" className="block text-sm font-medium">
                 Email Address
@@ -87,7 +82,7 @@ export default function SignUp() {
                 placeholder="Enter your email"
               />
             </div>
-            
+
             <div>
               <label htmlFor="password" className="block text-sm font-medium">
                 Password
@@ -109,7 +104,7 @@ export default function SignUp() {
               disabled={isLoading}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? "Creating account..." : "Create account"}
+              {isLoading ? 'Creating account...' : 'Create account'}
             </button>
           </div>
         </form>

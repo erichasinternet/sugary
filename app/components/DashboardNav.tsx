@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useAuthActions } from "@convex-dev/auth/react";
-import { useQuery } from "convex/react";
-import { api } from "@/convex/_generated/api";
+import { useAuthActions } from '@convex-dev/auth/react';
+import { useQuery } from 'convex/react';
+import Link from 'next/link';
+import { api } from '@/convex/_generated/api';
 
 export function DashboardNav() {
   const { signOut } = useAuthActions();
@@ -36,7 +36,7 @@ export function DashboardNav() {
               </Link>
             </div>
           </div>
-          
+
           <div className="flex items-center space-x-4">
             <span className="text-sm text-gray-500 dark:text-gray-400">
               {user?.name || user?.email}

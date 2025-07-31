@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useQuery } from "convex/react";
-import Link from "next/link";
-import { api } from "@/convex/_generated/api";
+import { useQuery } from 'convex/react';
+import Link from 'next/link';
+import { api } from '@/convex/_generated/api';
 
 export default function Dashboard() {
   const features = useQuery(api.features.getMyFeatures);
@@ -10,7 +10,12 @@ export default function Dashboard() {
   const signupTrends = useQuery(api.analytics.getSignupTrends);
   const topFeatures = useQuery(api.analytics.getTopFeatures);
 
-  if (features === undefined || company === undefined || signupTrends === undefined || topFeatures === undefined) {
+  if (
+    features === undefined ||
+    company === undefined ||
+    signupTrends === undefined ||
+    topFeatures === undefined
+  ) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
@@ -44,9 +49,7 @@ export default function Dashboard() {
       {/* Header */}
       <div className="sm:flex sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-            Features Dashboard
-          </h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Features Dashboard</h1>
           <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Track interest and manage your feature waitlists
           </p>
@@ -141,7 +144,7 @@ export default function Dashboard() {
               Manage your feature waitlists and track subscriber interest
             </p>
           </div>
-          
+
           {features.length === 0 ? (
             <div className="px-4 py-12 text-center">
               <p className="text-gray-500 dark:text-gray-400 mb-4">
@@ -166,12 +169,17 @@ export default function Dashboard() {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
                           <div className="flex-shrink-0">
-                            <div className={`w-3 h-3 rounded-full ${
-                              feature.status === 'completed' ? 'bg-green-400' :
-                              feature.status === 'in_progress' ? 'bg-yellow-400' :
-                              feature.status === 'cancelled' ? 'bg-red-400' :
-                              'bg-gray-400'
-                            }`}></div>
+                            <div
+                              className={`w-3 h-3 rounded-full ${
+                                feature.status === 'completed'
+                                  ? 'bg-green-400'
+                                  : feature.status === 'in_progress'
+                                    ? 'bg-yellow-400'
+                                    : feature.status === 'cancelled'
+                                      ? 'bg-red-400'
+                                      : 'bg-gray-400'
+                              }`}
+                            ></div>
                           </div>
                           <div className="ml-4">
                             <div className="text-sm font-medium text-gray-900 dark:text-white">

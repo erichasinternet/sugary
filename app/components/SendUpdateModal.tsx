@@ -1,29 +1,29 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useMutation } from "convex/react";
-import { api } from "@/convex/_generated/api";
-import { Id } from "@/convex/_generated/dataModel";
+import { useMutation } from 'convex/react';
+import { useState } from 'react';
+import { api } from '@/convex/_generated/api';
+import type { Id } from '@/convex/_generated/dataModel';
 
 interface SendUpdateModalProps {
   isOpen: boolean;
   onClose: () => void;
-  featureId: Id<"features">;
+  featureId: Id<'features'>;
   featureTitle: string;
   subscriberCount: number;
 }
 
-export function SendUpdateModal({ 
-  isOpen, 
-  onClose, 
-  featureId, 
+export function SendUpdateModal({
+  isOpen,
+  onClose,
+  featureId,
   featureTitle,
-  subscriberCount 
+  subscriberCount,
 }: SendUpdateModalProps) {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
   const sendFeatureUpdate = useMutation(api.features.sendFeatureUpdate);
@@ -31,7 +31,7 @@ export function SendUpdateModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError("");
+    setError('');
 
     try {
       const result = await sendFeatureUpdate({
@@ -39,16 +39,16 @@ export function SendUpdateModal({
         title,
         content,
       });
-      
+
       setSuccess(true);
       setTimeout(() => {
         onClose();
         setSuccess(false);
-        setTitle("");
-        setContent("");
+        setTitle('');
+        setContent('');
       }, 2000);
     } catch (error) {
-      setError(error instanceof Error ? error.message : "An error occurred");
+      setError(error instanceof Error ? error.message : 'An error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -57,9 +57,9 @@ export function SendUpdateModal({
   const handleClose = () => {
     if (!isLoading) {
       onClose();
-      setTitle("");
-      setContent("");
-      setError("");
+      setTitle('');
+      setContent('');
+      setError('');
       setSuccess(false);
     }
   };
@@ -73,9 +73,7 @@ export function SendUpdateModal({
           <div className="mb-4">
             <span className="text-4xl">📧</span>
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-            Update Sent!
-          </h3>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Update Sent!</h3>
           <p className="text-gray-600 dark:text-gray-300">
             Your update has been sent to all confirmed subscribers.
           </p>
@@ -88,16 +86,20 @@ export function SendUpdateModal({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-            Send Update
-          </h2>
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Send Update</h2>
           <button
             onClick={handleClose}
             disabled={isLoading}
             className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
           >
             <span className="sr-only">Close</span>
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+            >
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -112,13 +114,17 @@ export function SendUpdateModal({
 
           <div className="mb-4">
             <p className="text-sm text-gray-600 dark:text-gray-300">
-              Send an update about <strong>{featureTitle}</strong> to {subscriberCount} confirmed subscribers.
+              Send an update about <strong>{featureTitle}</strong> to {subscriberCount} confirmed
+              subscribers.
             </p>
           </div>
 
           <div className="space-y-4">
             <div>
-              <label htmlFor="update-title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label
+                htmlFor="update-title"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              >
                 Update Title
               </label>
               <input
@@ -133,7 +139,10 @@ export function SendUpdateModal({
             </div>
 
             <div>
-              <label htmlFor="update-content" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label
+                htmlFor="update-content"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              >
                 Update Content
               </label>
               <textarea

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useConvexAuth } from "convex/react";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useConvexAuth } from 'convex/react';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useConvexAuth();
@@ -10,7 +10,7 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      router.push("/auth/signin");
+      router.push('/auth/signin');
     }
   }, [isAuthenticated, isLoading, router]);
 
