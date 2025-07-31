@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import { use, useState } from "react";
-import { useQuery, useMutation } from "convex/react";
-import Link from "next/link";
-import { api } from "@/convex/_generated/api";
+import { useMutation, useQuery } from 'convex/react';
+import Link from 'next/link';
+import { use, useState } from 'react';
+import { api } from '@/convex/_generated/api';
 
-export default function FeatureSignup({ 
-  params 
-}: { 
-  params: Promise<{ company: string; feature: string }> 
+export default function FeatureSignup({
+  params,
+}: {
+  params: Promise<{ company: string; feature: string }>;
 }) {
   const { company: companySlug, feature: featureSlug } = use(params);
-  const [email, setEmail] = useState("");
-  const [context, setContext] = useState("");
+  const [email, setEmail] = useState('');
+  const [context, setContext] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   const featureData = useQuery(api.features.getFeatureBySlug, {
     companySlug,
@@ -29,7 +29,7 @@ export default function FeatureSignup({
     if (!featureData) return;
 
     setIsLoading(true);
-    setError("");
+    setError('');
 
     try {
       await subscribe({
@@ -39,7 +39,7 @@ export default function FeatureSignup({
       });
       setIsSubscribed(true);
     } catch (error) {
-      setError(error instanceof Error ? error.message : "An error occurred");
+      setError(error instanceof Error ? error.message : 'An error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -67,10 +67,7 @@ export default function FeatureSignup({
             <p className="text-gray-600 dark:text-gray-300 mb-6">
               The feature you're looking for doesn't exist or has been removed.
             </p>
-            <Link
-              href="/"
-              className="text-blue-600 hover:text-blue-500 font-medium"
-            >
+            <Link href="/" className="text-blue-600 hover:text-blue-500 font-medium">
               Go to Sugary
             </Link>
           </div>
@@ -91,13 +88,13 @@ export default function FeatureSignup({
               You're on the list!
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mb-6">
-              Thanks for your interest in <strong>{featureData.title}</strong>. 
-              We'll send you a confirmation email and keep you updated on our progress.
+              Thanks for your interest in <strong>{featureData.title}</strong>. We'll send you a
+              confirmation email and keep you updated on our progress.
             </p>
             <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
               <p className="text-sm text-blue-800 dark:text-blue-200">
-                <strong>What's next?</strong> Check your email for a confirmation link, 
-                then sit back and we'll update you as we build this feature.
+                <strong>What's next?</strong> Check your email for a confirmation link, then sit
+                back and we'll update you as we build this feature.
               </p>
             </div>
           </div>
@@ -117,9 +114,7 @@ export default function FeatureSignup({
                 {featureData.company.name}
               </div>
               <span className="text-gray-400">•</span>
-              <span className="text-sm text-gray-500 dark:text-gray-400">
-                Feature Request
-              </span>
+              <span className="text-sm text-gray-500 dark:text-gray-400">Feature Request</span>
             </div>
             <Link
               href="/"
@@ -139,33 +134,37 @@ export default function FeatureSignup({
               {featureData.title}
             </h1>
             {featureData.description && (
-              <p className="text-lg text-gray-600 dark:text-gray-300">
-                {featureData.description}
-              </p>
+              <p className="text-lg text-gray-600 dark:text-gray-300">{featureData.description}</p>
             )}
           </div>
 
           <div className="mb-8">
             <div className="flex items-center justify-center space-x-6 text-sm text-gray-500 dark:text-gray-400">
               <div className="flex items-center">
-                <div className={`w-3 h-3 rounded-full mr-2 ${
-                  featureData.status === 'completed' ? 'bg-green-400' :
-                  featureData.status === 'in_progress' ? 'bg-yellow-400' :
-                  featureData.status === 'cancelled' ? 'bg-red-400' :
-                  'bg-gray-400'
-                }`}></div>
-                <span className="capitalize">
-                  {featureData.status.replace('_', ' ')}
-                </span>
+                <div
+                  className={`w-3 h-3 rounded-full mr-2 ${
+                    featureData.status === 'completed'
+                      ? 'bg-green-400'
+                      : featureData.status === 'in_progress'
+                        ? 'bg-yellow-400'
+                        : featureData.status === 'cancelled'
+                          ? 'bg-red-400'
+                          : 'bg-gray-400'
+                  }`}
+                ></div>
+                <span className="capitalize">{featureData.status.replace('_', ' ')}</span>
               </div>
               <div>
-                Status: {
-                  featureData.status === 'planning' ? 'Collecting feedback' :
-                  featureData.status === 'in_progress' ? 'In development' :
-                  featureData.status === 'completed' ? 'Available now!' :
-                  featureData.status === 'cancelled' ? 'Not planned' :
-                  'Planning'
-                }
+                Status:{' '}
+                {featureData.status === 'planning'
+                  ? 'Collecting feedback'
+                  : featureData.status === 'in_progress'
+                    ? 'In development'
+                    : featureData.status === 'completed'
+                      ? 'Available now!'
+                      : featureData.status === 'cancelled'
+                        ? 'Not planned'
+                        : 'Planning'}
               </div>
             </div>
           </div>
@@ -178,7 +177,10 @@ export default function FeatureSignup({
             )}
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              >
                 Email Address
               </label>
               <input
@@ -193,7 +195,10 @@ export default function FeatureSignup({
             </div>
 
             <div>
-              <label htmlFor="context" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label
+                htmlFor="context"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              >
                 Why do you need this feature? <span className="text-gray-400">(Optional)</span>
               </label>
               <textarea
@@ -220,7 +225,7 @@ export default function FeatureSignup({
                   Adding you to the list...
                 </span>
               ) : (
-                "Get notified when this is ready"
+                'Get notified when this is ready'
               )}
             </button>
           </form>

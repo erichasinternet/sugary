@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useMutation } from "convex/react";
-import { useRouter } from "next/navigation";
-import { api } from "@/convex/_generated/api";
+import { useMutation } from 'convex/react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { api } from '@/convex/_generated/api';
 
 export default function Onboarding() {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const createCompany = useMutation(api.companies.createCompany);
   const router = useRouter();
 
@@ -21,17 +21,17 @@ export default function Onboarding() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    setError("");
-    
+    setError('');
+
     const formData = new FormData(e.currentTarget);
-    const name = formData.get("name") as string;
-    const slug = formData.get("slug") as string;
-    
+    const name = formData.get('name') as string;
+    const slug = formData.get('slug') as string;
+
     try {
       await createCompany({ name, slug });
-      router.push("/dashboard");
+      router.push('/dashboard');
     } catch (error) {
-      setError(error instanceof Error ? error.message : "An error occurred");
+      setError(error instanceof Error ? error.message : 'An error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -41,9 +41,7 @@ export default function Onboarding() {
     <div className="px-4 py-6">
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-            Set up your company
-          </h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Set up your company</h1>
           <p className="mt-2 text-gray-600 dark:text-gray-300">
             Create your company profile to start building feature waitlists
           </p>
@@ -58,7 +56,10 @@ export default function Onboarding() {
             )}
 
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Company Name
               </label>
               <input
@@ -78,7 +79,10 @@ export default function Onboarding() {
             </div>
 
             <div>
-              <label htmlFor="slug" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="slug"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Company Slug
               </label>
               <div className="mt-1 flex rounded-md shadow-sm">
@@ -106,7 +110,7 @@ export default function Onboarding() {
                 disabled={isLoading}
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isLoading ? "Creating company..." : "Create Company"}
+                {isLoading ? 'Creating company...' : 'Create Company'}
               </button>
             </div>
           </form>

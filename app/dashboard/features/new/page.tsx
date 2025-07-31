@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useMutation, useQuery } from "convex/react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { api } from "@/convex/_generated/api";
+import { useMutation, useQuery } from 'convex/react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { api } from '@/convex/_generated/api';
 
 export default function NewFeature() {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const createFeature = useMutation(api.features.createFeature);
   const company = useQuery(api.companies.getMyCompany);
   const router = useRouter();
@@ -23,22 +23,22 @@ export default function NewFeature() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    setError("");
-    
+    setError('');
+
     const formData = new FormData(e.currentTarget);
-    const title = formData.get("title") as string;
-    const slug = formData.get("slug") as string;
-    const description = formData.get("description") as string;
-    
+    const title = formData.get('title') as string;
+    const slug = formData.get('slug') as string;
+    const description = formData.get('description') as string;
+
     try {
-      const featureId = await createFeature({ 
-        title, 
-        slug, 
-        description: description || undefined 
+      const featureId = await createFeature({
+        title,
+        slug,
+        description: description || undefined,
       });
       router.push(`/dashboard/features/${featureId}`);
     } catch (error) {
-      setError(error instanceof Error ? error.message : "An error occurred");
+      setError(error instanceof Error ? error.message : 'An error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -77,10 +77,7 @@ export default function NewFeature() {
     <div className="px-4 py-6">
       <div className="max-w-2xl mx-auto">
         <div className="mb-8">
-          <Link
-            href="/dashboard"
-            className="text-blue-600 hover:text-blue-500 text-sm font-medium"
-          >
+          <Link href="/dashboard" className="text-blue-600 hover:text-blue-500 text-sm font-medium">
             ← Back to Dashboard
           </Link>
           <h1 className="mt-2 text-3xl font-bold text-gray-900 dark:text-white">
@@ -100,7 +97,10 @@ export default function NewFeature() {
             )}
 
             <div>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="title"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Feature Title
               </label>
               <input
@@ -120,7 +120,10 @@ export default function NewFeature() {
             </div>
 
             <div>
-              <label htmlFor="slug" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="slug"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 URL Slug
               </label>
               <div className="mt-1 flex rounded-md shadow-sm">
@@ -143,7 +146,10 @@ export default function NewFeature() {
             </div>
 
             <div>
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Description (Optional)
               </label>
               <textarea
@@ -161,13 +167,11 @@ export default function NewFeature() {
                   <span className="text-blue-400 text-lg">💡</span>
                 </div>
                 <div className="ml-3">
-                  <h3 className="text-sm font-medium text-blue-800 dark:text-blue-200">
-                    Pro Tip
-                  </h3>
+                  <h3 className="text-sm font-medium text-blue-800 dark:text-blue-200">Pro Tip</h3>
                   <div className="mt-2 text-sm text-blue-700 dark:text-blue-300">
                     <p>
-                      Once created, you can share your feature link anywhere users request this feature - 
-                      on Reddit, Twitter, support tickets, or anywhere else!
+                      Once created, you can share your feature link anywhere users request this
+                      feature - on Reddit, Twitter, support tickets, or anywhere else!
                     </p>
                   </div>
                 </div>
@@ -180,7 +184,7 @@ export default function NewFeature() {
                 disabled={isLoading}
                 className="flex-1 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isLoading ? "Creating..." : "Create Feature"}
+                {isLoading ? 'Creating...' : 'Create Feature'}
               </button>
               <Link
                 href="/dashboard"

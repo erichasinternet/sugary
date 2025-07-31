@@ -1,30 +1,28 @@
-import { mutation, query } from "./_generated/server";
-import { v } from "convex/values";
-import { internal } from "./_generated/api";
+import { v } from 'convex/values';
+import { internal } from './_generated/api';
+import { mutation, query } from './_generated/server';
 
 export const subscribe = mutation({
   args: {
-    featureId: v.id("features"),
+    featureId: v.id('features'),
     email: v.string(),
     context: v.optional(v.string()),
   },
   handler: async (ctx, { featureId, email, context }) => {
     // Check if already subscribed
     const existing = await ctx.db
-      .query("subscribers")
-      .withIndex("by_email_and_feature", (q) => 
-        q.eq("email", email).eq("featureId", featureId)
-      )
+      .query('subscribers')
+      .withIndex('by_email_and_feature', (q) => q.eq('email', email).eq('featureId', featureId))
       .first();
-      
+
     if (existing) {
-      throw new Error("Email is already subscribed to this feature");
+      throw new Error('Email is already subscribed to this feature');
     }
-    
+
     // Generate confirmation token
     const confirmationToken = crypto.randomUUID();
-    
-    const subscriberId = await ctx.db.insert("subscribers", {
+
+    const subscriberId = await ctx.db.insert('subscribers', {
       email,
       featureId,
       context,
@@ -32,7 +30,7 @@ export const subscribe = mutation({
       confirmationToken,
       subscribedAt: Date.now(),
     });
-    
+
     // Get feature and company info for the email
     const feature = await ctx.db.get(featureId);
     if (feature) {
@@ -47,7 +45,7 @@ export const subscribe = mutation({
         });
       }
     }
-    
+
     return subscriberId;
   },
 });
@@ -58,29 +56,29 @@ export const confirmSubscription = mutation({
   },
   handler: async (ctx, { token }) => {
     const subscriber = await ctx.db
-      .query("subscribers")
-      .withIndex("by_confirmation_token", (q) => q.eq("confirmationToken", token))
+      .query('subscribers')
+      .withIndex('by_confirmation_token', (q) => q.eq('confirmationToken', token))
       .first();
-      
+
     if (!subscriber) {
-      throw new Error("Invalid confirmation token");
+      throw new Error('Invalid confirmation token');
     }
-    
+
     await ctx.db.patch(subscriber._id, {
       confirmed: true,
       confirmationToken: undefined,
     });
-    
+
     return subscriber;
   },
 });
 
 export const getSubscribersByFeature = query({
-  args: { featureId: v.id("features") },
+  args: { featureId: v.id('features') },
   handler: async (ctx, { featureId }) => {
     return await ctx.db
-      .query("subscribers")
-      .withIndex("by_feature", (q) => q.eq("featureId", featureId))
+      .query('subscribers')
+      .withIndex('by_feature', (q) => q.eq('featureId', featureId))
       .collect();
   },
 });
