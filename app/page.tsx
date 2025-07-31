@@ -76,7 +76,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <Link
                 href="/auth/signup"
-                className="group bg-gradient-to-r from-primary to-secondary text-white px-10 py-5 rounded-full font-semibold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-500 animate-pulse-glow relative overflow-hidden"
+                className="group bg-gradient-to-r from-primary to-secondary text-white px-10 py-5 rounded-full font-semibold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-500 relative overflow-hidden"
               >
                 <span className="relative z-10">Start Building Waitlists</span>
                 <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
