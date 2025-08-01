@@ -16,19 +16,28 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
   if (featureData === undefined) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
   }
 
   if (!featureData) {
     return (
-      <div className="px-4 py-6">
+      <div className="px-4 py-12">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
+            <span className="text-2xl text-white">❓</span>
+          </div>
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent mb-4">
             Feature not found
           </h2>
-          <Link href="/dashboard" className="text-blue-600 hover:text-blue-500">
+          <p className="text-muted mb-8 text-lg">
+            This feature might have been removed or you don't have access to it.
+          </p>
+          <Link
+            href="/dashboard"
+            className="bg-gradient-to-r from-primary to-secondary text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 inline-flex items-center gap-2"
+          >
             ← Back to Dashboard
           </Link>
         </div>
@@ -36,185 +45,206 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
     );
   }
 
-  const { subscribers, company, ...feature } = featureData;
+  const { subscribers, company, analytics, ...feature } = featureData;
   const featureUrl = `${company.slug}.sugary.dev/${feature.slug}`;
 
   return (
-    <div className="px-4 py-6">
+    <div className="px-4 py-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
-          <Link href="/dashboard" className="text-blue-600 hover:text-blue-500 text-sm font-medium">
+        <div className="mb-10">
+          <Link
+            href="/dashboard"
+            className="text-primary hover:text-primary-dark text-sm font-medium transition-colors inline-flex items-center gap-2 mb-6"
+          >
             ← Back to Dashboard
           </Link>
-          <div className="mt-4 sm:flex sm:items-center sm:justify-between">
+          <div className="sm:flex sm:items-center sm:justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{feature.title}</h1>
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{featureUrl}</p>
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent mb-2">
+                {feature.title}
+              </h1>
+              <p className="text-muted font-mono bg-gradient-to-r from-primary/10 to-secondary/10 px-3 py-1 rounded-lg inline-block">
+                {featureUrl}
+              </p>
             </div>
-            <div className="mt-4 sm:mt-0 flex items-center gap-3">
+            <div className="mt-6 sm:mt-0 flex items-center gap-3">
               <span
-                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${
+                className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium capitalize ${
                   feature.status === 'completed'
                     ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
                     : feature.status === 'in_progress'
-                      ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'
+                      ? 'bg-gradient-to-r from-secondary/20 to-accent/20 text-secondary border border-secondary/30'
                       : feature.status === 'cancelled'
                         ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300'
-                        : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+                        : 'bg-gradient-to-r from-primary/20 to-secondary/20 text-primary border border-primary/30'
                 }`}
               >
                 {feature.status.replace('_', ' ')}
               </span>
               <button
                 onClick={() => setShowUpdateModal(true)}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg text-sm"
+                className="bg-gradient-to-r from-primary to-secondary text-white font-medium py-2 px-4 rounded-xl text-sm hover:shadow-lg hover:scale-105 transition-all duration-300"
               >
-                Send Update
+                📧 Send Update
               </button>
             </div>
           </div>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 mb-8">
-          <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
-            <div className="p-5">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
-                    <span className="text-blue-600 dark:text-blue-400 text-sm">👥</span>
-                  </div>
-                </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
-                      Total Subscribers
-                    </dt>
-                    <dd className="text-lg font-medium text-gray-900 dark:text-white">
-                      {subscribers.length}
-                    </dd>
-                  </dl>
-                </div>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-10">
+          <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl p-6 border border-primary/10 shadow-lg hover:shadow-xl transition-all duration-300">
+            <div className="flex items-center">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
+                <span className="text-white text-xl">👥</span>
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-muted">Total Subscribers</p>
+                <p className="text-2xl font-bold text-foreground">{subscribers.length}</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
-            <div className="p-5">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <div className="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
-                    <span className="text-green-600 dark:text-green-400 text-sm">✅</span>
-                  </div>
-                </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
-                      Confirmed
-                    </dt>
-                    <dd className="text-lg font-medium text-gray-900 dark:text-white">
-                      {subscribers.filter((s) => s.confirmed).length}
-                    </dd>
-                  </dl>
-                </div>
+          <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl p-6 border border-secondary/10 shadow-lg hover:shadow-xl transition-all duration-300">
+            <div className="flex items-center">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-secondary to-accent flex items-center justify-center">
+                <span className="text-white text-xl">✅</span>
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-muted">Confirmed</p>
+                <p className="text-2xl font-bold text-foreground">
+                  {subscribers.filter((s) => s.confirmed).length}
+                </p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
-            <div className="p-5">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
-                    <span className="text-purple-600 dark:text-purple-400 text-sm">🔗</span>
-                  </div>
-                </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
-                      Share Link
-                    </dt>
-                    <dd className="text-sm font-medium text-gray-900 dark:text-white">
-                      <button
-                        onClick={() => navigator.clipboard.writeText(`https://${featureUrl}`)}
-                        className="text-blue-600 hover:text-blue-500"
-                      >
-                        Copy URL
-                      </button>
-                    </dd>
-                  </dl>
-                </div>
+          <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl p-6 border border-accent/10 shadow-lg hover:shadow-xl transition-all duration-300">
+            <div className="flex items-center">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-accent to-primary flex items-center justify-center">
+                <span className="text-white text-xl">📈</span>
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-muted">Page Views (30d)</p>
+                <p className="text-2xl font-bold text-foreground">
+                  {analytics?.totalPageViews || 0}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl p-6 border border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300">
+            <div className="flex items-center">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-green-400 to-green-600 flex items-center justify-center">
+                <span className="text-white text-xl">🎯</span>
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-muted">Conversion Rate</p>
+                <p className="text-2xl font-bold text-foreground">
+                  {analytics?.conversionRate || 0}%
+                </p>
               </div>
             </div>
           </div>
         </div>
 
+        {/* Share Link Section */}
+        <div className="bg-gradient-to-r from-primary/5 to-secondary/5 border border-primary/20 rounded-2xl p-6 mb-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
+                🔗 Share this feature
+              </h3>
+              <p className="text-muted font-mono bg-white/50 dark:bg-slate-700/50 px-3 py-2 rounded-lg">
+                https://{featureUrl}
+              </p>
+            </div>
+            <button
+              onClick={() => navigator.clipboard.writeText(`https://${featureUrl}`)}
+              className="bg-gradient-to-r from-primary to-secondary text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2"
+            >
+              📋 Copy Link
+            </button>
+          </div>
+        </div>
+
         {/* Feature Description */}
         {feature.description && (
-          <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 mb-8">
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Description</h3>
-            <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
+          <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl p-6 border border-primary/10 shadow-lg mb-8">
+            <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+              📝 Description
+            </h3>
+            <p className="text-muted leading-relaxed">{feature.description}</p>
           </div>
         )}
 
         {/* Subscribers List */}
-        <div className="bg-white dark:bg-gray-800 shadow rounded-lg">
-          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-              Subscribers ({subscribers.length})
+        <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl border border-primary/10 shadow-lg">
+          <div className="px-6 py-5 border-b border-primary/10">
+            <h3 className="text-xl font-semibold bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent flex items-center gap-2">
+              👥 Subscribers ({subscribers.length})
             </h3>
           </div>
 
           {subscribers.length === 0 ? (
             <div className="px-6 py-12 text-center">
-              <p className="text-gray-500 dark:text-gray-400 mb-4">
+              <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-r from-primary/20 to-secondary/20 flex items-center justify-center">
+                <span className="text-2xl">📢</span>
+              </div>
+              <p className="text-muted mb-6 text-lg">
                 No subscribers yet. Share your feature link to start collecting interest!
               </p>
-              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-left">
-                <p className="text-sm font-medium text-gray-900 dark:text-white mb-2">
-                  Your feature link:
+              <div className="bg-gradient-to-r from-primary/5 to-secondary/5 border border-primary/20 rounded-xl p-6 text-left">
+                <p className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                  🔗 Your feature link:
                 </p>
-                <code className="text-sm text-blue-600 dark:text-blue-400 break-all">
+                <code className="text-sm text-primary font-mono break-all bg-white/50 dark:bg-slate-700/50 px-3 py-2 rounded-lg block">
                   https://{featureUrl}
                 </code>
+                <button
+                  onClick={() => navigator.clipboard.writeText(`https://${featureUrl}`)}
+                  className="mt-4 bg-gradient-to-r from-primary to-secondary text-white px-4 py-2 rounded-lg text-sm font-medium hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2"
+                >
+                  📋 Copy Link
+                </button>
               </div>
             </div>
           ) : (
-            <div className="divide-y divide-gray-200 dark:divide-gray-700">
+            <div className="divide-y divide-primary/10">
               {subscribers.map((subscriber) => (
-                <div key={subscriber._id} className="px-6 py-4">
+                <div key={subscriber._id} className="px-6 py-5 hover:bg-primary/5 transition-colors duration-200">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       <div className="flex-shrink-0">
                         <div
-                          className={`w-3 h-3 rounded-full ${
-                            subscriber.confirmed ? 'bg-green-400' : 'bg-yellow-400'
+                          className={`w-4 h-4 rounded-full ${
+                            subscriber.confirmed ? 'bg-green-400' : 'bg-gradient-to-r from-secondary to-accent'
                           }`}
                         ></div>
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900 dark:text-white">
+                        <div className="text-sm font-semibold text-foreground">
                           {subscriber.email}
                         </div>
                         {subscriber.context && (
-                          <div className="text-sm text-gray-500 dark:text-gray-400">
+                          <div className="text-sm text-muted mt-1 italic">
                             "{subscriber.context}"
                           </div>
                         )}
                       </div>
                     </div>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-3">
                       <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
                           subscriber.confirmed
                             ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
-                            : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'
+                            : 'bg-gradient-to-r from-secondary/20 to-accent/20 text-secondary border border-secondary/30'
                         }`}
                       >
-                        {subscriber.confirmed ? 'Confirmed' : 'Pending'}
+                        {subscriber.confirmed ? '✅ Confirmed' : '⏳ Pending'}
                       </span>
-                      <span className="text-xs text-gray-400 dark:text-gray-500">
+                      <span className="text-xs text-muted font-mono">
                         {new Date(subscriber.subscribedAt).toLocaleDateString()}
                       </span>
                     </div>

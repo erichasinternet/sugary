@@ -38,37 +38,39 @@ export default function Onboarding() {
   };
 
   return (
-    <div className="px-4 py-6">
+    <div className="px-4 py-12">
       <div className="max-w-2xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Set up your company</h1>
-          <p className="mt-2 text-gray-600 dark:text-gray-300">
-            Create your company profile to start building feature waitlists
+        <div className="text-center mb-12">
+          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
+            <span className="text-2xl text-white">🏢</span>
+          </div>
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent mb-4">
+            Set up your company
+          </h1>
+          <p className="text-muted text-lg">
+            Create your branded space to start capturing feature demand 🚀
           </p>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
-          <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl p-8 border border-primary/10 shadow-xl">
+          <form onSubmit={handleSubmit} className="space-y-8">
             {error && (
-              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded">
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg">
                 {error}
               </div>
             )}
 
             <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >
-                Company Name
+              <label htmlFor="name" className="block text-sm font-semibold text-foreground mb-3">
+                🏢 Company Name
               </label>
               <input
                 type="text"
                 name="name"
                 id="name"
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                placeholder="Enter your company name"
+                className="block w-full px-4 py-3 border border-primary/20 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary bg-background transition-all duration-200 hover:border-primary/30 text-foreground"
+                placeholder="Your awesome startup"
                 onChange={(e) => {
                   const slugInput = document.getElementById('slug') as HTMLInputElement;
                   if (slugInput) {
@@ -79,38 +81,43 @@ export default function Onboarding() {
             </div>
 
             <div>
-              <label
-                htmlFor="slug"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >
-                Company Slug
+              <label htmlFor="slug" className="block text-sm font-semibold text-foreground mb-3">
+                🔗 Your Brand URL
               </label>
-              <div className="mt-1 flex rounded-md shadow-sm">
+              <div className="flex rounded-xl shadow-sm border border-primary/20 overflow-hidden hover:border-primary/30 transition-colors duration-200">
                 <input
                   type="text"
                   name="slug"
                   id="slug"
                   required
                   pattern="^[a-z0-9-]+$"
-                  className="flex-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-l-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="flex-1 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary bg-background text-foreground font-mono"
                   placeholder="your-company"
                 />
-                <span className="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-600 text-gray-500 dark:text-gray-400 text-sm">
+                <span className="inline-flex items-center px-4 py-3 bg-gradient-to-r from-primary/10 to-secondary/10 text-primary font-mono text-sm font-medium border-l border-primary/20">
                   .sugary.dev
                 </span>
               </div>
-              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                This will be used in your feature URLs (e.g., yourcompany.sugary.dev/feature-name)
+              <p className="mt-3 text-sm text-muted">
+                💡 This creates your branded space:{' '}
+                <strong>yourcompany.sugary.dev/feature-name</strong>
               </p>
             </div>
 
-            <div>
+            <div className="pt-4">
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-gradient-to-r from-primary to-secondary text-white py-4 px-6 rounded-xl font-semibold hover:shadow-lg hover:scale-[1.02] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
               >
-                {isLoading ? 'Creating company...' : 'Create Company'}
+                {isLoading ? (
+                  <>
+                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                    Setting up your brand...
+                  </>
+                ) : (
+                  <>🚀 Create Your Brand Space</>
+                )}
               </button>
             </div>
           </form>
