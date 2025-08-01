@@ -3,6 +3,7 @@
 import { useQuery } from 'convex/react';
 import Link from 'next/link';
 import { api } from '@/convex/_generated/api';
+import GradientButton from '../components/GradientButton';
 
 export default function Dashboard() {
   const features = useQuery(api.features.getMyFeatures);
@@ -36,12 +37,11 @@ export default function Dashboard() {
           <p className="text-muted mb-8 text-lg">
             Let's set up your company to start turning feature requests into engaged communities.
           </p>
-          <Link
-            href="/dashboard/onboarding"
-            className="bg-gradient-to-r from-primary to-secondary text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 inline-flex items-center gap-2"
-          >
-            Set Up Company
-          </Link>
+          <GradientButton size="lg">
+            <Link href="/dashboard/onboarding">
+              Set Up Company
+            </Link>
+          </GradientButton>
         </div>
       </div>
     );
@@ -60,12 +60,11 @@ export default function Dashboard() {
           </p>
         </div>
         <div className="mt-4 sm:mt-0">
-          <Link
-            href="/dashboard/features/new"
-            className="bg-gradient-to-r from-primary to-secondary text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 inline-flex items-center gap-2"
-          >
-            Create New Feature
-          </Link>
+          <GradientButton size="md">
+            <Link href="/dashboard/features/new">
+              Create New Feature
+            </Link>
+          </GradientButton>
         </div>
       </div>
 
@@ -114,35 +113,34 @@ export default function Dashboard() {
 
       {/* Features List */}
       <div className="mt-8">
-        <div className="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-md">
-          <div className="px-4 py-5 sm:px-6">
-            <h3 className="text-lg leading-6 font-medium text-gray-900 dark:text-white">
+        <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm shadow-xl overflow-hidden rounded-2xl border border-primary/10">
+          <div className="px-6 py-5">
+            <h3 className="text-lg leading-6 font-semibold text-foreground">
               Your Features
             </h3>
-            <p className="mt-1 max-w-2xl text-sm text-gray-500 dark:text-gray-400">
+            <p className="mt-1 max-w-2xl text-sm text-muted">
               Manage your feature waitlists and track subscriber interest
             </p>
           </div>
 
           {features.length === 0 ? (
             <div className="px-4 py-12 text-center">
-              <p className="text-gray-500 dark:text-gray-400 mb-4">
+              <p className="text-muted mb-6">
                 No features created yet. Create your first feature to start collecting interest!
               </p>
-              <Link
-                href="/dashboard/features/new"
-                className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg"
-              >
-                Create Your First Feature
-              </Link>
+              <GradientButton>
+                <Link href="/dashboard/features/new">
+                  Create Your First Feature
+                </Link>
+              </GradientButton>
             </div>
           ) : (
-            <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+            <ul className="divide-y divide-primary/10">
               {features.map((feature) => (
                 <li key={feature._id}>
                   <Link
                     href={`/dashboard/features/${feature._id}`}
-                    className="block hover:bg-gray-50 dark:hover:bg-gray-700/50"
+                    className="block hover:bg-primary/5 transition-colors duration-200"
                   >
                     <div className="px-4 py-4 sm:px-6">
                       <div className="flex items-center justify-between">
@@ -161,19 +159,19 @@ export default function Dashboard() {
                             ></div>
                           </div>
                           <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900 dark:text-white">
+                            <div className="text-sm font-medium text-foreground">
                               {feature.title}
                             </div>
-                            <div className="text-sm text-gray-500 dark:text-gray-400">
+                            <div className="text-sm text-muted font-mono">
                               {company.slug}.sugary.dev/{feature.slug}
                             </div>
                           </div>
                         </div>
                         <div className="flex items-center space-x-4">
-                          <div className="text-sm text-gray-500 dark:text-gray-400">
+                          <div className="text-sm text-muted">
                             {feature.subscriberCount} subscribers
                           </div>
-                          <div className="text-xs text-gray-400 dark:text-gray-500 capitalize">
+                          <div className="text-xs text-muted capitalize">
                             {feature.status.replace('_', ' ')}
                           </div>
                         </div>
@@ -191,8 +189,8 @@ export default function Dashboard() {
       {company && features.length > 0 && (
         <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Signup Trends */}
-          <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+          <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm shadow-xl rounded-2xl p-6 border border-primary/10">
+            <h3 className="text-lg font-semibold text-foreground mb-4">
               Signups Last 30 Days
             </h3>
             {signupTrends.length > 0 ? (
@@ -224,8 +222,8 @@ export default function Dashboard() {
           </div>
 
           {/* Top Features */}
-          <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+          <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm shadow-xl rounded-2xl p-6 border border-primary/10">
+            <h3 className="text-lg font-semibold text-foreground mb-4">
               Most Requested Features
             </h3>
             {topFeatures.length > 0 ? (

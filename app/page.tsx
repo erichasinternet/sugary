@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import SugaryLogo from './components/SugaryLogo';
+import GradientButton from './components/GradientButton';
 
 export default function Home() {
   return (
@@ -7,15 +9,7 @@ export default function Home() {
       <header className="glass sticky top-0 z-50 border-b border-primary/10 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-3">
-              <div
-                className="w-8 h-8 rounded-full"
-                style={{ background: 'var(--gradient-primary)' }}
-              ></div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Sugary
-              </h1>
-            </div>
+            <SugaryLogo size="lg" />
             <div className="flex items-center gap-4">
               <Link
                 href="/auth/signin"
@@ -23,12 +17,11 @@ export default function Home() {
               >
                 Sign In
               </Link>
-              <Link
-                href="/auth/signup"
-                className="bg-gradient-to-r from-primary to-secondary text-white px-6 py-2.5 rounded-full hover:shadow-lg hover:scale-105 transition-all duration-300 font-medium"
-              >
-                Get Started
-              </Link>
+              <GradientButton>
+                <Link href="/auth/signup">
+                  Get Started
+                </Link>
+              </GradientButton>
             </div>
           </div>
         </div>
@@ -203,11 +196,8 @@ export default function Home() {
       <footer className="border-t border-primary/10 bg-gradient-to-r from-neutral/30 to-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center">
-            <div className="flex items-center justify-center space-x-3 mb-6">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-secondary"></div>
-              <h3 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Sugary
-              </h3>
+            <div className="mb-6">
+              <SugaryLogo size="lg" className="justify-center" showText={true} href="#" />
             </div>
             <p className="text-muted mb-8 max-w-md mx-auto">
               Making feature development sweeter, one request at a time

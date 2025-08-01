@@ -4,6 +4,7 @@ import { useAuthActions } from '@convex-dev/auth/react';
 import { useQuery } from 'convex/react';
 import Link from 'next/link';
 import { api } from '@/convex/_generated/api';
+import SugaryLogo from './SugaryLogo';
 
 export function DashboardNav() {
   const { signOut } = useAuthActions();
@@ -18,15 +19,7 @@ export function DashboardNav() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Link href="/dashboard" className="flex items-center space-x-3">
-              <div
-                className="w-8 h-8 rounded-full"
-                style={{ background: 'var(--gradient-primary)' }}
-              ></div>
-              <span className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Sugary
-              </span>
-            </Link>
+            <SugaryLogo href="/dashboard" size="md" />
             <div className="hidden sm:ml-8 sm:flex sm:space-x-1">
               <Link
                 href="/dashboard"

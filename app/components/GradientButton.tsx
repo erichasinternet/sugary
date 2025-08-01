@@ -1,0 +1,51 @@
+import { ReactNode } from 'react';
+
+interface GradientButtonProps {
+  children: ReactNode;
+  onClick?: () => void;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
+  className?: string;
+  variant?: 'primary' | 'secondary';
+  size?: 'sm' | 'md' | 'lg';
+}
+
+export default function GradientButton({
+  children,
+  onClick,
+  type = 'button',
+  disabled = false,
+  className = '',
+  variant = 'primary',
+  size = 'md'
+}: GradientButtonProps) {
+  const sizeClasses = {
+    sm: 'px-4 py-2 text-sm',
+    md: 'px-6 py-3 text-base',
+    lg: 'px-8 py-4 text-lg'
+  };
+
+  const variantClasses = {
+    primary: 'bg-gradient-to-r from-primary to-secondary text-white',
+    secondary: 'bg-white/95 dark:bg-slate-800/95 text-foreground border-2 border-primary/30 hover:border-primary/50'
+  };
+
+  return (
+    <button
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      className={`
+        ${variantClasses[variant]}
+        ${sizeClasses[size]}
+        font-semibold rounded-xl
+        hover:shadow-lg hover:scale-[1.02] 
+        transition-all duration-300
+        disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
+        ${className}
+      `}
+    >
+      {children}
+    </button>
+  );
+}

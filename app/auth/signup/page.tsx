@@ -4,6 +4,8 @@ import { useAuthActions } from '@convex-dev/auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import SugaryLogo from '../../components/SugaryLogo';
+import GradientButton from '../../components/GradientButton';
 
 export default function SignUp() {
   const { signIn } = useAuthActions();
@@ -38,15 +40,9 @@ export default function SignUp() {
     >
       <div className="max-w-md w-full space-y-8 p-8">
         <div className="text-center">
-          <Link href="/" className="inline-flex items-center space-x-3 mb-8">
-            <div
-              className="w-8 h-8 rounded-full"
-              style={{ background: 'var(--gradient-primary)' }}
-            ></div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Sugary
-            </span>
-          </Link>
+          <div className="mb-8">
+            <SugaryLogo size="lg" />
+          </div>
           <h2 className="text-3xl font-bold mb-2 text-foreground">Start building smarter</h2>
           <p className="text-muted mb-8">
             Already have an account?{' '}
@@ -114,10 +110,11 @@ export default function SignUp() {
               </div>
             </div>
 
-            <button
+            <GradientButton
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-primary to-secondary text-white py-3 px-6 rounded-xl font-semibold hover:shadow-lg hover:scale-[1.02] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              className="w-full"
+              size="lg"
             >
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
@@ -129,7 +126,7 @@ export default function SignUp() {
                   Start building features ✨
                 </span>
               )}
-            </button>
+            </GradientButton>
           </form>
         </div>
 

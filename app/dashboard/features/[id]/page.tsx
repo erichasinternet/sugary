@@ -6,6 +6,7 @@ import { use, useState } from 'react';
 import { SendUpdateModal } from '@/app/components/SendUpdateModal';
 import { api } from '@/convex/_generated/api';
 import type { Id } from '@/convex/_generated/dataModel';
+import GradientButton from '../../../components/GradientButton';
 
 export default function FeatureDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -16,7 +17,7 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
   if (featureData === undefined) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
   }
@@ -25,12 +26,14 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
     return (
       <div className="px-4 py-6">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            Feature not found
-          </h2>
-          <Link href="/dashboard" className="text-blue-600 hover:text-blue-500">
-            ← Back to Dashboard
-          </Link>
+          <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl p-8 border border-primary/10 shadow-xl">
+            <h2 className="text-2xl font-bold text-foreground mb-4">
+              Feature not found
+            </h2>
+            <Link href="/dashboard" className="text-primary hover:text-primary-dark transition-colors">
+              ← Back to Dashboard
+            </Link>
+          </div>
         </div>
       </div>
     );
@@ -44,13 +47,13 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <Link href="/dashboard" className="text-blue-600 hover:text-blue-500 text-sm font-medium">
+          <Link href="/dashboard" className="text-primary hover:text-primary-dark text-sm font-medium transition-colors">
             ← Back to Dashboard
           </Link>
           <div className="mt-4 sm:flex sm:items-center sm:justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{feature.title}</h1>
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{featureUrl}</p>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">{feature.title}</h1>
+              <p className="mt-1 text-sm text-muted font-mono">{featureUrl}</p>
             </div>
             <div className="mt-4 sm:mt-0 flex items-center gap-3">
               <span
@@ -66,32 +69,32 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
               >
                 {feature.status.replace('_', ' ')}
               </span>
-              <button
+              <GradientButton
                 onClick={() => setShowUpdateModal(true)}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg text-sm"
+                size="sm"
               >
                 Send Update
-              </button>
+              </GradientButton>
             </div>
           </div>
         </div>
 
         {/* Stats */}
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 mb-8">
-          <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
+          <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm overflow-hidden shadow-xl rounded-2xl border border-primary/10">
             <div className="p-5">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
-                    <span className="text-blue-600 dark:text-blue-400 text-sm">👥</span>
+                  <div className="w-8 h-8 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center">
+                    <span className="text-white text-sm">👥</span>
                   </div>
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
+                    <dt className="text-sm font-medium text-muted truncate">
                       Total Subscribers
                     </dt>
-                    <dd className="text-lg font-medium text-gray-900 dark:text-white">
+                    <dd className="text-lg font-medium text-foreground">
                       {subscribers.length}
                     </dd>
                   </dl>
@@ -100,20 +103,20 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
+          <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm overflow-hidden shadow-xl rounded-2xl border border-secondary/10">
             <div className="p-5">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <div className="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
-                    <span className="text-green-600 dark:text-green-400 text-sm">✅</span>
+                  <div className="w-8 h-8 bg-gradient-to-r from-secondary to-accent rounded-full flex items-center justify-center">
+                    <span className="text-white text-sm">✅</span>
                   </div>
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
+                    <dt className="text-sm font-medium text-muted truncate">
                       Confirmed
                     </dt>
-                    <dd className="text-lg font-medium text-gray-900 dark:text-white">
+                    <dd className="text-lg font-medium text-foreground">
                       {subscribers.filter((s) => s.confirmed).length}
                     </dd>
                   </dl>
@@ -122,23 +125,23 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
+          <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm overflow-hidden shadow-xl rounded-2xl border border-accent/10">
             <div className="p-5">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
-                    <span className="text-purple-600 dark:text-purple-400 text-sm">🔗</span>
+                  <div className="w-8 h-8 bg-gradient-to-r from-accent to-primary rounded-full flex items-center justify-center">
+                    <span className="text-white text-sm">🔗</span>
                   </div>
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
+                    <dt className="text-sm font-medium text-muted truncate">
                       Share Link
                     </dt>
-                    <dd className="text-sm font-medium text-gray-900 dark:text-white">
+                    <dd className="text-sm font-medium text-foreground">
                       <button
                         onClick={() => navigator.clipboard.writeText(`https://${featureUrl}`)}
-                        className="text-blue-600 hover:text-blue-500"
+                        className="text-primary hover:text-primary-dark transition-colors"
                       >
                         Copy URL
                       </button>
@@ -152,36 +155,36 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
 
         {/* Feature Description */}
         {feature.description && (
-          <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 mb-8">
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Description</h3>
-            <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
+          <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm shadow-xl rounded-2xl p-6 mb-8 border border-primary/10">
+            <h3 className="text-lg font-semibold text-foreground mb-3">Description</h3>
+            <p className="text-muted">{feature.description}</p>
           </div>
         )}
 
         {/* Subscribers List */}
-        <div className="bg-white dark:bg-gray-800 shadow rounded-lg">
-          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+        <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm shadow-xl rounded-2xl border border-primary/10">
+          <div className="px-6 py-4 border-b border-primary/10">
+            <h3 className="text-lg font-semibold text-foreground">
               Subscribers ({subscribers.length})
             </h3>
           </div>
 
           {subscribers.length === 0 ? (
             <div className="px-6 py-12 text-center">
-              <p className="text-gray-500 dark:text-gray-400 mb-4">
+              <p className="text-muted mb-4">
                 No subscribers yet. Share your feature link to start collecting interest!
               </p>
-              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-left">
-                <p className="text-sm font-medium text-gray-900 dark:text-white mb-2">
+              <div className="bg-gradient-to-r from-primary/5 to-secondary/5 border border-primary/20 rounded-xl p-4 text-left">
+                <p className="text-sm font-semibold text-foreground mb-2">
                   Your feature link:
                 </p>
-                <code className="text-sm text-blue-600 dark:text-blue-400 break-all">
+                <code className="text-sm text-primary break-all font-mono">
                   https://{featureUrl}
                 </code>
               </div>
             </div>
           ) : (
-            <div className="divide-y divide-gray-200 dark:divide-gray-700">
+            <div className="divide-y divide-primary/10">
               {subscribers.map((subscriber) => (
                 <div key={subscriber._id} className="px-6 py-4">
                   <div className="flex items-center justify-between">
@@ -194,11 +197,11 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
                         ></div>
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900 dark:text-white">
+                        <div className="text-sm font-medium text-foreground">
                           {subscriber.email}
                         </div>
                         {subscriber.context && (
-                          <div className="text-sm text-gray-500 dark:text-gray-400">
+                          <div className="text-sm text-muted">
                             "{subscriber.context}"
                           </div>
                         )}
@@ -214,7 +217,7 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
                       >
                         {subscriber.confirmed ? 'Confirmed' : 'Pending'}
                       </span>
-                      <span className="text-xs text-gray-400 dark:text-gray-500">
+                      <span className="text-xs text-muted">
                         {new Date(subscriber.subscribedAt).toLocaleDateString()}
                       </span>
                     </div>

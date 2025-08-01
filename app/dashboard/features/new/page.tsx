@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { api } from '@/convex/_generated/api';
+import GradientButton from '../../../components/GradientButton';
 
 export default function NewFeature() {
   const [isLoading, setIsLoading] = useState(false);
@@ -47,7 +48,7 @@ export default function NewFeature() {
   if (company === undefined) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
   }
@@ -56,18 +57,19 @@ export default function NewFeature() {
     return (
       <div className="px-4 py-6">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            No company found
-          </h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-8">
-            You need to set up a company before creating features.
-          </p>
-          <Link
-            href="/dashboard/onboarding"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg"
-          >
-            Set Up Company
-          </Link>
+          <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl p-8 border border-primary/10 shadow-xl">
+            <h2 className="text-2xl font-bold text-foreground mb-4">
+              No company found
+            </h2>
+            <p className="text-muted mb-8">
+              You need to set up a company before creating features.
+            </p>
+            <GradientButton>
+              <Link href="/dashboard/onboarding">
+                Set Up Company
+              </Link>
+            </GradientButton>
+          </div>
         </div>
       </div>
     );
@@ -77,21 +79,21 @@ export default function NewFeature() {
     <div className="px-4 py-6">
       <div className="max-w-2xl mx-auto">
         <div className="mb-8">
-          <Link href="/dashboard" className="text-blue-600 hover:text-blue-500 text-sm font-medium">
+          <Link href="/dashboard" className="text-primary hover:text-primary-dark text-sm font-medium transition-colors">
             ← Back to Dashboard
           </Link>
-          <h1 className="mt-2 text-3xl font-bold text-gray-900 dark:text-white">
+          <h1 className="mt-2 text-3xl font-bold bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
             Create New Feature
           </h1>
-          <p className="mt-2 text-gray-600 dark:text-gray-300">
+          <p className="mt-2 text-muted">
             Set up a waitlist for a new feature request
           </p>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+        <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm shadow-xl rounded-2xl p-8 border border-primary/10">
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
-              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded">
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-xl">
                 {error}
               </div>
             )}
@@ -99,7 +101,7 @@ export default function NewFeature() {
             <div>
               <label
                 htmlFor="title"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                className="block text-sm font-semibold text-foreground mb-2"
               >
                 Feature Title
               </label>
@@ -108,7 +110,7 @@ export default function NewFeature() {
                 name="title"
                 id="title"
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="block w-full px-4 py-3 border border-primary/20 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary bg-background transition-all duration-200 hover:border-primary/30"
                 placeholder="e.g., API Webhooks, Dark Mode, Mobile App"
                 onChange={(e) => {
                   const slugInput = document.getElementById('slug') as HTMLInputElement;
@@ -122,12 +124,12 @@ export default function NewFeature() {
             <div>
               <label
                 htmlFor="slug"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                className="block text-sm font-semibold text-foreground mb-2"
               >
                 URL Slug
               </label>
-              <div className="mt-1 flex rounded-md shadow-sm">
-                <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-600 text-gray-500 dark:text-gray-400 text-sm">
+              <div className="flex rounded-xl shadow-sm">
+                <span className="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-primary/20 bg-primary/5 text-muted text-sm font-mono">
                   {company.slug}.sugary.dev/
                 </span>
                 <input
@@ -136,11 +138,11 @@ export default function NewFeature() {
                   id="slug"
                   required
                   pattern="^[a-z0-9-]+$"
-                  className="flex-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-r-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="flex-1 block w-full px-4 py-3 border border-primary/20 rounded-r-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary bg-background transition-all duration-200 hover:border-primary/30"
                   placeholder="api-webhooks"
                 />
               </div>
-              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+              <p className="mt-2 text-sm text-muted">
                 This will be the unique URL where users can sign up for this feature
               </p>
             </div>
@@ -148,7 +150,7 @@ export default function NewFeature() {
             <div>
               <label
                 htmlFor="description"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                className="block text-sm font-semibold text-foreground mb-2"
               >
                 Description (Optional)
               </label>
@@ -156,19 +158,19 @@ export default function NewFeature() {
                 name="description"
                 id="description"
                 rows={3}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="block w-full px-4 py-3 border border-primary/20 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary bg-background transition-all duration-200 hover:border-primary/30"
                 placeholder="Describe what this feature will do and why users might want it..."
               />
             </div>
 
-            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md p-4">
+            <div className="bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20 rounded-xl p-4">
               <div className="flex">
                 <div className="flex-shrink-0">
-                  <span className="text-blue-400 text-lg">💡</span>
+                  <span className="text-primary text-lg">💡</span>
                 </div>
                 <div className="ml-3">
-                  <h3 className="text-sm font-medium text-blue-800 dark:text-blue-200">Pro Tip</h3>
-                  <div className="mt-2 text-sm text-blue-700 dark:text-blue-300">
+                  <h3 className="text-sm font-medium text-primary">Pro Tip</h3>
+                  <div className="mt-2 text-sm text-primary">
                     <p>
                       Once created, you can share your feature link anywhere users request this
                       feature - on Reddit, Twitter, support tickets, or anywhere else!
@@ -179,19 +181,23 @@ export default function NewFeature() {
             </div>
 
             <div className="flex gap-3">
-              <button
+              <GradientButton
                 type="submit"
                 disabled={isLoading}
-                className="flex-1 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1"
+                size="lg"
               >
                 {isLoading ? 'Creating...' : 'Create Feature'}
-              </button>
-              <Link
-                href="/dashboard"
-                className="flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              </GradientButton>
+              <GradientButton
+                variant="secondary"
+                className="px-8"
+                size="lg"
               >
-                Cancel
-              </Link>
+                <Link href="/dashboard">
+                  Cancel
+                </Link>
+              </GradientButton>
             </div>
           </form>
         </div>
