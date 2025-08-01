@@ -45,7 +45,7 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
     );
   }
 
-  const { subscribers, company, ...feature } = featureData;
+  const { subscribers, company, analytics, ...feature } = featureData;
   const featureUrl = `${company.slug}.sugary.dev/${feature.slug}`;
 
   return (
@@ -93,7 +93,7 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3 mb-10">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-10">
           <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl p-6 border border-primary/10 shadow-lg hover:shadow-xl transition-all duration-300">
             <div className="flex items-center">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
@@ -123,12 +123,26 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
           <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl p-6 border border-accent/10 shadow-lg hover:shadow-xl transition-all duration-300">
             <div className="flex items-center">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-accent to-primary flex items-center justify-center">
-                <span className="text-white text-xl">🔗</span>
+                <span className="text-white text-xl">📈</span>
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-muted">Feature Status</p>
-                <p className="text-lg font-bold text-foreground capitalize">
-                  {feature.status.replace('_', ' ')}
+                <p className="text-sm font-medium text-muted">Page Views (30d)</p>
+                <p className="text-2xl font-bold text-foreground">
+                  {analytics?.totalPageViews || 0}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl p-6 border border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300">
+            <div className="flex items-center">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-green-400 to-green-600 flex items-center justify-center">
+                <span className="text-white text-xl">🎯</span>
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-muted">Conversion Rate</p>
+                <p className="text-2xl font-bold text-foreground">
+                  {analytics?.conversionRate || 0}%
                 </p>
               </div>
             </div>
