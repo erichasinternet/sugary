@@ -159,7 +159,7 @@ export default function Home() {
         </div>
 
         {/* CTA Section */}
-        <div className="py-24 text-center relative overflow-hidden">
+        <div className="py-24 mb-16 text-center relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5 rounded-3xl"></div>
           <div className="relative z-10">
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 mb-8">
