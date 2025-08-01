@@ -5,38 +5,6 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { api } from '@/convex/_generated/api';
 
-// Secure domain matching helper
-function getSourceIcon(source: string): string {
-  if (source === 'Direct') return '🔗';
-  
-  // Use exact domain matching instead of substring matching
-  const validDomains = new Set([
-    'twitter.com',
-    'x.com', 
-    'reddit.com',
-    'github.com',
-    'linkedin.com'
-  ]);
-  
-  if (validDomains.has(source)) {
-    switch (source) {
-      case 'twitter.com':
-      case 'x.com':
-        return '🐦';
-      case 'reddit.com':
-        return '🗿';
-      case 'github.com':
-        return '🐱';
-      case 'linkedin.com':
-        return '💼';
-      default:
-        return '🌐';
-    }
-  }
-  
-  return '🌐';
-}
-
 export default function Dashboard() {
   const [timeframe, setTimeframe] = useState<'7d' | '30d' | '90d'>('30d');
   const features = useQuery(api.features.getMyFeatures);
@@ -272,7 +240,11 @@ export default function Dashboard() {
                 <div key={source.source} className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="text-sm">
-                      {getSourceIcon(source.source)}
+                      {source.source === 'Direct' ? '🔗' : 
+                       source.source.includes('twitter.com') || source.source.includes('x.com') ? '🐦' :
+                       source.source.includes('reddit.com') ? '🗿' :
+                       source.source.includes('github.com') ? '🐱' :
+                       source.source.includes('linkedin.com') ? '💼' : '🌐'}
                     </span>
                     <span className="text-sm font-medium text-foreground">
                       {source.source === 'Direct' ? 'Direct' : source.source}
