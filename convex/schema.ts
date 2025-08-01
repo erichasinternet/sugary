@@ -50,24 +50,6 @@ const schema = defineSchema({
     sentAt: v.number(),
     recipientCount: v.number(),
   }).index('by_feature', ['featureId']),
-
-  clicks: defineTable({
-    featureId: v.id('features'),
-    type: v.union(
-      v.literal('page_view'),
-      v.literal('email_click'),
-      v.literal('social_share'),
-      v.literal('signup_started'),
-      v.literal('signup_completed')
-    ),
-    ipAddress: v.optional(v.string()),
-    userAgent: v.optional(v.string()),
-    referrer: v.optional(v.string()),
-    timestamp: v.number(),
-  })
-    .index('by_feature', ['featureId'])
-    .index('by_timestamp', ['timestamp'])
-    .index('by_feature_and_timestamp', ['featureId', 'timestamp']),
 });
 
 export default schema;
