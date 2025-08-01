@@ -134,16 +134,30 @@ export const getDashboardInsights = query({
     const deviceCounts: Record<string, number> = {};
 
     allClicks.forEach(click => {
-      // Referrers
+      // Referrers - secure domain parsing
       if (click.referrer) {
         try {
-          const domain = new URL(click.referrer).hostname.replace('www.', '');
-          referrerCounts[domain] = (referrerCounts[domain] || 0) + 1;
+          const url = new URL(click.referrer);
+          // Only accept HTTP/HTTPS URLs
+          if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+            referrerCounts.Direct = (referrerCounts.Direct || 0) + 1;
+            return;
+          }
+          
+          // Normalize domain (remove www. prefix)
+          const domain = url.hostname.replace(/^www\./, '');
+          
+          // Validate domain format
+          if (domain && /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(domain)) {
+            referrerCounts[domain] = (referrerCounts[domain] || 0) + 1;
+          } else {
+            referrerCounts.Direct = (referrerCounts.Direct || 0) + 1;
+          }
         } catch {
-          referrerCounts['Direct'] = (referrerCounts['Direct'] || 0) + 1;
+          referrerCounts.Direct = (referrerCounts.Direct || 0) + 1;
         }
       } else {
-        referrerCounts['Direct'] = (referrerCounts['Direct'] || 0) + 1;
+        referrerCounts.Direct = (referrerCounts.Direct || 0) + 1;
       }
 
       // Devices
@@ -188,7 +202,15 @@ export const getDashboardInsights = query({
         
         if (click.referrer) {
           try {
-            referrer = new URL(click.referrer).hostname.replace('www.', '');
+            const url = new URL(click.referrer);
+            // Only accept HTTP/HTTPS URLs
+            if (url.protocol === 'http:' || url.protocol === 'https:') {
+              const domain = url.hostname.replace(/^www\./, '');
+              // Validate domain format
+              if (domain && /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(domain)) {
+                referrer = domain;
+              }
+            }
           } catch {
             referrer = 'Direct';
           }
