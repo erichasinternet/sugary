@@ -2,7 +2,7 @@
 
 import { useMutation, useQuery } from 'convex/react';
 import Link from 'next/link';
-import { use, useState } from 'react';
+import { use, useState, useMemo } from 'react';
 import { api } from '@/convex/_generated/api';
 
 export default function FeatureSignup({
@@ -21,6 +21,32 @@ export default function FeatureSignup({
     companySlug,
     featureSlug,
   });
+
+  const trackAnalytics = useMutation(api.analytics.trackAnalytics);
+
+  // Track page view once when feature data loads
+  const [hasTrackedView, setHasTrackedView] = useState(false);
+
+  useMemo(() => {
+    if (featureData && !hasTrackedView && typeof window !== 'undefined') {
+      // Get browser info for analytics
+      const metadata = {
+        referrer: document.referrer || undefined,
+        userAgent: navigator.userAgent,
+      };
+
+      trackAnalytics({
+        featureId: featureData._id,
+        type: 'page_view',
+        metadata,
+      }).catch(error => {
+        // Silent fail - don't break the page if analytics fails
+        console.debug('Analytics tracking failed:', error);
+      });
+
+      setHasTrackedView(true);
+    }
+  }, [featureData, hasTrackedView, trackAnalytics]);
 
   const subscribe = useMutation(api.subscribers.subscribe);
 
@@ -47,28 +73,31 @@ export default function FeatureSignup({
 
   if (featureData === undefined) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-secondary/5">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
   }
 
   if (!featureData) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-secondary/5">
         <div className="max-w-md w-full text-center">
-          <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-8">
-            <div className="mb-4">
-              <span className="text-4xl">🔍</span>
+          <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm shadow-xl rounded-2xl p-8 border border-primary/10">
+            <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
+              <span className="text-2xl text-white">🔍</span>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent mb-4">
               Feature Not Found
             </h2>
-            <p className="text-gray-600 dark:text-gray-300 mb-6">
+            <p className="text-muted mb-8 text-lg">
               The feature you're looking for doesn't exist or has been removed.
             </p>
-            <Link href="/" className="text-blue-600 hover:text-blue-500 font-medium">
-              Go to Sugary
+            <Link
+              href="/"
+              className="bg-gradient-to-r from-primary to-secondary text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 inline-flex items-center gap-2"
+            >
+              🏠 Go to Sugary
             </Link>
           </div>
         </div>
@@ -78,23 +107,23 @@ export default function FeatureSignup({
 
   if (isSubscribed) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-secondary/5">
         <div className="max-w-md w-full text-center">
-          <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-8">
-            <div className="mb-4">
-              <span className="text-4xl">✅</span>
+          <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm shadow-xl rounded-2xl p-8 border border-primary/10">
+            <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-r from-green-400 to-green-600 flex items-center justify-center animate-pulse">
+              <span className="text-2xl text-white">✅</span>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent mb-4">
               You're on the list!
             </h2>
-            <p className="text-gray-600 dark:text-gray-300 mb-6">
-              Thanks for your interest in <strong>{featureData.title}</strong>. We'll send you a
+            <p className="text-muted mb-6 text-lg">
+              Thanks for your interest in <strong className="text-primary">{featureData.title}</strong>. We'll send you a
               confirmation email and keep you updated on our progress.
             </p>
-            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-              <p className="text-sm text-blue-800 dark:text-blue-200">
-                <strong>What's next?</strong> Check your email for a confirmation link, then sit
-                back and we'll update you as we build this feature.
+            <div className="bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20 rounded-xl p-6">
+              <p className="text-sm text-foreground">
+                <strong className="text-primary">🚀 What's next?</strong> Check your email for a confirmation link, then sit
+                back and we'll update you as we build this feature!
               </p>
             </div>
           </div>
@@ -104,23 +133,28 @@ export default function FeatureSignup({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5">
       {/* Header */}
-      <div className="bg-white dark:bg-gray-800 shadow-sm">
+      <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border-b border-primary/10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="text-lg font-semibold text-gray-900 dark:text-white">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
+                <span className="text-white text-sm font-bold">
+                  {featureData.company.name.charAt(0).toUpperCase()}
+                </span>
+              </div>
+              <div className="text-lg font-semibold text-foreground">
                 {featureData.company.name}
               </div>
-              <span className="text-gray-400">•</span>
-              <span className="text-sm text-gray-500 dark:text-gray-400">Feature Request</span>
+              <span className="text-primary">•</span>
+              <span className="text-sm text-muted">Feature Request</span>
             </div>
             <Link
               href="/"
-              className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+              className="text-sm text-primary hover:text-primary-dark font-medium transition-colors flex items-center gap-1"
             >
-              Powered by Sugary
+              ✨ Powered by Sugary
             </Link>
           </div>
         </div>
@@ -128,43 +162,42 @@ export default function FeatureSignup({
 
       {/* Main Content */}
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-8">
+        <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm shadow-xl rounded-2xl p-8 border border-primary/10">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent mb-4">
               {featureData.title}
             </h1>
             {featureData.description && (
-              <p className="text-lg text-gray-600 dark:text-gray-300">{featureData.description}</p>
+              <p className="text-lg text-muted leading-relaxed">{featureData.description}</p>
             )}
           </div>
 
           <div className="mb-8">
-            <div className="flex items-center justify-center space-x-6 text-sm text-gray-500 dark:text-gray-400">
-              <div className="flex items-center">
+            <div className="flex items-center justify-center space-x-6 text-sm">
+              <div className="flex items-center bg-gradient-to-r from-primary/10 to-secondary/10 px-4 py-2 rounded-full border border-primary/20">
                 <div
                   className={`w-3 h-3 rounded-full mr-2 ${
                     featureData.status === 'completed'
                       ? 'bg-green-400'
                       : featureData.status === 'in_progress'
-                        ? 'bg-yellow-400'
+                        ? 'bg-gradient-to-r from-secondary to-accent'
                         : featureData.status === 'cancelled'
                           ? 'bg-red-400'
-                          : 'bg-gray-400'
+                          : 'bg-gradient-to-r from-primary to-secondary'
                   }`}
                 ></div>
-                <span className="capitalize">{featureData.status.replace('_', ' ')}</span>
+                <span className="capitalize font-medium text-primary">{featureData.status.replace('_', ' ')}</span>
               </div>
-              <div>
-                Status:{' '}
+              <div className="text-muted font-medium">
                 {featureData.status === 'planning'
-                  ? 'Collecting feedback'
+                  ? '📈 Collecting feedback'
                   : featureData.status === 'in_progress'
-                    ? 'In development'
+                    ? '🔧 In development'
                     : featureData.status === 'completed'
-                      ? 'Available now!'
+                      ? '✅ Available now!'
                       : featureData.status === 'cancelled'
-                        ? 'Not planned'
-                        : 'Planning'}
+                        ? '❌ Not planned'
+                        : '📈 Planning'}
               </div>
             </div>
           </div>
@@ -179,9 +212,9 @@ export default function FeatureSignup({
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                className="block text-sm font-semibold text-foreground mb-3"
               >
-                Email Address
+                📧 Email Address
               </label>
               <input
                 type="email"
@@ -189,7 +222,7 @@ export default function FeatureSignup({
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full px-4 py-3 border border-primary/20 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary bg-background transition-all duration-200 hover:border-primary/30 text-foreground"
                 placeholder="your@email.com"
               />
             </div>
@@ -197,43 +230,47 @@ export default function FeatureSignup({
             <div>
               <label
                 htmlFor="context"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                className="block text-sm font-semibold text-foreground mb-3"
               >
-                Why do you need this feature? <span className="text-gray-400">(Optional)</span>
+                💬 Why do you need this feature? <span className="text-muted">(Optional)</span>
               </label>
               <textarea
                 id="context"
                 value={context}
                 onChange={(e) => setContext(e.target.value)}
                 rows={3}
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full px-4 py-3 border border-primary/20 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary bg-background transition-all duration-200 hover:border-primary/30 text-foreground resize-none"
                 placeholder="Tell us about your use case, integration needs, or how this would help you..."
               />
-              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                This helps the team prioritize and build the right solution.
+              <p className="mt-3 text-sm text-muted">
+                💡 This helps the team prioritize and build the right solution.
               </p>
             </div>
 
             <button
               type="submit"
               disabled={isLoading || !email.trim()}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium py-3 px-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="w-full bg-gradient-to-r from-primary to-secondary text-white py-4 px-6 rounded-xl font-semibold hover:shadow-lg hover:scale-[1.02] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
             >
               {isLoading ? (
-                <span className="flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                <>
+                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
                   Adding you to the list...
-                </span>
+                </>
               ) : (
-                'Get notified when this is ready'
+                <>🔔 Get notified when this is ready</>
               )}
             </button>
           </form>
 
-          <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-            <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-              <span>We'll email you updates as we build this feature</span>
-              <span>No spam, unsubscribe anytime</span>
+          <div className="mt-8 pt-6 border-t border-primary/10">
+            <div className="flex items-center justify-between text-sm text-muted">
+              <span className="flex items-center gap-1">
+                📧 We'll email you updates as we build this feature
+              </span>
+              <span className="flex items-center gap-1">
+                ✨ No spam, unsubscribe anytime
+              </span>
             </div>
           </div>
         </div>
