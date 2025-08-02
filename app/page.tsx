@@ -18,9 +18,7 @@ export default function Home() {
                 Sign In
               </Link>
               <GradientButton>
-                <Link href="/auth/signup">
-                  Get Started
-                </Link>
+                <Link href="/auth/signup">Get Started</Link>
               </GradientButton>
             </div>
           </div>
@@ -203,18 +201,21 @@ export default function Home() {
               Making feature development sweeter, one request at a time
             </p>
             <div className="flex justify-center space-x-8 mb-8 text-sm">
-              <Link href="#" className="text-muted hover:text-primary transition-colors">
+              <Link href="/privacy" className="text-muted hover:text-primary transition-colors">
                 Privacy
               </Link>
-              <Link href="#" className="text-muted hover:text-primary transition-colors">
+              <Link href="/terms" className="text-muted hover:text-primary transition-colors">
                 Terms
               </Link>
-              <Link href="#" className="text-muted hover:text-primary transition-colors">
+              <a
+                href="mailto:eric@gantstreet.com"
+                className="text-muted hover:text-primary transition-colors"
+              >
                 Contact
-              </Link>
+              </a>
             </div>
             <p className="text-muted text-sm">
-              &copy; 2024 Sugary. Built with 💝 for founders who listen to their users.
+              &copy; 2025 Gant Street LLC. Built with ❤️ for founders who listen to their users.
             </p>
           </div>
         </div>
