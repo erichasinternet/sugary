@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Sugary - Capture & nurture feature interest',
+  title: 'Build What Matters | Sugary',
   description:
     'Turn feature requests into engaged waitlists. Track interest, keep users updated, and build what matters most.',
 };
