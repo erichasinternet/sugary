@@ -90,6 +90,7 @@ export default function Home() {
 
         {/* Demo Section */}
         <div className="py-24 relative overflow-hidden">
+          <div className="glass-card rounded-3xl p-8 mx-4 sm:mx-8">
           <div className="text-center mb-16">
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-secondary/10 to-accent/10 border border-secondary/20 mb-6">
               <span className="text-sm font-medium text-primary">See It In Action</span>
@@ -325,10 +326,12 @@ export default function Home() {
               </div>
             </div>
           </div>
+          </div>
         </div>
 
         {/* How It Works Section */}
         <div id="how-it-works" className="py-24">
+          <div className="glass-card rounded-3xl p-8 mx-4 sm:mx-8">
           <div className="text-center mb-20">
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-accent/10 to-primary/10 border border-accent/20 mb-6">
               <span className="text-sm font-medium text-primary">🍭 Sweet & Simple Process</span>
@@ -563,10 +566,12 @@ export default function Home() {
               </div>
             </div>
           </div>
+          </div>
         </div>
 
         {/* CTA Section */}
         <div className="py-24 mb-16 text-center relative overflow-hidden">
+          <div className="glass-card rounded-3xl p-8 mx-4 sm:mx-8 relative">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5 rounded-3xl"></div>
           <div className="relative z-10">
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 mb-8">
@@ -595,6 +600,7 @@ export default function Home() {
                 <span className="font-medium">No credit card required</span> • Start in 30 seconds
               </div>
             </div>
+          </div>
           </div>
         </div>
       </main>
