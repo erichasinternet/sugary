@@ -448,9 +448,7 @@ export default function Home() {
                 Contact
               </a>
             </div>
-            <p className="text-muted text-sm">
-              &copy; 2025 Gant Street LLC. Built with ❤️ for founders who listen to their users.
-            </p>
+            <p className="text-muted text-sm">© 2025 Gant Street LLC. All rights reserved.</p>
           </div>
         </div>
       </footer>
