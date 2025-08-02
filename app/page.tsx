@@ -88,6 +88,151 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Demo Section */}
+        <div className="py-24 relative overflow-hidden">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-secondary/10 to-accent/10 border border-secondary/20 mb-6">
+              <span className="text-sm font-medium text-primary">💬 See It In Action</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-foreground to-muted bg-clip-text text-transparent">
+              From chaos to clarity
+            </h2>
+            <p className="text-xl text-muted max-w-3xl mx-auto leading-relaxed">
+              Watch how Sugary transforms scattered feature requests into organized, trackable interest
+            </p>
+          </div>
+
+          <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+            {/* Before: Traditional Social Media */}
+            <div className="space-y-6">
+              <div className="bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/30 dark:to-orange-950/30 p-6 rounded-2xl border border-red-200 dark:border-red-800">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <h3 className="font-bold text-foreground">Before: Lost in the noise</h3>
+                </div>
+                
+                {/* Simulated Reddit/Twitter conversation */}
+                <div className="space-y-4">
+                  {/* User request */}
+                  <div className="bg-white dark:bg-slate-800 p-4 rounded-lg border border-gray-200 dark:border-slate-700 animate-fadeInUp opacity-0" style={{animationDelay: '0.5s', animationFillMode: 'forwards'}}>
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                        U
+                      </div>
+                      <div>
+                        <div className="font-medium text-sm text-muted mb-1">@sarah_dev • 2h</div>
+                        <p className="text-foreground">Hey @founder, any chance we could get dark mode support? My eyes are dying over here 😅</p>
+                        <div className="flex items-center gap-4 mt-2 text-sm text-muted">
+                          <span>❤️ 23</span>
+                          <span>💬 8</span>
+                          <span>🔄 2</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* More scattered requests */}
+                  <div className="bg-white dark:bg-slate-800 p-4 rounded-lg border border-gray-200 dark:border-slate-700 animate-fadeInUp opacity-0" style={{animationDelay: '1s', animationFillMode: 'forwards'}}>
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 bg-gradient-to-r from-green-400 to-green-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                        M
+                      </div>
+                      <div>
+                        <div className="font-medium text-sm text-muted mb-1">@mike_codes • 45m</div>
+                        <p className="text-foreground">+1 for dark mode! Been waiting forever</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white dark:bg-slate-800 p-4 rounded-lg border border-gray-200 dark:border-slate-700 animate-fadeInUp opacity-0" style={{animationDelay: '1.5s', animationFillMode: 'forwards'}}>
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                        A
+                      </div>
+                      <div>
+                        <div className="font-medium text-sm text-muted mb-1">@alex_builds • 12m</div>
+                        <p className="text-foreground">Dark mode would be amazing! When can we expect this?</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Founder's struggle */}
+                  <div className="bg-yellow-50 dark:bg-yellow-950/30 p-4 rounded-lg border border-yellow-200 dark:border-yellow-800 animate-fadeInUp opacity-0" style={{animationDelay: '2s', animationFillMode: 'forwards'}}>
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center text-white text-sm font-bold">
+                        F
+                      </div>
+                      <div>
+                        <div className="font-medium text-sm text-muted mb-1">@founder • 5m</div>
+                        <p className="text-foreground">Noted! I'll add it to our backlog. Hard to track all these requests though... 😅</p>
+                        <div className="text-sm text-muted mt-2 italic">*Request gets lost in the thread*</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* After: With Sugary */}
+            <div className="space-y-6">
+              <div className="bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-950/30 dark:to-blue-950/30 p-6 rounded-2xl border border-green-200 dark:border-green-800">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <h3 className="font-bold text-foreground">After: Organized & actionable</h3>
+                </div>
+
+                {/* User request */}
+                <div className="bg-white dark:bg-slate-800 p-4 rounded-lg border border-gray-200 dark:border-slate-700 animate-fadeInUp opacity-0" style={{animationDelay: '2.5s', animationFillMode: 'forwards'}}>
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                      U
+                    </div>
+                    <div>
+                      <div className="font-medium text-sm text-muted mb-1">@sarah_dev • 2h</div>
+                      <p className="text-foreground">Hey @founder, any chance we could get dark mode support?</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Founder's smart response */}
+                <div className="bg-gradient-to-r from-primary/5 to-secondary/5 p-4 rounded-lg border border-primary/20 animate-fadeInUp opacity-0" style={{animationDelay: '3s', animationFillMode: 'forwards'}}>
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center text-white text-sm font-bold">
+                      F
+                    </div>
+                    <div>
+                      <div className="font-medium text-sm text-muted mb-1">@founder • 1m</div>
+                      <p className="text-foreground mb-3">Great idea! I've set up a feature page to track interest in dark mode 🌙</p>
+                      <div className="bg-white dark:bg-slate-800 p-3 rounded-lg border border-primary/30">
+                        <div className="text-sm text-primary font-medium mb-1">yourcompany.sugary.dev/dark-mode</div>
+                        <div className="text-xs text-muted">Sign up to get notified when it's ready!</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Community engagement */}
+                <div className="space-y-3 animate-fadeInUp opacity-0" style={{animationDelay: '3.5s', animationFillMode: 'forwards'}}>
+                  <div className="flex items-center gap-2 text-sm">
+                    <div className="flex -space-x-2">
+                      <div className="w-6 h-6 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full border-2 border-white dark:border-slate-800"></div>
+                      <div className="w-6 h-6 bg-gradient-to-r from-green-400 to-green-600 rounded-full border-2 border-white dark:border-slate-800"></div>
+                      <div className="w-6 h-6 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full border-2 border-white dark:border-slate-800"></div>
+                      <div className="w-6 h-6 bg-gradient-to-r from-orange-400 to-orange-600 rounded-full border-2 border-white dark:border-slate-800"></div>
+                    </div>
+                    <span className="text-green-600 dark:text-green-400 font-medium">+12 people signed up</span>
+                  </div>
+                  <div className="bg-green-50 dark:bg-green-950/50 p-3 rounded-lg border border-green-200 dark:border-green-800">
+                    <div className="text-sm text-green-700 dark:text-green-300">
+                      ✨ <strong>Result:</strong> Clear demand validated, users stay engaged, founder builds with confidence
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Features Section */}
         <div id="how-it-works" className="py-24">
           <div className="text-center mb-20">
