@@ -26,8 +26,8 @@ export default function GradientButton({
   };
 
   const variantClasses = {
-    primary: 'bg-gradient-to-r from-primary to-secondary text-white',
-    secondary: 'bg-white/95 dark:bg-slate-800/95 text-foreground border-2 border-primary/30 hover:border-primary/50'
+    primary: 'brand-button',
+    secondary: 'glass-card-subtle text-foreground border-2 border-primary/30 hover:border-primary/50'
   };
 
   return (
@@ -39,8 +39,7 @@ export default function GradientButton({
         ${variantClasses[variant]}
         ${sizeClasses[size]}
         font-semibold rounded-xl
-        hover:shadow-lg hover:scale-[1.02] 
-        transition-all duration-300
+        ${variant === 'secondary' ? 'hover:shadow-lg hover:scale-[1.02] transition-all duration-300' : ''}
         disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
         ${className}
       `}

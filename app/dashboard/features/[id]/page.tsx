@@ -26,7 +26,7 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
     return (
       <div className="px-4 py-6">
         <div className="max-w-2xl mx-auto text-center">
-          <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl p-8 border border-primary/10 shadow-xl">
+          <div className="glass-card-elevated rounded-2xl p-8">
             <h2 className="text-2xl font-bold text-foreground mb-4">
               Feature not found
             </h2>
@@ -52,7 +52,7 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
           </Link>
           <div className="mt-4 sm:flex sm:items-center sm:justify-between">
             <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">{feature.title}</h1>
+              <h1 className="text-3xl font-bold gradient-text">{feature.title}</h1>
               <p className="mt-1 text-sm text-muted font-mono">{featureUrl}</p>
             </div>
             <div className="mt-4 sm:mt-0 flex items-center gap-3">
@@ -81,11 +81,11 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
 
         {/* Stats */}
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 mb-8">
-          <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm overflow-hidden shadow-xl rounded-2xl border border-primary/10">
+          <div className="glass-card overflow-hidden rounded-2xl">
             <div className="p-5">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <div className="w-8 h-8 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 gradient-icon">
                     <span className="text-white text-sm">👥</span>
                   </div>
                 </div>
@@ -103,11 +103,11 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
             </div>
           </div>
 
-          <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm overflow-hidden shadow-xl rounded-2xl border border-secondary/10">
+          <div className="glass-card overflow-hidden rounded-2xl">
             <div className="p-5">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <div className="w-8 h-8 bg-gradient-to-r from-secondary to-accent rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 gradient-icon">
                     <span className="text-white text-sm">✅</span>
                   </div>
                 </div>
@@ -125,11 +125,11 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
             </div>
           </div>
 
-          <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm overflow-hidden shadow-xl rounded-2xl border border-accent/10">
+          <div className="glass-card overflow-hidden rounded-2xl">
             <div className="p-5">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <div className="w-8 h-8 bg-gradient-to-r from-accent to-primary rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 gradient-icon">
                     <span className="text-white text-sm">🔗</span>
                   </div>
                 </div>
@@ -155,14 +155,14 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
 
         {/* Feature Description */}
         {feature.description && (
-          <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm shadow-xl rounded-2xl p-6 mb-8 border border-primary/10">
+          <div className="glass-card rounded-2xl p-6 mb-8">
             <h3 className="text-lg font-semibold text-foreground mb-3">Description</h3>
             <p className="text-muted">{feature.description}</p>
           </div>
         )}
 
         {/* Subscribers List */}
-        <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm shadow-xl rounded-2xl border border-primary/10">
+        <div className="glass-card rounded-2xl">
           <div className="px-6 py-4 border-b border-primary/10">
             <h3 className="text-lg font-semibold text-foreground">
               Subscribers ({subscribers.length})
@@ -174,7 +174,7 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
               <p className="text-muted mb-4">
                 No subscribers yet. Share your feature link to start collecting interest!
               </p>
-              <div className="bg-gradient-to-r from-primary/5 to-secondary/5 border border-primary/20 rounded-xl p-4 text-left">
+              <div className="glass-card-subtle rounded-xl p-4 text-left">
                 <p className="text-sm font-semibold text-foreground mb-2">
                   Your feature link:
                 </p>
@@ -191,8 +191,8 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
                     <div className="flex items-center">
                       <div className="flex-shrink-0">
                         <div
-                          className={`w-3 h-3 rounded-full ${
-                            subscriber.confirmed ? 'bg-green-400' : 'bg-yellow-400'
+                          className={`status-indicator ${
+                            subscriber.confirmed ? 'status-completed' : 'status-in-progress'
                           }`}
                         ></div>
                       </div>

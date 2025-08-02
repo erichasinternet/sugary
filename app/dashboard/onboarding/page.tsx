@@ -42,13 +42,13 @@ export default function Onboarding() {
     <div className="px-4 py-6">
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">Set up your company</h1>
+          <h1 className="text-3xl font-bold gradient-text">Set up your company</h1>
           <p className="mt-2 text-muted">
             Create your company profile to start building feature waitlists
           </p>
         </div>
 
-        <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm shadow-xl rounded-2xl p-8 border border-primary/10">
+        <div className="glass-card rounded-2xl p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
               <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-xl">

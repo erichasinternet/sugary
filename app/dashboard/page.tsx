@@ -27,17 +27,17 @@ export default function Dashboard() {
   if (!company) {
     return (
       <div className="px-4 py-16">
-        <div className="glass-card rounded-3xl p-12 mx-4 sm:mx-8 max-w-2xl mx-auto text-center relative overflow-hidden">
+        <div className="glass-card-elevated rounded-3xl p-12 mx-4 sm:mx-8 max-w-2xl mx-auto text-center relative overflow-hidden">
           {/* Floating elements */}
           <div className="absolute top-6 left-6 w-12 h-12 rounded-full bg-gradient-to-r from-accent/20 to-accent-light/20 animate-float"></div>
           <div className="absolute top-12 right-8 w-8 h-8 rounded-full bg-gradient-to-r from-secondary/20 to-primary/20 animate-float" style={{ animationDelay: '1s' }}></div>
           <div className="absolute bottom-8 left-1/4 w-6 h-6 rounded-full bg-gradient-to-r from-primary/20 to-secondary/20 animate-float" style={{ animationDelay: '2s' }}></div>
           
           <div className="relative z-10">
-            <div className="w-20 h-20 mx-auto mb-8 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center shadow-xl">
+            <div className="w-20 h-20 mx-auto mb-8 gradient-icon">
               <span className="text-3xl">✨</span>
             </div>
-            <h2 className="text-4xl font-bold bg-gradient-to-r from-foreground via-primary to-secondary bg-clip-text text-transparent mb-6">
+            <h2 className="text-4xl font-bold gradient-text mb-6">
               Welcome to Sugary!
             </h2>
             <p className="text-muted mb-10 text-lg leading-relaxed">
@@ -61,11 +61,11 @@ export default function Dashboard() {
       {/* Header */}
       <div className="mb-12">
         <div className="flex items-center gap-4 mb-6">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-primary to-secondary flex items-center justify-center shadow-lg">
+          <div className="w-12 h-12 gradient-icon">
             <span className="text-white text-xl">📊</span>
           </div>
           <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-foreground via-primary to-secondary bg-clip-text text-transparent">
+            <h1 className="text-4xl font-bold gradient-text">
               Dashboard
             </h1>
             <p className="text-muted text-lg">
@@ -86,7 +86,7 @@ export default function Dashboard() {
             href={`https://${company.slug}.sugary.dev`}
             target="_blank"
             rel="noopener noreferrer"
-            className="group bg-white/90 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-800 px-6 py-3 rounded-xl font-medium border border-primary/20 hover:border-primary/40 transition-all duration-300 flex items-center gap-2 backdrop-blur-sm shadow-sm hover:shadow-lg"
+            className="group glass-card-subtle px-6 py-3 rounded-xl font-medium flex items-center gap-2"
           >
             <span>🌐</span>
             View Public Page
@@ -97,9 +97,9 @@ export default function Dashboard() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-3 mb-12">
-        <div className="glass-card rounded-2xl p-6 group hover:scale-105 transition-all duration-300">
+        <div className="glass-card rounded-2xl p-6 group">
           <div className="flex items-center justify-between mb-4">
-            <div className="w-14 h-14 rounded-xl bg-gradient-to-r from-primary to-secondary flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
+            <div className="w-14 h-14 gradient-icon">
               <span className="text-white text-xl">🎯</span>
             </div>
             <div className="text-right">
@@ -123,9 +123,9 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="glass-card rounded-2xl p-6 group hover:scale-105 transition-all duration-300">
+        <div className="glass-card rounded-2xl p-6 group">
           <div className="flex items-center justify-between mb-4">
-            <div className="w-14 h-14 rounded-xl bg-gradient-to-r from-secondary to-accent flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
+            <div className="w-14 h-14 gradient-icon">
               <span className="text-white text-xl">👥</span>
             </div>
             <div className="text-right">
@@ -151,9 +151,9 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="glass-card rounded-2xl p-6 group hover:scale-105 transition-all duration-300">
+        <div className="glass-card rounded-2xl p-6 group">
           <div className="flex items-center justify-between mb-4">
-            <div className="w-14 h-14 rounded-xl bg-gradient-to-r from-accent to-primary flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
+            <div className="w-14 h-14 gradient-icon">
               <span className="text-white text-xl">🌟</span>
             </div>
             <div className="text-right">
@@ -188,14 +188,14 @@ export default function Dashboard() {
         </div>
 
         {features.length === 0 ? (
-          <div className="glass-card rounded-3xl p-16 text-center relative overflow-hidden">
+          <div className="glass-card-elevated rounded-3xl p-16 text-center relative overflow-hidden">
             {/* Floating elements */}
             <div className="absolute top-8 left-8 w-16 h-16 rounded-full bg-gradient-to-r from-accent/10 to-accent-light/10 animate-float"></div>
             <div className="absolute top-12 right-12 w-12 h-12 rounded-full bg-gradient-to-r from-secondary/10 to-primary/10 animate-float" style={{ animationDelay: '1s' }}></div>
             <div className="absolute bottom-12 left-1/4 w-8 h-8 rounded-full bg-gradient-to-r from-primary/10 to-secondary/10 animate-float" style={{ animationDelay: '2s' }}></div>
             
             <div className="relative z-10">
-              <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-r from-primary/20 to-secondary/20 flex items-center justify-center">
+              <div className="w-24 h-24 mx-auto mb-6 gradient-icon opacity-30">
                 <span className="text-4xl">🎯</span>
               </div>
               <h3 className="text-2xl font-bold text-foreground mb-4">Ready to capture your first requests?</h3>
@@ -217,23 +217,20 @@ export default function Dashboard() {
               <Link
                 key={feature._id}
                 href={`/dashboard/features/${feature._id}`}
-                className="glass-card rounded-xl p-6 group hover:scale-[1.02] transition-all duration-300 block"
+                className="glass-card rounded-xl p-6 group block"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="relative">
-                      <div className={`w-4 h-4 rounded-full ${
+                      <div className={`status-indicator ${
                         feature.status === 'completed'
-                          ? 'bg-green-500 shadow-lg shadow-green-500/25'
+                          ? 'status-completed'
                           : feature.status === 'in_progress'
-                            ? 'bg-yellow-500 shadow-lg shadow-yellow-500/25'
+                            ? 'status-in-progress'
                             : feature.status === 'cancelled'
-                              ? 'bg-red-500 shadow-lg shadow-red-500/25'
-                              : 'bg-gray-400 shadow-lg shadow-gray-400/25'
+                              ? 'status-cancelled'
+                              : 'status-pending'
                       }`}>
-                        {feature.status === 'completed' && (
-                          <div className="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-75"></div>
-                        )}
                       </div>
                     </div>
                     <div>
@@ -289,9 +286,9 @@ export default function Dashboard() {
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Signup Trends */}
-            <div className="glass-card rounded-2xl p-6 group hover:scale-[1.02] transition-all duration-300">
+            <div className="glass-card rounded-2xl p-6 group">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
+                <div className="w-10 h-10 gradient-icon">
                   <span className="text-white text-lg">📈</span>
                 </div>
                 <div>
@@ -343,9 +340,9 @@ export default function Dashboard() {
             </div>
 
             {/* Top Features */}
-            <div className="glass-card rounded-2xl p-6 group hover:scale-[1.02] transition-all duration-300">
+            <div className="glass-card rounded-2xl p-6 group">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-secondary to-accent flex items-center justify-center">
+                <div className="w-10 h-10 gradient-icon">
                   <span className="text-white text-lg">🏆</span>
                 </div>
                 <div>
@@ -372,11 +369,11 @@ export default function Dashboard() {
                             {feature.title}
                           </div>
                           <div className="text-xs text-muted capitalize flex items-center gap-1">
-                            <div className={`w-2 h-2 rounded-full ${
-                              feature.status === 'completed' ? 'bg-green-500' :
-                              feature.status === 'in_progress' ? 'bg-yellow-500' :
-                              feature.status === 'cancelled' ? 'bg-red-500' :
-                              'bg-gray-400'
+                            <div className={`status-indicator ${
+                              feature.status === 'completed' ? 'status-completed' :
+                              feature.status === 'in_progress' ? 'status-in-progress' :
+                              feature.status === 'cancelled' ? 'status-cancelled' :
+                              'status-pending'
                             }`}></div>
                             {feature.status.replace('_', ' ')}
                           </div>

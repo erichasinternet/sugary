@@ -57,7 +57,7 @@ export default function NewFeature() {
     return (
       <div className="px-4 py-6">
         <div className="max-w-2xl mx-auto text-center">
-          <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl p-8 border border-primary/10 shadow-xl">
+          <div className="glass-card-elevated rounded-2xl p-8">
             <h2 className="text-2xl font-bold text-foreground mb-4">
               No company found
             </h2>
@@ -82,7 +82,7 @@ export default function NewFeature() {
           <Link href="/dashboard" className="text-primary hover:text-primary-dark text-sm font-medium transition-colors">
             ← Back to Dashboard
           </Link>
-          <h1 className="mt-2 text-3xl font-bold bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
+          <h1 className="mt-2 text-3xl font-bold gradient-text">
             Create New Feature
           </h1>
           <p className="mt-2 text-muted">
@@ -90,7 +90,7 @@ export default function NewFeature() {
           </p>
         </div>
 
-        <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm shadow-xl rounded-2xl p-8 border border-primary/10">
+        <div className="glass-card rounded-2xl p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
               <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-xl">
@@ -163,10 +163,12 @@ export default function NewFeature() {
               />
             </div>
 
-            <div className="bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20 rounded-xl p-4">
+            <div className="glass-card-subtle rounded-xl p-4">
               <div className="flex">
                 <div className="flex-shrink-0">
-                  <span className="text-primary text-lg">💡</span>
+                  <div className="w-8 h-8 gradient-icon">
+                    <span className="text-white text-sm">💡</span>
+                  </div>
                 </div>
                 <div className="ml-3">
                   <h3 className="text-sm font-medium text-primary">Pro Tip</h3>
