@@ -95,11 +95,16 @@ export default function Home() {
               <span className="text-sm font-medium text-primary">See It In Action</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-foreground to-muted bg-clip-text text-transparent">
-              From chaos to clarity
+              From scattered to
+              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                {' '}
+                sweet
+              </span>
             </h2>
             <p className="text-xl text-muted max-w-3xl mx-auto leading-relaxed">
-              Watch how Sugary transforms scattered feature requests into organized, trackable
-              interest
+              See how Sugary transforms chaotic feature requests into organized, trackable waitlists
+              that
+              <span className="text-foreground font-medium"> build genuine excitement</span>
             </p>
           </div>
 
@@ -109,7 +114,7 @@ export default function Home() {
               <div className="bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/30 dark:to-orange-950/30 p-6 rounded-2xl border border-red-200 dark:border-red-800 h-full flex flex-col">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                  <h3 className="font-bold text-foreground">Before: Lost in the noise</h3>
+                  <h3 className="font-bold text-foreground">Before: Scattered & Forgotten</h3>
                 </div>
 
                 <div className="space-y-4 flex-1">
@@ -195,8 +200,8 @@ export default function Home() {
                               <span className="text-white text-xs">!</span>
                             </div>
                             <div className="text-sm text-red-700 dark:text-red-300">
-                              <strong>Problem:</strong> Request gets lost in the thread, no
-                              follow-up, users frustrated
+                              <strong>Problem:</strong> Requests vanish into the void, users
+                              frustrated, founders miss opportunities
                             </div>
                           </div>
                         </div>
@@ -212,7 +217,7 @@ export default function Home() {
               <div className="bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-950/30 dark:to-blue-950/30 p-6 rounded-2xl border border-green-200 dark:border-green-800 h-full flex flex-col">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                  <h3 className="font-bold text-foreground">After: Organized & actionable</h3>
+                  <h3 className="font-bold text-foreground">After: Organized & Actionable</h3>
                 </div>
 
                 <div className="space-y-4 flex-1">
@@ -309,8 +314,8 @@ export default function Home() {
                             <span className="text-white text-xs">✓</span>
                           </div>
                           <div className="text-sm text-green-700 dark:text-green-300">
-                            <strong>Result:</strong> Clear demand validated, users stay engaged,
-                            founder builds with confidence
+                            <strong>Sweet Result:</strong> Demand validated, community engaged,
+                            founder builds features users actually crave 🎯
                           </div>
                         </div>
                       </div>
