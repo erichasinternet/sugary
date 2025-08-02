@@ -362,19 +362,19 @@ export default function Home() {
                 </p>
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-primary rounded-full"></div>
                     <span className="text-foreground">
                       30-second setup with custom company branding
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-primary rounded-full"></div>
                     <span className="text-foreground">
                       SEO-friendly URLs that build your brand presence
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-primary rounded-full"></div>
                     <span className="text-foreground">
                       Professional pages that make requests feel official
                     </span>
@@ -408,10 +408,10 @@ export default function Home() {
             {/* Step 2 */}
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               <div>
-                <div className="bg-gradient-to-br from-secondary/5 to-accent/5 p-8 rounded-3xl border border-secondary/20">
+                <div className="bg-gradient-to-br from-primary/5 to-secondary/5 p-8 rounded-3xl border border-primary/20">
                   <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-xl">
                     <div className="text-center space-y-4">
-                      <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-r from-secondary to-accent flex items-center justify-center">
+                      <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
                         <span className="text-2xl">🌑</span>
                       </div>
                       <div>
@@ -424,18 +424,18 @@ export default function Home() {
                       </div>
                       <div className="space-y-3">
                         <input
-                          className="w-full p-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-background"
+                          className="w-full p-3 rounded-lg border border-primary/20 dark:border-primary/30 bg-background"
                           placeholder="your@email.com"
                           disabled
                         />
                         <textarea
-                          className="w-full p-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-background resize-none"
+                          className="w-full p-3 rounded-lg border border-primary/20 dark:border-primary/30 bg-background resize-none"
                           placeholder="Why do you need this feature?"
                           rows={3}
                           disabled
                         />
-                        <button className="w-full bg-gradient-to-r from-secondary to-accent text-white py-3 rounded-lg font-semibold">
-                          Count Me In! 🙋‍♀️
+                        <button className="w-full bg-gradient-to-r from-primary to-secondary text-white py-3 rounded-lg font-semibold">
+                          Count Me In!
                         </button>
                       </div>
                     </div>
@@ -444,11 +444,11 @@ export default function Home() {
               </div>
               <div>
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-r from-secondary to-accent flex items-center justify-center shadow-lg">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center shadow-lg">
                     <span className="text-2xl">💝</span>
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-secondary mb-1">STEP 2</div>
+                    <div className="text-sm font-semibold text-primary mb-1">STEP 2</div>
                     <h3 className="text-3xl font-bold text-foreground">
                       Capture Meaningful Interest
                     </h3>
@@ -460,19 +460,19 @@ export default function Home() {
                 </p>
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-primary rounded-full"></div>
                     <span className="text-foreground">
                       Collect emails for direct communication when ready
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-primary rounded-full"></div>
                     <span className="text-foreground">
                       Understand user motivations and use cases
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-primary rounded-full"></div>
                     <span className="text-foreground">
                       Build a community around your upcoming features
                     </span>
@@ -485,11 +485,11 @@ export default function Home() {
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               <div className="order-2 lg:order-1">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-r from-accent to-primary flex items-center justify-center shadow-lg">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center shadow-lg">
                     <span className="text-2xl">📊</span>
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-accent mb-1">STEP 3</div>
+                    <div className="text-sm font-semibold text-primary mb-1">STEP 3</div>
                     <h3 className="text-3xl font-bold text-foreground">Build with Confidence</h3>
                   </div>
                 </div>
@@ -499,19 +499,19 @@ export default function Home() {
                 </p>
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-primary rounded-full"></div>
                     <span className="text-foreground">
                       See which features have real demand vs. nice-to-haves
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-primary rounded-full"></div>
                     <span className="text-foreground">
                       Keep subscribers engaged with development updates
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-primary rounded-full"></div>
                     <span className="text-foreground">
                       Launch to users who are guaranteed to use your feature
                     </span>
@@ -519,12 +519,12 @@ export default function Home() {
                 </div>
               </div>
               <div className="order-1 lg:order-2">
-                <div className="bg-gradient-to-br from-accent/5 to-primary/5 p-8 rounded-3xl border border-accent/20">
+                <div className="bg-gradient-to-br from-primary/5 to-secondary/5 p-8 rounded-3xl border border-primary/20">
                   <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-xl">
                     <div className="space-y-6">
                       <div className="flex justify-between items-center">
                         <h4 className="font-semibold text-foreground">Dark Mode Interest</h4>
-                        <span className="text-sm bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-3 py-1 rounded-full">
+                        <span className="text-sm bg-primary/10 dark:bg-primary/20 text-primary px-3 py-1 rounded-full">
                           Hot 🔥
                         </span>
                       </div>
@@ -554,7 +554,7 @@ export default function Home() {
                         </div>
                       </div>
 
-                      <button className="w-full bg-gradient-to-r from-accent to-primary text-white py-3 rounded-lg font-semibold">
+                      <button className="w-full bg-gradient-to-r from-primary to-secondary text-white py-3 rounded-lg font-semibold">
                         Send Update to 47 Users
                       </button>
                     </div>
