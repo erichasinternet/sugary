@@ -17,6 +17,10 @@ export const metadata: Metadata = {
   title: 'Build What Matters | Sugary',
   description:
     'Turn feature requests into engaged waitlists. Track interest, keep users updated, and build what matters most.',
+  icons: {
+    icon: '/icon.svg',
+    apple: '/apple-icon.svg',
+  },
 };
 
 export default function RootLayout({
