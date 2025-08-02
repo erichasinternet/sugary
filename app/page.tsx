@@ -103,16 +103,16 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+          <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-stretch">
             {/* Before: Traditional Social Media */}
-            <div className="space-y-6">
-              <div className="bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/30 dark:to-orange-950/30 p-6 rounded-2xl border border-red-200 dark:border-red-800">
+            <div className="flex flex-col">
+              <div className="bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/30 dark:to-orange-950/30 p-6 rounded-2xl border border-red-200 dark:border-red-800 h-full flex flex-col">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-3 h-3 bg-red-500 rounded-full"></div>
                   <h3 className="font-bold text-foreground">Before: Lost in the noise</h3>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-4 flex-1">
                   {/* User request */}
                   <div
                     className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-gray-200 dark:border-slate-700 shadow-sm animate-fadeInUp opacity-0"
@@ -208,14 +208,14 @@ export default function Home() {
             </div>
 
             {/* After: With Sugary */}
-            <div className="space-y-6">
-              <div className="bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-950/30 dark:to-blue-950/30 p-6 rounded-2xl border border-green-200 dark:border-green-800">
+            <div className="flex flex-col">
+              <div className="bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-950/30 dark:to-blue-950/30 p-6 rounded-2xl border border-green-200 dark:border-green-800 h-full flex flex-col">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                   <h3 className="font-bold text-foreground">After: Organized & actionable</h3>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-4 flex-1">
                   {/* User request */}
                   <div
                     className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-gray-200 dark:border-slate-700 shadow-sm animate-fadeInUp opacity-0"
