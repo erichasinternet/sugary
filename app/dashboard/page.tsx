@@ -111,7 +111,7 @@ export default function Dashboard() {
             <div className="flex justify-between text-sm">
               <span className="text-muted">Active</span>
               <span className="font-medium text-foreground">
-                {features.filter(f => f.status === 'active').length}
+                {features.filter(f => f.status !== 'cancelled' && f.status !== 'completed').length}
               </span>
             </div>
             <div className="flex justify-between text-sm">
