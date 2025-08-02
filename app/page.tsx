@@ -64,26 +64,17 @@ export default function Home() {
               </span>
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <div className="flex flex-col items-center gap-4">
               <Link
                 href="/auth/signup"
-                className="group bg-gradient-to-r from-primary to-secondary text-white px-10 py-5 rounded-full font-semibold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-500 relative overflow-hidden"
+                className="group bg-gradient-to-r from-primary to-secondary text-white px-12 py-6 rounded-full font-semibold text-xl hover:shadow-2xl hover:scale-105 transition-all duration-500 relative overflow-hidden"
               >
                 <span className="relative z-10">Start Building Waitlists</span>
                 <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
               </Link>
-
-              <Link
-                href="#how-it-works"
-                className="group bg-white/95 dark:bg-slate-800/95 hover:bg-white dark:hover:bg-slate-800 px-10 py-5 rounded-full font-semibold text-lg hover:shadow-xl transition-all duration-300 border-2 border-primary/30 hover:border-primary/50 text-foreground backdrop-blur-sm"
-              >
-                <span className="flex items-center gap-2">
-                  See How It Works
-                  <span className="group-hover:translate-x-1 transition-transform duration-300">
-                    →
-                  </span>
-                </span>
-              </Link>
+              <p className="text-sm text-muted">
+                <span className="font-medium text-foreground">Free to start</span> • No credit card required
+              </p>
             </div>
           </div>
         </div>
