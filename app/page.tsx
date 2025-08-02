@@ -337,7 +337,8 @@ export default function Home() {
               How Sugary Works
             </h2>
             <p className="text-xl text-muted max-w-3xl mx-auto leading-relaxed">
-              Turn scattered feature requests into organized communities in minutes, not months
+              Turn scattered feature requests into organized communities
+              <span className="text-foreground font-medium"> in minutes, not months</span>
             </p>
           </div>
 
