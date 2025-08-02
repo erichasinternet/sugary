@@ -249,7 +249,7 @@ export default function Home() {
                         F
                       </div>
                       <div className="min-w-0 flex-1">
-                        <div className="font-medium text-sm text-muted mb-2">@founder • 1m</div>
+                        <div className="font-medium text-sm text-muted mb-2">@founder • 1h</div>
                         <p className="text-foreground leading-relaxed mb-4">
                           Great idea! I've set up a feature page to track interest in dark mode 🌙
                         </p>
@@ -304,7 +304,7 @@ export default function Home() {
                             12 interested users
                           </span>
                         </div>
-                        <div className="text-xs text-muted">2 hours ago</div>
+                        <div className="text-xs text-muted">30 min ago</div>
                       </div>
 
                       {/* Result highlight */}
