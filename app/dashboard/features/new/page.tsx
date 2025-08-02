@@ -130,7 +130,7 @@ export default function NewFeature() {
               </label>
               <div className="flex rounded-xl shadow-sm">
                 <span className="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-primary/20 bg-primary/5 text-muted text-sm font-mono">
-                  {company.slug}.sugary.dev/
+                  sugary.dev/{company.slug}/
                 </span>
                 <input
                   type="text"

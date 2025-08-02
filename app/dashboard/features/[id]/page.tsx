@@ -40,7 +40,7 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
   }
 
   const { subscribers, company, ...feature } = featureData;
-  const featureUrl = `${company.slug}.sugary.dev/${feature.slug}`;
+  const featureUrl = `sugary.dev/${company.slug}/${feature.slug}`;
 
   return (
     <div className="px-4 py-6">

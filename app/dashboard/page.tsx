@@ -83,7 +83,7 @@ export default function Dashboard() {
             </Link>
           </GradientButton>
           <Link
-            href={`https://${company.slug}.sugary.dev`}
+            href={`https://sugary.dev/${company.slug}`}
             target="_blank"
             rel="noopener noreferrer"
             className="group glass-card-subtle px-6 py-3 rounded-xl font-medium flex items-center gap-2"
@@ -158,7 +158,7 @@ export default function Dashboard() {
             </div>
             <div className="text-right">
               <p className="text-2xl font-bold text-foreground font-mono">
-                {company.slug}.sugary.dev
+                sugary.dev/{company.slug}
               </p>
               <p className="text-sm font-medium text-muted">Your Brand</p>
             </div>
@@ -238,7 +238,7 @@ export default function Dashboard() {
                         {feature.title}
                       </h3>
                       <p className="text-muted font-mono text-sm">
-                        {company.slug}.sugary.dev/{feature.slug}
+                        sugary.dev/{company.slug}/{feature.slug}
                       </p>
                     </div>
                   </div>

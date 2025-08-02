@@ -97,11 +97,11 @@ export default function Onboarding() {
                   placeholder="your-company"
                 />
                 <span className="inline-flex items-center px-3 rounded-r-xl border border-l-0 border-primary/20 bg-primary/5 text-muted text-sm font-mono">
-                  .sugary.dev
+                  (on sugary.dev)
                 </span>
               </div>
               <p className="mt-2 text-sm text-muted">
-                This will be used in your feature URLs (e.g., yourcompany.sugary.dev/feature-name)
+                This will be used in your feature URLs (e.g., sugary.dev/yourcompany/feature-name)
               </p>
             </div>
 

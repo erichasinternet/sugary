@@ -257,7 +257,7 @@ export default function Home() {
                                 Dark Mode Feature Request
                               </div>
                               <div className="text-sm text-muted mb-2">
-                                yourcompany.sugary.dev/dark-mode
+                                sugary.dev/yourcompany/dark-mode
                               </div>
                               <div className="text-xs text-muted">
                                 Sign up to get notified when it's ready!
@@ -382,14 +382,14 @@ export default function Home() {
                       <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
                         <span className="text-white text-sm font-bold">S</span>
                       </div>
-                      <div className="text-sm font-medium text-muted">yourcompany.sugary.dev</div>
+                      <div className="text-sm font-medium text-muted">sugary.dev/yourcompany</div>
                     </div>
                     <div className="space-y-3">
                       <div className="h-3 bg-gradient-to-r from-primary/20 to-secondary/20 rounded w-3/4"></div>
                       <div className="h-3 bg-muted/30 rounded w-1/2"></div>
                       <div className="bg-gradient-to-r from-primary/10 to-secondary/10 p-4 rounded-xl border border-primary/20">
                         <div className="font-mono text-sm text-primary">
-                          yourcompany.sugary.dev/
+                          sugary.dev/yourcompany/
                           <span className="text-secondary font-semibold">dark-mode</span>
                         </div>
                       </div>

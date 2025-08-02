@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - **App Name**: Sugary
 - **Domain**: sugary.dev  
-- **URLs**: `company.sugary.dev/feature-slug` format
+- **URLs**: `sugary.dev/company/feature-slug` format
 
 ## Commands
 
