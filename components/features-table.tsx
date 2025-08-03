@@ -32,7 +32,6 @@ export function FeaturesTable() {
                 <TableHead>Feature</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Subscribers</TableHead>
-                <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -49,9 +48,6 @@ export function FeaturesTable() {
                   </TableCell>
                   <TableCell>
                     <div className="h-4 bg-muted rounded w-8 animate-pulse"></div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="h-8 bg-muted rounded w-20 animate-pulse"></div>
                   </TableCell>
                 </TableRow>
               ))}
@@ -101,12 +97,11 @@ export function FeaturesTable() {
                 <TableHead>Feature</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead className="text-right">Subscribers</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {features.map((feature) => (
-                <TableRow key={feature._id}>
+                <TableRow key={feature._id} className="cursor-pointer hover:bg-primary/10 hover:border-primary/20 transition-colors border-l-4 border-l-transparent hover:border-l-primary/30" onClick={() => window.location.href = `/dashboard/features/${feature._id}`}>
                   <TableCell>
                     <div className="space-y-1">
                       <div className="font-medium text-foreground">
@@ -132,32 +127,6 @@ export function FeaturesTable() {
                   </TableCell>
                   <TableCell className="text-right font-medium">
                     {feature.subscriberCount}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        asChild
-                      >
-                        <Link 
-                          href={`https://sugary.dev/${company?.slug}/${feature.slug}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <IconExternalLink className="w-4 h-4" />
-                        </Link>
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        asChild
-                      >
-                        <Link href={`/dashboard/features/${feature._id}`}>
-                          Manage
-                        </Link>
-                      </Button>
-                    </div>
                   </TableCell>
                 </TableRow>
               ))}
