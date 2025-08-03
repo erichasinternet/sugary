@@ -2,15 +2,10 @@
 
 import * as React from "react"
 import {
-  IconChartBar,
   IconDashboard,
-  IconHelp,
   IconPlus,
-  IconSettings,
-  IconUsers,
-  IconWorld,
+  IconExternalLink,
   IconStar,
-  IconEye,
 } from "@tabler/icons-react"
 import { useQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
@@ -44,21 +39,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         title: "Features",
         url: "/dashboard/features",
         icon: IconStar,
-        items: [
-          {
-            title: "All Features",
-            url: "/dashboard/features",
-          },
-          {
-            title: "New Feature",
-            url: "/dashboard/features/new",
-          },
-        ],
-      },
-      {
-        title: "Analytics",
-        url: "/dashboard/analytics",
-        icon: IconChartBar,
       },
     ],
     quickActions: [
@@ -70,27 +50,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       {
         name: "View Public Page",
         url: company ? `https://sugary.dev/${company.slug}` : "#",
-        icon: IconWorld,
+        icon: IconExternalLink,
         external: true,
       },
-      {
-        name: "Preview Mode",
-        url: "/dashboard/preview",
-        icon: IconEye,
-      },
     ],
-    navSecondary: [
-      {
-        title: "Settings",
-        url: "/dashboard/settings",
-        icon: IconSettings,
-      },
-      {
-        title: "Support",
-        url: "/dashboard/support",
-        icon: IconHelp,
-      },
-    ],
+    navSecondary: [],
   }
 
   return (

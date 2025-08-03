@@ -2,7 +2,9 @@
 
 import {
   type Icon,
+  IconExternalLink,
 } from "@tabler/icons-react"
+import Link from "next/link"
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -28,14 +30,21 @@ export function NavDocuments({
         {items.map((item) => (
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild>
-              <a 
-                href={item.url} 
-                target={item.external ? "_blank" : undefined} 
-                rel={item.external ? "noopener noreferrer" : undefined}
-              >
-                <item.icon />
-                <span>{item.name}</span>
-              </a>
+              {item.external ? (
+                <a 
+                  href={item.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                >
+                  <item.icon />
+                  <span>{item.name}</span>
+                </a>
+              ) : (
+                <Link href={item.url}>
+                  <item.icon />
+                  <span>{item.name}</span>
+                </Link>
+              )}
             </SidebarMenuButton>
           </SidebarMenuItem>
         ))}
