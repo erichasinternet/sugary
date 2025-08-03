@@ -1,5 +1,6 @@
 "use client"
 
+import { useAuthActions } from '@convex-dev/auth/react';
 import {
   IconDotsVertical,
   IconLogout,
@@ -36,6 +37,7 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  const { signOut } = useAuthActions()
 
   return (
     <SidebarMenu>
@@ -80,7 +82,7 @@ export function NavUser({
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => signOut()}>
               <IconLogout />
               Log out
             </DropdownMenuItem>
