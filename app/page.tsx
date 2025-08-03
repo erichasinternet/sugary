@@ -8,17 +8,17 @@ export default function Home() {
       {/* Header */}
       <header className="glass sticky top-0 z-50 border-b border-primary/10 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
+          <div className="flex justify-between items-center py-3 sm:py-4">
             <SugaryLogo size="lg" />
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               <Link
                 href="/auth/signin"
-                className="text-muted hover:text-foreground transition-all duration-300 font-medium"
+                className="text-muted hover:text-foreground transition-all duration-300 font-medium text-sm sm:text-base"
               >
                 Sign In
               </Link>
               <GradientButton>
-                <Link href="/auth/signup">Get Started</Link>
+                <Link href="/auth/signup" className="text-sm sm:text-base px-3 sm:px-4 py-2">Get Started</Link>
               </GradientButton>
             </div>
           </div>
@@ -27,27 +27,27 @@ export default function Home() {
 
       {/* Hero Section */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="py-24 text-center relative">
-          {/* Floating elements */}
-          <div className="absolute top-20 left-10 w-20 h-20 rounded-full bg-gradient-to-r from-accent to-accent-light opacity-20 animate-float"></div>
+        <div className="py-12 sm:py-16 md:py-20 lg:py-24 text-center relative">
+          {/* Floating elements - hidden on mobile to prevent interference */}
+          <div className="hidden md:block absolute top-20 left-10 w-20 h-20 rounded-full bg-gradient-to-r from-accent to-accent-light opacity-20 animate-float"></div>
           <div
-            className="absolute top-32 right-16 w-16 h-16 rounded-full bg-gradient-to-r from-secondary to-primary opacity-30 animate-float"
+            className="hidden md:block absolute top-32 right-16 w-16 h-16 rounded-full bg-gradient-to-r from-secondary to-primary opacity-30 animate-float"
             style={{ animationDelay: '1s' }}
           ></div>
           <div
-            className="absolute bottom-20 left-1/4 w-12 h-12 rounded-full bg-gradient-to-r from-primary to-primary-light opacity-25 animate-float"
+            className="hidden lg:block absolute bottom-20 left-1/4 w-12 h-12 rounded-full bg-gradient-to-r from-primary to-primary-light opacity-25 animate-float"
             style={{ animationDelay: '2s' }}
           ></div>
 
           <div className="max-w-5xl mx-auto relative z-10">
             {/* Badge */}
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20 mb-8">
-              <span className="text-sm font-medium text-primary">
+            <div className="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20 mb-6 sm:mb-8">
+              <span className="text-xs sm:text-sm font-medium text-primary">
                 ✨ Turn requests into engaged communities
               </span>
             </div>
 
-            <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 leading-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight mb-6 sm:mb-8 leading-tight px-2">
               Sweet
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-gradient">
                 {' '}
@@ -56,7 +56,7 @@ export default function Home() {
               tracking
             </h1>
 
-            <p className="text-xl md:text-2xl text-muted mb-12 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-lg sm:text-xl md:text-2xl text-muted mb-8 sm:mb-12 max-w-3xl mx-auto leading-relaxed px-4">
               Transform scattered feature requests into organized waitlists.
               <span className="text-foreground font-medium">
                 {' '}
@@ -64,15 +64,15 @@ export default function Home() {
               </span>
             </p>
 
-            <div className="flex flex-col items-center gap-4">
+            <div className="flex flex-col items-center gap-3 sm:gap-4 px-4">
               <Link
                 href="/auth/signup"
-                className="group bg-gradient-to-r from-primary to-secondary text-white px-12 py-6 rounded-full font-semibold text-xl hover:shadow-2xl hover:scale-105 transition-all duration-500 relative overflow-hidden"
+                className="group bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 sm:px-10 sm:py-5 md:px-12 md:py-6 rounded-full font-semibold text-lg sm:text-xl hover:shadow-2xl hover:scale-105 transition-all duration-500 relative overflow-hidden w-full sm:w-auto max-w-sm"
               >
                 <span className="relative z-10">Start Building Waitlists</span>
                 <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
               </Link>
-              <p className="text-sm text-muted">
+              <p className="text-xs sm:text-sm text-muted text-center">
                 <span className="font-medium text-foreground">Free to start</span> • No credit card required
               </p>
             </div>
@@ -80,27 +80,27 @@ export default function Home() {
         </div>
 
         {/* Demo Section */}
-        <div className="py-24 relative overflow-hidden">
-          <div className="glass-card rounded-3xl p-8 mx-4 sm:mx-8">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-secondary/10 to-accent/10 border border-secondary/20 mb-6">
-              <span className="text-sm font-medium text-primary">See It In Action</span>
+        <div className="py-12 sm:py-16 md:py-20 lg:py-24 relative overflow-hidden">
+          <div className="glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 mx-2 sm:mx-4 md:mx-8">
+          <div className="text-center mb-8 sm:mb-12 md:mb-16">
+            <div className="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-gradient-to-r from-secondary/10 to-accent/10 border border-secondary/20 mb-4 sm:mb-6">
+              <span className="text-xs sm:text-sm font-medium text-primary">See It In Action</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-foreground to-muted bg-clip-text text-transparent">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-foreground to-muted bg-clip-text text-transparent px-2">
               From scattered to
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 {' '}
                 sweet
               </span>
             </h2>
-            <p className="text-xl text-muted max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-muted max-w-3xl mx-auto leading-relaxed px-4">
               See how Sugary transforms chaotic feature requests into organized, trackable waitlists
               that
               <span className="text-foreground font-medium"> build genuine excitement</span>
             </p>
           </div>
 
-          <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-stretch">
+          <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-stretch">
             {/* Before: Traditional Social Media */}
             <div className="flex flex-col">
               <div className="bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/30 dark:to-orange-950/30 p-6 rounded-2xl border border-red-200 dark:border-red-800 h-full flex flex-col">
@@ -256,7 +256,7 @@ export default function Home() {
                               <div className="text-sm text-primary font-semibold mb-1">
                                 Dark Mode Feature Request
                               </div>
-                              <div className="text-sm text-muted mb-2">
+                              <div className="text-sm text-muted mb-2 break-all">
                                 sugary.dev/yourcompany/dark-mode
                               </div>
                               <div className="text-xs text-muted">
@@ -321,76 +321,76 @@ export default function Home() {
         </div>
 
         {/* How It Works Section */}
-        <div id="how-it-works" className="py-24">
-          <div className="glass-card rounded-3xl p-8 mx-4 sm:mx-8">
-          <div className="text-center mb-20">
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-accent/10 to-primary/10 border border-accent/20 mb-6">
-              <span className="text-sm font-medium text-primary">🍭 Sweet & Simple Process</span>
+        <div id="how-it-works" className="py-12 sm:py-16 md:py-20 lg:py-24">
+          <div className="glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 mx-2 sm:mx-4 md:mx-8">
+          <div className="text-center mb-12 sm:mb-16 md:mb-20">
+            <div className="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-gradient-to-r from-accent/10 to-primary/10 border border-accent/20 mb-4 sm:mb-6">
+              <span className="text-xs sm:text-sm font-medium text-primary">🍭 Sweet & Simple Process</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-foreground to-muted bg-clip-text text-transparent">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-foreground to-muted bg-clip-text text-transparent px-2">
               How Sugary Works
             </h2>
-            <p className="text-xl text-muted max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-muted max-w-3xl mx-auto leading-relaxed px-4">
               Turn scattered feature requests into organized communities
               <span className="text-foreground font-medium"> in minutes, not months</span>
             </p>
           </div>
 
-          <div className="max-w-7xl mx-auto space-y-24">
+          <div className="max-w-7xl mx-auto space-y-12 sm:space-y-16 md:space-y-20 lg:space-y-24">
             {/* Step 1 */}
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
               <div className="order-2 lg:order-1">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center shadow-lg">
-                    <span className="text-2xl">🎯</span>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center shadow-lg flex-shrink-0">
+                    <span className="text-lg sm:text-xl md:text-2xl">🎯</span>
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-primary mb-1">STEP 1</div>
-                    <h3 className="text-3xl font-bold text-foreground">Create Feature Pages</h3>
+                    <div className="text-xs sm:text-sm font-semibold text-primary mb-1">STEP 1</div>
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground">Create Feature Pages</h3>
                   </div>
                 </div>
-                <p className="text-lg text-muted mb-6 leading-relaxed">
+                <p className="text-base sm:text-lg text-muted mb-4 sm:mb-6 leading-relaxed">
                   Instead of letting requests disappear in social media threads, create dedicated
                   pages for each feature idea. Each page gets a beautiful, branded URL that's easy
                   to share.
                 </p>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-foreground">
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                    <span className="text-sm sm:text-base text-foreground">
                       30-second setup with custom company branding
                     </span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-foreground">
+                  <div className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                    <span className="text-sm sm:text-base text-foreground">
                       SEO-friendly URLs that build your brand presence
                     </span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-foreground">
+                  <div className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                    <span className="text-sm sm:text-base text-foreground">
                       Professional pages that make requests feel official
                     </span>
                   </div>
                 </div>
               </div>
               <div className="order-1 lg:order-2">
-                <div className="bg-gradient-to-br from-primary/5 to-secondary/5 p-8 rounded-3xl border border-primary/20">
-                  <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-xl">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
-                        <span className="text-white text-sm font-bold">S</span>
+                <div className="bg-gradient-to-br from-primary/5 to-secondary/5 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-primary/20">
+                  <div className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-xl">
+                    <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                      <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
+                        <span className="text-white text-xs sm:text-sm font-bold">S</span>
                       </div>
-                      <div className="text-sm font-medium text-muted">sugary.dev/yourcompany</div>
+                      <div className="text-xs sm:text-sm font-medium text-muted truncate">sugary.dev/yourcompany</div>
                     </div>
-                    <div className="space-y-3">
-                      <div className="h-3 bg-gradient-to-r from-primary/20 to-secondary/20 rounded w-3/4"></div>
-                      <div className="h-3 bg-muted/30 rounded w-1/2"></div>
-                      <div className="bg-gradient-to-r from-primary/10 to-secondary/10 p-4 rounded-xl border border-primary/20">
-                        <div className="font-mono text-sm text-primary">
-                          sugary.dev/yourcompany/
-                          <span className="text-secondary font-semibold">dark-mode</span>
+                    <div className="space-y-2 sm:space-y-3">
+                      <div className="h-2 sm:h-3 bg-gradient-to-r from-primary/20 to-secondary/20 rounded w-3/4"></div>
+                      <div className="h-2 sm:h-3 bg-muted/30 rounded w-1/2"></div>
+                      <div className="bg-gradient-to-r from-primary/10 to-secondary/10 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-primary/20">
+                        <div className="font-mono text-xs sm:text-sm text-primary">
+                          <span className="break-all">sugary.dev/yourcompany/</span>
+                          <span className="text-secondary font-semibold break-all">dark-mode</span>
                         </div>
                       </div>
                     </div>
@@ -400,35 +400,35 @@ export default function Home() {
             </div>
 
             {/* Step 2 */}
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
               <div>
-                <div className="bg-gradient-to-br from-primary/5 to-secondary/5 p-8 rounded-3xl border border-primary/20">
-                  <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-xl">
-                    <div className="text-center space-y-4">
-                      <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
-                        <span className="text-2xl">🌑</span>
+                <div className="bg-gradient-to-br from-primary/5 to-secondary/5 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-primary/20">
+                  <div className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-xl">
+                    <div className="text-center space-y-3 sm:space-y-4">
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 mx-auto rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
+                        <span className="text-lg sm:text-xl md:text-2xl">🌑</span>
                       </div>
                       <div>
-                        <h4 className="font-bold text-foreground text-lg mb-2">
+                        <h4 className="font-bold text-foreground text-base sm:text-lg mb-1 sm:mb-2">
                           Dark Mode Support
                         </h4>
-                        <p className="text-sm text-muted">
+                        <p className="text-xs sm:text-sm text-muted">
                           Help us prioritize this feature by sharing why you need it
                         </p>
                       </div>
-                      <div className="space-y-3">
+                      <div className="space-y-2 sm:space-y-3">
                         <input
-                          className="w-full p-3 rounded-lg border border-primary/20 dark:border-primary/30 bg-background"
+                          className="w-full p-2 sm:p-3 rounded-lg border border-primary/20 dark:border-primary/30 bg-background text-sm"
                           placeholder="your@email.com"
                           disabled
                         />
                         <textarea
-                          className="w-full p-3 rounded-lg border border-primary/20 dark:border-primary/30 bg-background resize-none"
+                          className="w-full p-2 sm:p-3 rounded-lg border border-primary/20 dark:border-primary/30 bg-background resize-none text-sm"
                           placeholder="Why do you need this feature?"
                           rows={3}
                           disabled
                         />
-                        <button className="w-full bg-gradient-to-r from-primary to-secondary text-white py-3 rounded-lg font-semibold">
+                        <button className="w-full bg-gradient-to-r from-primary to-secondary text-white py-2 sm:py-3 rounded-lg font-semibold text-sm sm:text-base">
                           Count Me In!
                         </button>
                       </div>
@@ -437,37 +437,37 @@ export default function Home() {
                 </div>
               </div>
               <div>
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center shadow-lg">
-                    <span className="text-2xl">💝</span>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center shadow-lg flex-shrink-0">
+                    <span className="text-lg sm:text-xl md:text-2xl">💝</span>
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-primary mb-1">STEP 2</div>
-                    <h3 className="text-3xl font-bold text-foreground">
+                    <div className="text-xs sm:text-sm font-semibold text-primary mb-1">STEP 2</div>
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground">
                       Capture Meaningful Interest
                     </h3>
                   </div>
                 </div>
-                <p className="text-lg text-muted mb-6 leading-relaxed">
+                <p className="text-base sm:text-lg text-muted mb-4 sm:mb-6 leading-relaxed">
                   Users don't just click "like" - they provide their email and explain why they need
                   the feature. This creates qualified leads and valuable insights about user needs.
                 </p>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-foreground">
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                    <span className="text-sm sm:text-base text-foreground">
                       Collect emails for direct communication when ready
                     </span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-foreground">
+                  <div className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                    <span className="text-sm sm:text-base text-foreground">
                       Understand user motivations and use cases
                     </span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-foreground">
+                  <div className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                    <span className="text-sm sm:text-base text-foreground">
                       Build a community around your upcoming features
                     </span>
                   </div>
@@ -476,67 +476,67 @@ export default function Home() {
             </div>
 
             {/* Step 3 */}
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
               <div className="order-2 lg:order-1">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center shadow-lg">
-                    <span className="text-2xl">📊</span>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center shadow-lg flex-shrink-0">
+                    <span className="text-lg sm:text-xl md:text-2xl">📊</span>
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-primary mb-1">STEP 3</div>
-                    <h3 className="text-3xl font-bold text-foreground">Build with Confidence</h3>
+                    <div className="text-xs sm:text-sm font-semibold text-primary mb-1">STEP 3</div>
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground">Build with Confidence</h3>
                   </div>
                 </div>
-                <p className="text-lg text-muted mb-6 leading-relaxed">
+                <p className="text-base sm:text-lg text-muted mb-4 sm:mb-6 leading-relaxed">
                   Track real demand with beautiful analytics. Send updates to engaged users as you
                   build. Launch to a community that's already excited about your feature.
                 </p>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-foreground">
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                    <span className="text-sm sm:text-base text-foreground">
                       See which features have real demand vs. nice-to-haves
                     </span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-foreground">
+                  <div className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                    <span className="text-sm sm:text-base text-foreground">
                       Keep subscribers engaged with development updates
                     </span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-foreground">
+                  <div className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                    <span className="text-sm sm:text-base text-foreground">
                       Launch to users who are guaranteed to use your feature
                     </span>
                   </div>
                 </div>
               </div>
               <div className="order-1 lg:order-2">
-                <div className="bg-gradient-to-br from-primary/5 to-secondary/5 p-8 rounded-3xl border border-primary/20">
-                  <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-xl">
-                    <div className="space-y-6">
+                <div className="bg-gradient-to-br from-primary/5 to-secondary/5 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-primary/20">
+                  <div className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-xl">
+                    <div className="space-y-4 sm:space-y-6">
                       <div className="flex justify-between items-center">
-                        <h4 className="font-semibold text-foreground">Dark Mode Interest</h4>
-                        <span className="text-sm bg-primary/10 dark:bg-primary/20 text-primary px-3 py-1 rounded-full">
+                        <h4 className="font-semibold text-foreground text-sm sm:text-base">Dark Mode Interest</h4>
+                        <span className="text-xs sm:text-sm bg-primary/10 dark:bg-primary/20 text-primary px-2 sm:px-3 py-1 rounded-full">
                           Hot 🔥
                         </span>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="text-center p-4 bg-primary/10 rounded-xl">
-                          <div className="text-2xl font-bold text-primary">47</div>
-                          <div className="text-sm text-muted">Subscribers</div>
+                      <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                        <div className="text-center p-3 sm:p-4 bg-primary/10 rounded-lg sm:rounded-xl">
+                          <div className="text-xl sm:text-2xl font-bold text-primary">47</div>
+                          <div className="text-xs sm:text-sm text-muted">Subscribers</div>
                         </div>
-                        <div className="text-center p-4 bg-secondary/10 rounded-xl">
-                          <div className="text-2xl font-bold text-secondary">89%</div>
-                          <div className="text-sm text-muted">Open Rate</div>
+                        <div className="text-center p-3 sm:p-4 bg-secondary/10 rounded-lg sm:rounded-xl">
+                          <div className="text-xl sm:text-2xl font-bold text-secondary">89%</div>
+                          <div className="text-xs sm:text-sm text-muted">Open Rate</div>
                         </div>
                       </div>
 
-                      <div className="space-y-3">
-                        <div className="text-sm font-medium text-foreground">Recent Activity</div>
-                        <div className="space-y-2 text-sm">
+                      <div className="space-y-2 sm:space-y-3">
+                        <div className="text-xs sm:text-sm font-medium text-foreground">Recent Activity</div>
+                        <div className="space-y-1 sm:space-y-2 text-xs sm:text-sm">
                           <div className="flex justify-between">
                             <span className="text-muted">New subscriber</span>
                             <span className="text-primary">2 min ago</span>
@@ -548,7 +548,7 @@ export default function Home() {
                         </div>
                       </div>
 
-                      <button className="w-full bg-gradient-to-r from-primary to-secondary text-white py-3 rounded-lg font-semibold">
+                      <button className="w-full bg-gradient-to-r from-primary to-secondary text-white py-2 sm:py-3 rounded-lg font-semibold text-sm sm:text-base">
                         Send Update to 47 Users
                       </button>
                     </div>
@@ -561,25 +561,25 @@ export default function Home() {
         </div>
 
         {/* CTA Section */}
-        <div className="py-24 mb-16 text-center relative overflow-hidden">
-          <div className="glass-card rounded-3xl p-8 mx-4 sm:mx-8 relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5 rounded-3xl"></div>
+        <div className="py-12 sm:py-16 md:py-20 lg:py-24 mb-8 sm:mb-12 md:mb-16 text-center relative overflow-hidden">
+          <div className="glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 mx-2 sm:mx-4 md:mx-8 relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5 rounded-2xl sm:rounded-3xl"></div>
           <div className="relative z-10">
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 mb-8">
-              <span className="text-sm font-medium text-primary">🚀 Ready to Launch?</span>
+            <div className="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 mb-6 sm:mb-8">
+              <span className="text-xs sm:text-sm font-medium text-primary">🚀 Ready to Launch?</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent px-2">
               Sweet success awaits
             </h2>
-            <p className="text-xl text-muted mb-12 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-muted mb-8 sm:mb-10 md:mb-12 max-w-2xl mx-auto leading-relaxed px-4">
               Join founders who've transformed scattered requests into thriving feature communities
             </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center px-4">
               <Link
                 href="/auth/signup"
-                className="group bg-gradient-to-r from-primary to-secondary text-white px-12 py-6 rounded-full font-bold text-xl hover:shadow-2xl hover:scale-105 transition-all duration-500 relative overflow-hidden"
+                className="group bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 sm:px-10 sm:py-5 md:px-12 md:py-6 rounded-full font-bold text-lg sm:text-xl hover:shadow-2xl hover:scale-105 transition-all duration-500 relative overflow-hidden w-full sm:w-auto max-w-sm"
               >
-                <span className="relative z-10 flex items-center gap-2">
+                <span className="relative z-10 flex items-center justify-center gap-2">
                   Get Started Free
                   <span className="group-hover:translate-x-1 transition-transform duration-300">
                     ✨
@@ -587,7 +587,7 @@ export default function Home() {
                 </span>
                 <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
               </Link>
-              <div className="text-sm text-muted">
+              <div className="text-xs sm:text-sm text-muted text-center">
                 <span className="font-medium">No credit card required</span> • Start in 30 seconds
               </div>
             </div>
