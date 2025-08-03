@@ -23,10 +23,10 @@ export default function Home() {
 
           <div className="max-w-5xl mx-auto relative z-10">
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight mb-6 sm:mb-8 leading-tight px-2">
-              Turn requests into
+              Validate demand
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-gradient">
                 {' '}
-                engaged communities{' '}
+                before you build{' '}
               </span>
             </h1>
 
@@ -568,7 +568,7 @@ export default function Home() {
                 Sweet success awaits
               </h2>
               <p className="text-base sm:text-lg md:text-xl text-muted mb-8 sm:mb-10 md:mb-12 max-w-2xl mx-auto leading-relaxed px-4">
-                Validate demand, build community, and launch features users actually want.
+                Validate demand, build community, and launch features users want.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center px-4">
                 <Link
