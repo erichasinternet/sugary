@@ -10,17 +10,6 @@ export default function Home() {
       {/* Hero Section */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-12 sm:py-16 md:py-20 lg:py-24 text-center relative">
-          {/* Floating elements - hidden on mobile to prevent interference */}
-          <div className="hidden md:block absolute top-20 left-10 w-20 h-20 rounded-full bg-gradient-to-r from-accent to-accent-light opacity-20 animate-float"></div>
-          <div
-            className="hidden md:block absolute top-32 right-16 w-16 h-16 rounded-full bg-gradient-to-r from-secondary to-primary opacity-30 animate-float"
-            style={{ animationDelay: '1s' }}
-          ></div>
-          <div
-            className="hidden lg:block absolute bottom-20 left-1/4 w-12 h-12 rounded-full bg-gradient-to-r from-primary to-primary-light opacity-25 animate-float"
-            style={{ animationDelay: '2s' }}
-          ></div>
-
           <div className="max-w-5xl mx-auto relative z-10">
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight mb-6 sm:mb-8 leading-tight px-2">
               Validate demand
