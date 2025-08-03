@@ -66,7 +66,7 @@ export default function SignUp() {
             <div className="space-y-5">
               <div>
                 <label htmlFor="name" className="block text-sm font-semibold text-foreground mb-2">
-                  Full Name
+                  Username
                 </label>
                 <input
                   id="name"
@@ -74,7 +74,7 @@ export default function SignUp() {
                   type="text"
                   required
                   className="block w-full px-4 py-3 border border-primary/20 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary bg-background transition-all duration-200 hover:border-primary/30"
-                  placeholder="Your full name"
+                  placeholder="Your username"
                 />
               </div>
 
