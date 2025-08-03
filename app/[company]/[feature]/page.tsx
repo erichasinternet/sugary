@@ -6,6 +6,7 @@ import { use, useState } from 'react';
 import { api } from '@/convex/_generated/api';
 import SugaryLogo from '../../components/SugaryLogo';
 import GradientButton from '../../components/GradientButton';
+import TerminalChat from '../../components/TerminalChat';
 
 export default function FeatureSignup({
   params,
@@ -49,7 +50,10 @@ export default function FeatureSignup({
 
   if (featureData === undefined) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--gradient-hero)' }}>
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{ background: 'var(--gradient-hero)' }}
+      >
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
@@ -57,15 +61,16 @@ export default function FeatureSignup({
 
   if (!featureData) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--gradient-hero)' }}>
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{ background: 'var(--gradient-hero)' }}
+      >
         <div className="max-w-md w-full text-center">
           <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm shadow-xl rounded-2xl p-8 border border-primary/10">
             <div className="mb-4">
               <span className="text-4xl">🔍</span>
             </div>
-            <h2 className="text-2xl font-bold text-foreground mb-2">
-              Feature Not Found
-            </h2>
+            <h2 className="text-2xl font-bold text-foreground mb-2">Feature Not Found</h2>
             <p className="text-muted mb-6">
               The feature you're looking for doesn't exist or has been removed.
             </p>
@@ -78,15 +83,16 @@ export default function FeatureSignup({
 
   if (isSubscribed) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--gradient-hero)' }}>
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{ background: 'var(--gradient-hero)' }}
+      >
         <div className="max-w-md w-full text-center">
           <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm shadow-xl rounded-2xl p-8 border border-primary/10">
             <div className="mb-4">
               <span className="text-4xl">✅</span>
             </div>
-            <h2 className="text-2xl font-bold text-foreground mb-2">
-              You're on the list!
-            </h2>
+            <h2 className="text-2xl font-bold text-foreground mb-2">You're on the list!</h2>
             <p className="text-muted mb-6">
               Thanks for your interest in <strong>{featureData.title}</strong>. We'll send you a
               confirmation email and keep you updated on our progress.
@@ -116,7 +122,11 @@ export default function FeatureSignup({
               <span className="text-muted">•</span>
               <span className="text-sm text-muted">Feature Request</span>
             </div>
-            <SugaryLogo href="/" size="sm" className="text-sm text-muted hover:text-primary transition-colors" />
+            <SugaryLogo
+              href="/"
+              size="sm"
+              className="text-sm text-muted hover:text-primary transition-colors"
+            />
           </div>
         </div>
       </header>
@@ -125,9 +135,7 @@ export default function FeatureSignup({
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm shadow-xl rounded-2xl p-8 border border-primary/10">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-foreground mb-4">
-              {featureData.title}
-            </h1>
+            <h1 className="text-3xl font-bold text-foreground mb-4">{featureData.title}</h1>
             {featureData.description && (
               <p className="text-lg text-muted">{featureData.description}</p>
             )}
@@ -149,18 +157,6 @@ export default function FeatureSignup({
                 ></div>
                 <span className="capitalize">{featureData.status.replace('_', ' ')}</span>
               </div>
-              <div>
-                Status:{' '}
-                {featureData.status === 'planning'
-                  ? 'Collecting feedback'
-                  : featureData.status === 'in_progress'
-                    ? 'In development'
-                    : featureData.status === 'completed'
-                      ? 'Available now!'
-                      : featureData.status === 'cancelled'
-                        ? 'Not planned'
-                        : 'Planning'}
-              </div>
             </div>
           </div>
 
@@ -172,10 +168,7 @@ export default function FeatureSignup({
             )}
 
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-semibold text-foreground mb-2"
-              >
+              <label htmlFor="email" className="block text-sm font-semibold text-foreground mb-2">
                 Email Address
               </label>
               <input
@@ -190,10 +183,7 @@ export default function FeatureSignup({
             </div>
 
             <div>
-              <label
-                htmlFor="context"
-                className="block text-sm font-semibold text-foreground mb-2"
-              >
+              <label htmlFor="context" className="block text-sm font-semibold text-foreground mb-2">
                 Why do you need this feature? <span className="text-muted">(Optional)</span>
               </label>
               <textarea
@@ -227,11 +217,15 @@ export default function FeatureSignup({
           </form>
 
           <div className="mt-8 pt-6 border-t border-primary/10">
-            <div className="flex items-center justify-between text-sm text-muted">
-              <span>We'll email you updates as we build this feature</span>
+            <div className="items-center text-center text-sm text-muted">
               <span>No spam, unsubscribe anytime</span>
             </div>
           </div>
+        </div>
+
+        {/* Terminal Chat */}
+        <div className="mt-8">
+          <TerminalChat featureId={featureData._id} />
         </div>
       </div>
     </div>

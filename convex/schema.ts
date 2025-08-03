@@ -50,6 +50,17 @@ const schema = defineSchema({
     sentAt: v.number(),
     recipientCount: v.number(),
   }).index('by_feature', ['featureId']),
+
+  chatMessages: defineTable({
+    featureId: v.id('features'),
+    authorName: v.string(),
+    authorEmail: v.optional(v.string()),
+    message: v.string(),
+    isFounder: v.optional(v.boolean()),
+    createdAt: v.number(),
+  })
+    .index('by_feature', ['featureId'])
+    .index('by_feature_and_time', ['featureId', 'createdAt']),
 });
 
 export default schema;
