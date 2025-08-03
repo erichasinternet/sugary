@@ -1,7 +1,9 @@
 'use client'
 
 import { useQuery } from 'convex/react'
+import { useState } from 'react'
 import { api } from '@/convex/_generated/api'
+import type { Id } from '@/convex/_generated/dataModel'
 import Link from 'next/link'
 import { Badge } from "@/components/ui/badge"
 import {
@@ -13,11 +15,14 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { IconExternalLink, IconPlus } from "@tabler/icons-react"
+import { IconPlus } from "@tabler/icons-react"
+import { FeatureDetailSheet } from './feature-detail-sheet'
 
 export function FeaturesTable() {
   const features = useQuery(api.features.getMyFeatures)
   const company = useQuery(api.companies.getMyCompany)
+  const [selectedFeatureId, setSelectedFeatureId] = useState<Id<'features'> | null>(null)
+  const [sheetOpen, setSheetOpen] = useState(false)
   
   if (features === undefined || company === undefined) {
     return (
@@ -101,7 +106,14 @@ export function FeaturesTable() {
             </TableHeader>
             <TableBody>
               {features.map((feature) => (
-                <TableRow key={feature._id} className="cursor-pointer hover:bg-primary/10 hover:border-primary/20 transition-colors border-l-4 border-l-transparent hover:border-l-primary/30" onClick={() => window.location.href = `/dashboard/features/${feature._id}`}>
+                <TableRow 
+                  key={feature._id} 
+                  className="cursor-pointer hover:bg-primary/10 hover:border-primary/20 transition-colors border-l-4 border-l-transparent hover:border-l-primary/30" 
+                  onClick={() => {
+                    setSelectedFeatureId(feature._id)
+                    setSheetOpen(true)
+                  }}
+                >
                   <TableCell>
                     <div className="space-y-1">
                       <div className="font-medium text-foreground">
@@ -134,6 +146,12 @@ export function FeaturesTable() {
           </Table>
         </div>
       )}
+      
+      <FeatureDetailSheet
+        featureId={selectedFeatureId}
+        open={sheetOpen}
+        onOpenChange={setSheetOpen}
+      />
     </div>
   )
 }

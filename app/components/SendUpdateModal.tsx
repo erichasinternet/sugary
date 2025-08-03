@@ -68,13 +68,15 @@ export function SendUpdateModal({
 
   if (success) {
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md text-center">
-          <div className="mb-4">
-            <span className="text-4xl">📧</span>
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div className="glass-card-elevated rounded-2xl p-8 w-full max-w-md text-center">
+          <div className="mb-6">
+            <div className="w-16 h-16 mx-auto gradient-icon rounded-full">
+              <span className="text-2xl">📧</span>
+            </div>
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Update Sent!</h3>
-          <p className="text-gray-600 dark:text-gray-300">
+          <h3 className="text-xl font-bold gradient-text mb-3">Update Sent!</h3>
+          <p className="text-muted-foreground">
             Your update has been sent to all confirmed subscribers.
           </p>
         </div>
@@ -83,18 +85,18 @@ export function SendUpdateModal({
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Send Update</h2>
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div className="glass-card-elevated rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between p-6 bg-gradient-to-r from-primary/5 to-secondary/5 rounded-t-2xl border-b border-primary/10">
+          <h2 className="text-xl font-bold text-primary">Send Update</h2>
           <button
             onClick={handleClose}
             disabled={isLoading}
-            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+            className="rounded-lg opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 disabled:pointer-events-none bg-background/50 hover:bg-background p-2"
           >
             <span className="sr-only">Close</span>
             <svg
-              className="w-6 h-6"
+              className="w-4 h-4"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth="1.5"
@@ -107,23 +109,23 @@ export function SendUpdateModal({
 
         <form onSubmit={handleSubmit} className="p-6">
           {error && (
-            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded mb-4">
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-xl mb-4">
               {error}
             </div>
           )}
 
-          <div className="mb-4">
-            <p className="text-sm text-gray-600 dark:text-gray-300">
-              Send an update about <strong>{featureTitle}</strong> to {subscriberCount} confirmed
+          <div className="mb-6">
+            <p className="text-sm text-muted-foreground">
+              Send an update about <span className="font-semibold text-foreground">{featureTitle}</span> to {subscriberCount} confirmed
               subscribers.
             </p>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-6">
             <div>
               <label
                 htmlFor="update-title"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                className="block text-sm font-semibold text-foreground mb-2"
               >
                 Update Title
               </label>
@@ -133,7 +135,7 @@ export function SendUpdateModal({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full px-4 py-3 border border-primary/20 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary bg-background transition-all duration-200 hover:border-primary/30"
                 placeholder="e.g., Development Started, Beta Available, Feature Complete"
               />
             </div>
@@ -141,7 +143,7 @@ export function SendUpdateModal({
             <div>
               <label
                 htmlFor="update-content"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                className="block text-sm font-semibold text-foreground mb-2"
               >
                 Update Content
               </label>
@@ -151,20 +153,20 @@ export function SendUpdateModal({
                 onChange={(e) => setContent(e.target.value)}
                 required
                 rows={6}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full px-4 py-3 border border-primary/20 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary bg-background transition-all duration-200 hover:border-primary/30 resize-none"
                 placeholder="Share your progress, timeline updates, or ask for feedback from your subscribers..."
               />
-              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+              <p className="mt-2 text-sm text-muted-foreground">
                 This will be sent via email to all confirmed subscribers.
               </p>
             </div>
           </div>
 
-          <div className="flex gap-3 mt-6">
+          <div className="flex gap-4 mt-8">
             <button
               type="submit"
               disabled={isLoading || !title.trim() || !content.trim()}
-              className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+              className="flex-1 brand-button py-3 px-6 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? (
                 <span className="flex items-center justify-center">
@@ -179,7 +181,7 @@ export function SendUpdateModal({
               type="button"
               onClick={handleClose}
               disabled={isLoading}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              className="px-6 py-3 border border-primary/20 rounded-xl text-foreground hover:bg-primary/10 hover:border-primary/30 transition-all duration-200 font-semibold disabled:opacity-50"
             >
               Cancel
             </button>
