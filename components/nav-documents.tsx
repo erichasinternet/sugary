@@ -35,12 +35,13 @@ export function NavDocuments({
                   href={item.url} 
                   target="_blank" 
                   rel="noopener noreferrer"
+                  className="hover:bg-gradient-to-r hover:from-primary/10 hover:to-secondary/10 hover:text-primary transition-all duration-200"
                 >
                   <item.icon />
                   <span>{item.name}</span>
                 </a>
               ) : (
-                <Link href={item.url}>
+                <Link href={item.url} className="hover:bg-gradient-to-r hover:from-primary/10 hover:to-secondary/10 hover:text-primary transition-all duration-200">
                   <item.icon />
                   <span>{item.name}</span>
                 </Link>
