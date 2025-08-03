@@ -28,11 +28,9 @@ export default function SugaryLogo({
   const content = (
     <div className={`flex items-center space-x-3 ${className}`}>
       <div
-        className={`${logoSizes[size]} rounded-full p-1`}
+        className={`${logoSizes[size]} rounded-full`}
         style={{ background: 'var(--gradient-primary)' }}
-      >
-        <div className="w-full h-full rounded-full bg-background"></div>
-      </div>
+      />
       {showText && (
         <span className={`${textSizes[size]} font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent`}>
           Sugary
