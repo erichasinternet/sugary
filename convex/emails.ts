@@ -3,7 +3,9 @@ import { v } from 'convex/values';
 import { components } from './_generated/api';
 import { internalAction } from './_generated/server';
 
-const resend = new Resend(components.resend);
+const resend = new Resend(components.resend, {
+  testMode: false,
+});
 
 export const sendConfirmationEmail = internalAction({
   args: {
