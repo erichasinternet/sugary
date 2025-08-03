@@ -44,12 +44,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         url: '/dashboard/features/new',
         icon: IconPlus,
       },
-      {
-        name: 'View Public Page',
-        url: company ? `https://sugary.dev/${company.slug}` : '#',
-        icon: IconExternalLink,
-        external: true,
-      },
     ],
     navSecondary: [],
   };
