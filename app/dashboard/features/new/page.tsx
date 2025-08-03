@@ -10,6 +10,7 @@ import GradientButton from '../../../components/GradientButton';
 export default function NewFeature() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [currentSlug, setCurrentSlug] = useState('');
   const createFeature = useMutation(api.features.createFeature);
   const company = useQuery(api.companies.getMyCompany);
   const router = useRouter();
@@ -39,7 +40,22 @@ export default function NewFeature() {
       });
       router.push(`/dashboard/features/${featureId}`);
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'An error occurred');
+      console.error('Feature creation error:', error);
+      
+      // Transform backend errors into user-friendly messages
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      
+      if (errorMessage.includes('already taken') || errorMessage.includes('already exists')) {
+        setError(`The URL "sugary.dev/${company?.slug}/${slug}" is already in use. Please choose a different URL slug.`);
+      } else if (errorMessage.includes('Not authenticated')) {
+        setError('Your session has expired. Please refresh the page and try again.');
+      } else if (errorMessage.includes('No company found')) {
+        setError('Please set up your company profile before creating features.');
+      } else if (errorMessage.includes('Invalid') || errorMessage.includes('required')) {
+        setError('Please check that all required fields are filled out correctly.');
+      } else {
+        setError('We encountered an issue creating your feature. Please try again in a moment.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -93,8 +109,29 @@ export default function NewFeature() {
         <div className="glass-card rounded-2xl p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
-              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-xl">
-                {error}
+              <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <div className="w-5 h-5 text-amber-500">💡</div>
+                  </div>
+                  <div className="ml-3">
+                    <h3 className="text-sm font-medium text-amber-800 dark:text-amber-200">
+                      Let's fix this
+                    </h3>
+                    <div className="mt-2 text-sm text-amber-700 dark:text-amber-300">
+                      {error}
+                    </div>
+                    {error.includes('already in use') && (
+                      <div className="mt-3 text-sm text-amber-600 dark:text-amber-400">
+                        <strong>Try this:</strong> Add a number, year, or descriptive word to make it unique 
+                        <br />
+                        <span className="font-mono text-xs bg-amber-100 dark:bg-amber-800 px-1 py-0.5 rounded">
+                          {currentSlug}-2025, {currentSlug}-v2, or {currentSlug}-new
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
 
@@ -113,9 +150,11 @@ export default function NewFeature() {
                 className="block w-full px-4 py-3 border border-primary/20 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary bg-background transition-all duration-200 hover:border-primary/30"
                 placeholder="e.g., API Webhooks, Dark Mode, Mobile App"
                 onChange={(e) => {
+                  const newSlug = generateSlug(e.target.value);
                   const slugInput = document.getElementById('slug') as HTMLInputElement;
                   if (slugInput) {
-                    slugInput.value = generateSlug(e.target.value);
+                    slugInput.value = newSlug;
+                    setCurrentSlug(newSlug);
                   }
                 }}
               />
@@ -140,6 +179,7 @@ export default function NewFeature() {
                   pattern="^[a-z0-9-]+$"
                   className="flex-1 block w-full px-4 py-3 border border-primary/20 rounded-r-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary bg-background transition-all duration-200 hover:border-primary/30"
                   placeholder="api-webhooks"
+                  onChange={(e) => setCurrentSlug(e.target.value)}
                 />
               </div>
               <p className="mt-2 text-sm text-muted">
