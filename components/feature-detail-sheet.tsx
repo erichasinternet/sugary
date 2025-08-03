@@ -1,6 +1,6 @@
 'use client'
 
-import { useQuery } from 'convex/react'
+import { useQuery, useMutation } from 'convex/react'
 import { useState } from 'react'
 import { api } from '@/convex/_generated/api'
 import type { Id } from '@/convex/_generated/dataModel'
@@ -11,6 +11,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { SendUpdateModal } from '@/app/components/SendUpdateModal'
 import GradientButton from '@/app/components/GradientButton'
 
@@ -26,6 +33,7 @@ export function FeatureDetailSheet({ featureId, open, onOpenChange }: FeatureDet
     featureId ? { featureId } : "skip"
   )
   const [showUpdateModal, setShowUpdateModal] = useState(false)
+  const updateStatus = useMutation(api.features.updateFeatureStatus)
 
   if (!featureId || featureData === undefined) {
     return (
@@ -69,17 +77,20 @@ export function FeatureDetailSheet({ featureId, open, onOpenChange }: FeatureDet
                   <p className="text-sm text-muted-foreground font-mono">{featureUrl}</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Badge 
-                    variant={
-                      feature.status === 'completed' ? 'default' :
-                      feature.status === 'in_progress' ? 'secondary' :
-                      feature.status === 'cancelled' ? 'destructive' :
-                      'outline'
-                    }
-                    className="capitalize"
+                  <Select 
+                    value={feature.status} 
+                    onValueChange={(value) => updateStatus({ featureId, status: value as any })}
                   >
-                    {feature.status.replace('_', ' ')}
-                  </Badge>
+                    <SelectTrigger className="w-32 h-8 text-xs border-primary/20 focus:border-primary hover:border-primary/30 data-[state=open]:border-primary data-[state=open]:bg-primary/10">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-xl">
+                      <SelectItem value="planning" className="focus:bg-primary/10 focus:text-primary">Planning</SelectItem>
+                      <SelectItem value="in_progress" className="focus:bg-primary/10 focus:text-primary">In Progress</SelectItem>
+                      <SelectItem value="completed" className="focus:bg-primary/10 focus:text-primary">Completed</SelectItem>
+                      <SelectItem value="cancelled" className="focus:bg-primary/10 focus:text-primary">Cancelled</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
             </DialogHeader>

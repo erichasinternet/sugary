@@ -146,6 +146,34 @@ export const getFeatureDetails = query({
   },
 });
 
+export const updateFeatureStatus = mutation({
+  args: {
+    featureId: v.id('features'),
+    status: v.union(v.literal('planning'), v.literal('in_progress'), v.literal('completed'), v.literal('cancelled')),
+  },
+  handler: async (ctx, { featureId, status }) => {
+    const userId = await auth.getUserId(ctx);
+    if (!userId) throw new Error('Not authenticated');
+
+    const feature = await ctx.db.get(featureId);
+    if (!feature) throw new Error('Feature not found');
+
+    // Verify user owns this feature's company
+    const company = await ctx.db.get(feature.companyId);
+    if (!company || company.ownerId !== userId) {
+      throw new Error('Not authorized to update this feature');
+    }
+
+    // Update the feature status
+    await ctx.db.patch(featureId, {
+      status,
+      updatedAt: Date.now(),
+    });
+
+    return { success: true };
+  },
+});
+
 export const sendFeatureUpdate = mutation({
   args: {
     featureId: v.id('features'),
