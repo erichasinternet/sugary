@@ -1,29 +1,11 @@
 import Link from 'next/link';
+import MobileNav from './components/MobileNav';
 import SugaryLogo from './components/SugaryLogo';
-import GradientButton from './components/GradientButton';
 
 export default function Home() {
   return (
     <div className="min-h-screen" style={{ background: 'var(--gradient-hero)' }}>
-      {/* Header */}
-      <header className="glass sticky top-0 z-50 border-b border-primary/10 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-3 sm:py-4">
-            <SugaryLogo size="lg" />
-            <div className="flex items-center gap-2 sm:gap-4">
-              <Link
-                href="/auth/signin"
-                className="text-muted hover:text-foreground transition-all duration-300 font-medium text-sm sm:text-base"
-              >
-                Sign In
-              </Link>
-              <GradientButton>
-                <Link href="/auth/signup" className="text-sm sm:text-base px-3 sm:px-4 py-2">Get Started</Link>
-              </GradientButton>
-            </div>
-          </div>
-        </div>
-      </header>
+      <MobileNav />
 
       {/* Hero Section */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
