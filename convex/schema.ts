@@ -10,25 +10,9 @@ const schema = defineSchema({
     slug: v.string(), // URL-friendly company identifier
     ownerId: v.id('users'),
     createdAt: v.number(),
-    // Subscription fields
-    stripeCustomerId: v.optional(v.string()),
-    stripeSubscriptionId: v.optional(v.string()),
-    subscriptionStatus: v.optional(v.union(
-      v.literal('trialing'),
-      v.literal('active'),
-      v.literal('past_due'),
-      v.literal('canceled'),
-      v.literal('unpaid'),
-      v.literal('incomplete'),
-      v.literal('incomplete_expired'),
-      v.literal('paused'),
-    )),
-    trialEndsAt: v.optional(v.number()),
-    subscriptionEndsAt: v.optional(v.number()),
   })
     .index('by_owner', ['ownerId'])
-    .index('by_slug', ['slug'])
-    .index('by_stripe_customer', ['stripeCustomerId']),
+    .index('by_slug', ['slug']),
 
   features: defineTable({
     title: v.string(),
