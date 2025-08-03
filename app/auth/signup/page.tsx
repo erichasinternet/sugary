@@ -25,7 +25,7 @@ export default function SignUp() {
 
     try {
       await signIn('password', { email, password, flow: 'signUp', name });
-      router.push('/dashboard');
+      router.push('/dashboard/onboarding');
     } catch (error) {
       setError(error instanceof Error ? error.message : 'An error occurred');
     } finally {

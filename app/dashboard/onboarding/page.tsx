@@ -1,15 +1,17 @@
 'use client';
 
-import { useMutation } from 'convex/react';
+import { useMutation, useQuery } from 'convex/react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { api } from '@/convex/_generated/api';
 import GradientButton from '../../components/GradientButton';
 
 export default function Onboarding() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [suggestedSlug, setSuggestedSlug] = useState('');
   const createCompany = useMutation(api.companies.createCompany);
+  const currentUser = useQuery(api.users.getCurrentUser);
   const router = useRouter();
 
   const generateSlug = (name: string) => {
@@ -18,6 +20,32 @@ export default function Onboarding() {
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-+|-+$/g, '');
   };
+
+  const generateSlugFromEmail = (email: string) => {
+    // Extract domain and create a clean slug
+    const domain = email.split('@')[1];
+    if (!domain) return '';
+    
+    return domain
+      .split('.')[0] // Take part before .com/.org etc
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  };
+
+  // Auto-suggest slug from user's email when component loads
+  useEffect(() => {
+    if (currentUser?.email && !suggestedSlug) {
+      const suggested = generateSlugFromEmail(currentUser.email);
+      setSuggestedSlug(suggested);
+      
+      // Auto-fill the slug field
+      const slugInput = document.getElementById('slug') as HTMLInputElement;
+      if (slugInput && suggested) {
+        slugInput.value = suggested;
+      }
+    }
+  }, [currentUser, suggestedSlug]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -30,7 +58,8 @@ export default function Onboarding() {
 
     try {
       await createCompany({ name, slug });
-      router.push('/dashboard');
+      // Redirect to feature creation to get immediate value
+      router.push('/dashboard/features/new?first=true');
     } catch (error) {
       setError(error instanceof Error ? error.message : 'An error occurred');
     } finally {
@@ -42,9 +71,9 @@ export default function Onboarding() {
     <div className="px-4 py-6">
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold gradient-text">Set up your company</h1>
+          <h1 className="text-3xl font-bold gradient-text">Ready to organize those scattered requests?</h1>
           <p className="mt-2 text-muted">
-            Create your company profile to start building feature waitlists
+            Let's set up your company profile so you can start turning feature requests into organized waitlists
           </p>
         </div>
 
@@ -103,6 +132,11 @@ export default function Onboarding() {
               <p className="mt-2 text-sm text-muted">
                 This will be used in your feature URLs (e.g., sugary.dev/yourcompany/feature-name)
               </p>
+              {suggestedSlug && (
+                <p className="mt-1 text-xs text-primary">
+                  💡 We suggested "{suggestedSlug}" based on your email - feel free to change it!
+                </p>
+              )}
             </div>
 
             <div>
@@ -112,7 +146,7 @@ export default function Onboarding() {
                 className="w-full"
                 size="lg"
               >
-                {isLoading ? 'Creating company...' : 'Create Company'}
+{isLoading ? 'Setting up...' : 'Continue to Create Your First Feature →'}
               </GradientButton>
             </div>
           </form>

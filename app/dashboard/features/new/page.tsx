@@ -2,7 +2,7 @@
 
 import { useMutation, useQuery } from 'convex/react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { api } from '@/convex/_generated/api';
 import GradientButton from '../../../components/GradientButton';
@@ -14,6 +14,8 @@ export default function NewFeature() {
   const createFeature = useMutation(api.features.createFeature);
   const company = useQuery(api.companies.getMyCompany);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const isFirstFeature = searchParams.get('first') === 'true';
 
   const generateSlug = (title: string) => {
     return title
@@ -21,6 +23,7 @@ export default function NewFeature() {
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-+|-+$/g, '');
   };
+
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -38,7 +41,14 @@ export default function NewFeature() {
         slug,
         description: description || undefined,
       });
-      router.push(`/dashboard/features/${featureId}`);
+      
+      // For first feature, show toast and redirect to dashboard
+      if (isFirstFeature) {
+        // You could add a toast notification here
+        router.push('/dashboard');
+      } else {
+        router.push(`/dashboard/features/${featureId}`);
+      }
     } catch (error) {
       console.error('Feature creation error:', error);
       
@@ -95,16 +105,22 @@ export default function NewFeature() {
     <div className="px-4 py-6">
       <div className="max-w-2xl mx-auto">
         <div className="mb-8">
-          <Link href="/dashboard" className="text-primary hover:text-primary-dark text-sm font-medium transition-colors">
-            ← Back to Dashboard
-          </Link>
+          {!isFirstFeature && (
+            <Link href="/dashboard" className="text-primary hover:text-primary-dark text-sm font-medium transition-colors">
+              ← Back to Dashboard
+            </Link>
+          )}
           <h1 className="mt-2 text-3xl font-bold gradient-text">
-            Create New Feature
+            {isFirstFeature ? 'Create Your First Feature Waitlist' : 'Create New Feature'}
           </h1>
           <p className="mt-2 text-muted">
-            Set up a waitlist for a new feature request
+            {isFirstFeature 
+              ? 'Let\'s turn your first scattered feature request into an organized waitlist that builds excitement'
+              : 'Set up a waitlist for a new feature request'
+            }
           </p>
         </div>
+
 
         <div className="glass-card rounded-2xl p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
