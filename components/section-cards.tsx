@@ -1,10 +1,10 @@
-'use client'
+'use client';
 
-import { IconTrendingDown, IconTrendingUp } from "@tabler/icons-react"
-import { useQuery } from 'convex/react'
-import { api } from '@/convex/_generated/api'
+import { IconTrendingDown, IconTrendingUp } from '@tabler/icons-react';
+import { useQuery } from 'convex/react';
+import { api } from '@/convex/_generated/api';
 
-import { Badge } from "@/components/ui/badge"
+import { Badge } from '@/components/ui/badge';
 import {
   Card,
   CardAction,
@@ -12,12 +12,12 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from '@/components/ui/card';
 
 export function SectionCards() {
-  const features = useQuery(api.features.getMyFeatures)
-  const signupTrends = useQuery(api.analytics.getSignupTrends)
-  
+  const features = useQuery(api.features.getMyFeatures);
+  const signupTrends = useQuery(api.analytics.getSignupTrends);
+
   if (features === undefined || signupTrends === undefined) {
     return (
       <div className="grid grid-cols-1 gap-4 px-4 lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
@@ -30,17 +30,20 @@ export function SectionCards() {
           </Card>
         ))}
       </div>
-    )
+    );
   }
 
-  const totalFeatures = features.length
-  const activeFeatures = features.filter(f => f.status !== 'cancelled' && f.status !== 'completed').length
-  const totalSubscribers = features.reduce((sum, f) => sum + f.subscriberCount, 0)
-  const monthlySignups = signupTrends.reduce((sum, day) => sum + day.count, 0)
-  
+  const totalFeatures = features.length;
+  const activeFeatures = features.filter(
+    (f) => f.status !== 'cancelled' && f.status !== 'completed',
+  ).length;
+  const totalSubscribers = features.reduce((sum, f) => sum + f.subscriberCount, 0);
+  const monthlySignups = signupTrends.reduce((sum, day) => sum + day.count, 0);
+
   // Calculate growth from previous period (simple mock for now)
-  const featuresGrowth = totalFeatures > 0 ? ((activeFeatures / totalFeatures) * 100).toFixed(1) : 0
-  const subscribersGrowth = monthlySignups > 0 ? '+' + monthlySignups : '0'
+  const featuresGrowth =
+    totalFeatures > 0 ? ((activeFeatures / totalFeatures) * 100).toFixed(1) : 0;
+  const subscribersGrowth = monthlySignups > 0 ? '+' + monthlySignups : '0';
 
   return (
     <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
@@ -50,23 +53,12 @@ export function SectionCards() {
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
             {totalFeatures}
           </CardTitle>
-          <CardAction>
-            <Badge variant="outline">
-              <IconTrendingUp />
-              {featuresGrowth}% active
-            </Badge>
-          </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            {activeFeatures} actively collecting feedback <IconTrendingUp className="size-4" />
-          </div>
-          <div className="text-muted-foreground">
-            Feature requests being tracked
-          </div>
+          <div className="text-muted-foreground">Feature requests being tracked</div>
         </CardFooter>
       </Card>
-      
+
       <Card className="@container/card">
         <CardHeader>
           <CardDescription>Total Subscribers</CardDescription>
@@ -81,15 +73,10 @@ export function SectionCards() {
           </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Growing community interest <IconTrendingUp className="size-4" />
-          </div>
-          <div className="text-muted-foreground">
-            Users waiting for features
-          </div>
+          <div className="text-muted-foreground">Users waiting for features</div>
         </CardFooter>
       </Card>
-      
+
       <Card className="@container/card">
         <CardHeader>
           <CardDescription>Monthly Signups</CardDescription>
@@ -104,16 +91,12 @@ export function SectionCards() {
           </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            {monthlySignups > 0 ? 'New subscribers this month' : 'Share your features to grow'} 
-            {monthlySignups > 0 ? <IconTrendingUp className="size-4" /> : <IconTrendingDown className="size-4" />}
-          </div>
           <div className="text-muted-foreground">
             {monthlySignups > 0 ? 'Strong engagement' : 'Promote your feature pages'}
           </div>
         </CardFooter>
       </Card>
-      
+
       <Card className="@container/card">
         <CardHeader>
           <CardDescription>Avg per Feature</CardDescription>
@@ -128,14 +111,11 @@ export function SectionCards() {
           </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            {totalFeatures > 0 ? 'Healthy engagement rate' : 'Create your first feature'} <IconTrendingUp className="size-4" />
-          </div>
           <div className="text-muted-foreground">
             {totalFeatures > 0 ? 'Subscribers per feature' : 'Start collecting feedback'}
           </div>
         </CardFooter>
       </Card>
     </div>
-  )
+  );
 }
