@@ -98,7 +98,7 @@ export function FeatureDetailSheet({ featureId, open, onOpenChange }: FeatureDet
                     <div className="ml-3 w-0 flex-1">
                       <dl>
                         <dt className="text-xs font-medium text-muted-foreground truncate">
-                          Total Subscribers
+                          Interested Users
                         </dt>
                         <dd className="text-sm font-medium text-foreground">
                           {subscribers.length}
@@ -120,7 +120,7 @@ export function FeatureDetailSheet({ featureId, open, onOpenChange }: FeatureDet
                     <div className="ml-3 w-0 flex-1">
                       <dl>
                         <dt className="text-xs font-medium text-muted-foreground truncate">
-                          Confirmed
+                          Subscribers
                         </dt>
                         <dd className="text-sm font-medium text-foreground">
                           {subscribers.filter((s) => s.confirmed).length}
