@@ -110,12 +110,7 @@ export default function SignUp() {
               </div>
             </div>
 
-            <GradientButton
-              type="submit"
-              disabled={isLoading}
-              className="w-full"
-              size="lg"
-            >
+            <GradientButton type="submit" disabled={isLoading} className="w-full" size="lg">
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
                   <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
@@ -123,16 +118,12 @@ export default function SignUp() {
                 </span>
               ) : (
                 <span className="flex items-center justify-center gap-2">
-                  Start building features ✨
+                  Start building features
                 </span>
               )}
             </GradientButton>
           </form>
         </div>
-
-        <p className="text-center text-sm text-muted mt-8">
-          Join founders building user-driven products 🚀
-        </p>
       </div>
     </div>
   );
