@@ -13,7 +13,7 @@ export default function Home() {
           <div className="max-w-5xl mx-auto relative z-10">
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight mb-6 sm:mb-8 leading-tight px-2">
               Validate demand
-              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-gradient">
+              <span className="bg-gradient-to-r from-primary via-pink-400 to-pink-300 bg-clip-text text-transparent animate-gradient">
                 {' '}
                 before you build{' '}
               </span>
