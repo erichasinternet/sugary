@@ -129,7 +129,7 @@ export default function SignIn() {
 
                 <div>
                   <label className="block text-sm font-semibold text-foreground mb-3">
-                    Sign in method
+                    How would you like to sign in?
                   </label>
                   <div className="space-y-3">
                     <label className="flex items-center p-4 border border-primary/20 rounded-xl hover:border-primary/30 transition-all cursor-pointer">
@@ -142,7 +142,7 @@ export default function SignIn() {
                       />
                       <div>
                         <div className="font-medium text-foreground">Password</div>
-                        <div className="text-sm text-muted">Sign in with your password</div>
+                        <div className="text-sm text-muted">I have a password for this account</div>
                       </div>
                     </label>
                     <label className="flex items-center p-4 border border-primary/20 rounded-xl hover:border-primary/30 transition-all cursor-pointer">
@@ -154,7 +154,7 @@ export default function SignIn() {
                       />
                       <div>
                         <div className="font-medium text-foreground">Email verification code</div>
-                        <div className="text-sm text-muted">Get a code sent to your email</div>
+                        <div className="text-sm text-muted">Send me a code to sign in</div>
                       </div>
                     </label>
                   </div>
@@ -201,6 +201,23 @@ export default function SignIn() {
                     className="block w-full px-4 py-3 border border-primary/20 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary bg-background transition-all duration-200 hover:border-primary/30"
                     placeholder="Your secure password"
                   />
+                  <p className="text-sm text-muted mt-2">
+                    Forgot your password?{' '}
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        try {
+                          await signIn('resend-otp', { email });
+                          setStep('otp-code');
+                        } catch (error) {
+                          setError('Failed to send verification code');
+                        }
+                      }}
+                      className="text-primary hover:text-primary-dark transition-colors"
+                    >
+                      Use email verification instead
+                    </button>
+                  </p>
                 </div>
               </div>
 
