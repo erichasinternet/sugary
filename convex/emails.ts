@@ -117,14 +117,6 @@ export const sendFeatureUpdateEmail = internalAction({
                 Your patience and support mean everything to us. 🙏
               </p>
               
-              <!-- Progress indicator -->
-              <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 1px solid #f59e0b; padding: 4px; border-radius: 50px; margin: 24px 0;">
-                <div style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); height: 12px; width: 60%; border-radius: 50px; position: relative;">
-                  <div style="position: absolute; right: -8px; top: -2px; width: 16px; height: 16px; background: #d97706; border-radius: 50%; border: 2px solid white;"></div>
-                </div>
-              </div>
-              <p style="color: #92400e; font-size: 14px; text-align: center; margin: 8px 0 32px 0; font-weight: 500;">Making great progress! 🔥</p>
-              
               <!-- Update content -->
               <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1px solid #10b981; padding: 32px; border-radius: 16px; margin: 32px 0; position: relative;">
                 <div style="position: absolute; top: -12px; left: 24px; background: #10b981; color: white; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Latest Update</div>
@@ -135,16 +127,6 @@ export const sendFeatureUpdateEmail = internalAction({
                     .map((line, index) => `<p style="margin: ${index === 0 ? '0' : '16px'} 0 0 0;">${line}</p>`)
                     .join('')}
                 </div>
-              </div>
-              
-              <!-- What's next section -->
-              <div style="background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%); border: 1px solid #8b5cf6; padding: 24px; border-radius: 12px; margin: 32px 0;">
-                <p style="color: #5b21b6; font-size: 16px; line-height: 1.6; margin: 0 0 12px 0; font-weight: 600;">
-                  🔮 <strong>What's coming next:</strong>
-                </p>
-                <p style="color: #6b21a8; font-size: 15px; line-height: 1.6; margin: 0;">
-                  We'll keep you posted as we hit more milestones. You're part of the journey now! 🚀
-                </p>
               </div>
               
               <div style="text-align: center; margin: 40px 0;">
