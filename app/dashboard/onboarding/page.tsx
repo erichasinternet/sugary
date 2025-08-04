@@ -1,6 +1,6 @@
 'use client';
 
-import { useMutation, useQuery, useAction } from 'convex/react';
+import { useMutation, useQuery } from 'convex/react';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { api } from '@/convex/_generated/api';
@@ -10,7 +10,6 @@ export default function Onboarding() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const createCompany = useMutation(api.companies.createCompany);
-  const createTrialSubscription = useAction(api.stripe.createTrialSubscription);
   const currentUser = useQuery(api.users.getCurrentUser);
   const router = useRouter();
 
@@ -32,15 +31,6 @@ export default function Onboarding() {
 
     try {
       await createCompany({ name, slug });
-      
-      // Automatically enroll user in 14-day trial
-      try {
-        await createTrialSubscription();
-      } catch (subscriptionError) {
-        // Don't block onboarding if trial creation fails
-        console.warn('Failed to create trial subscription:', subscriptionError);
-      }
-      
       // Redirect to feature creation to get immediate value
       router.push('/dashboard/features/new?first=true');
     } catch (error) {
