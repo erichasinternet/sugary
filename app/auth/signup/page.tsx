@@ -67,17 +67,11 @@ export default function SignUp() {
 
     const formData = new FormData(e.currentTarget);
     const password = formData.get('password') as string;
-    const skipPassword = formData.get('skip') === 'true';
 
     try {
-      if (skipPassword) {
-        // Complete signup without password (they'll use OTP for future logins)
-        router.push('/dashboard/onboarding');
-      } else {
-        // Set password and complete signup
-        await signIn('password', { email, password, flow: 'signUp', name });
-        router.push('/dashboard/onboarding');
-      }
+      // Set password and complete signup
+      await signIn('password', { email, password, flow: 'signUp', name });
+      router.push('/dashboard/onboarding');
     } catch (error) {
       setError(error instanceof Error ? error.message : 'An error occurred');
     } finally {
@@ -226,7 +220,7 @@ export default function SignUp() {
                     ✅ Email Verified!
                   </h3>
                   <p className="text-muted">
-                    Now set up a password for easier future logins, or skip to use email codes.
+                    Now create a password for your account.
                   </p>
                 </div>
 
@@ -253,43 +247,32 @@ export default function SignUp() {
                     htmlFor="password"
                     className="block text-sm font-semibold text-foreground mb-2"
                   >
-                    Password (Optional)
+                    Password
                   </label>
                   <input
                     id="password"
                     name="password"
                     type="password"
+                    required
                     className="block w-full px-4 py-3 border border-primary/20 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary bg-background transition-all duration-200 hover:border-primary/30"
                     placeholder="Choose a secure password"
                   />
                   <p className="text-sm text-muted mt-2">
-                    Set a password for quick logins, or skip to use email verification codes
+                    Choose a strong password for your account
                   </p>
                 </div>
               </div>
 
-              <div className="space-y-3">
-                <GradientButton type="submit" disabled={isLoading} className="w-full" size="lg">
-                  {isLoading ? (
-                    <span className="flex items-center justify-center gap-2">
-                      <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                      Creating account...
-                    </span>
-                  ) : (
-                    'Create Account with Password'
-                  )}
-                </GradientButton>
-                
-                <button
-                  type="submit"
-                  name="skip"
-                  value="true"
-                  disabled={isLoading}
-                  className="w-full px-4 py-3 text-muted hover:text-foreground transition-colors border border-primary/20 rounded-xl hover:border-primary/30"
-                >
-                  Skip - Use Email Codes Only
-                </button>
-              </div>
+              <GradientButton type="submit" disabled={isLoading} className="w-full" size="lg">
+                {isLoading ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                    Creating account...
+                  </span>
+                ) : (
+                  'Complete Account Setup'
+                )}
+              </GradientButton>
             </form>
           )}
         </div>
