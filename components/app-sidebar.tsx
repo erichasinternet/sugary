@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { IconDashboard, IconPlus, IconExternalLink, IconStar, IconCreditCard } from '@tabler/icons-react';
+import { IconDashboard, IconPlus, IconExternalLink, IconStar } from '@tabler/icons-react';
 import { useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 
@@ -36,11 +36,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         title: 'Features',
         url: '/dashboard/features',
         icon: IconStar,
-      },
-      {
-        title: 'Subscription',
-        url: '/dashboard/subscription',
-        icon: IconCreditCard,
       },
     ],
     quickActions: [
