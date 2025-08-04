@@ -28,8 +28,8 @@ export default function ForgotPassword() {
     setEmail(emailValue);
 
     try {
-      // Send password reset code using Password provider with reset flow
-      await signIn('password', { email: emailValue, flow: 'reset' });
+      // Send password reset code using FormData pattern
+      await signIn('password', formData);
       setStep('verify-code');
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Failed to send reset code');
@@ -63,7 +63,7 @@ export default function ForgotPassword() {
     setError('');
 
     const formData = new FormData(e.currentTarget);
-    const password = formData.get('password') as string;
+    const password = formData.get('newPassword') as string;
     const confirmPassword = formData.get('confirmPassword') as string;
 
     if (password !== confirmPassword) {
@@ -73,13 +73,8 @@ export default function ForgotPassword() {
     }
 
     try {
-      // Use the reset-verification flow to update the password
-      await signIn('password', { 
-        email, 
-        code: verificationCode,
-        password,
-        flow: 'reset-verification' 
-      });
+      // Use FormData pattern for reset-verification
+      await signIn('password', formData);
       setStep('success');
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Failed to reset password');
@@ -137,6 +132,8 @@ export default function ForgotPassword() {
                   </p>
                 </div>
               </div>
+
+              <input name="flow" type="hidden" value="reset" />
 
               <GradientButton type="submit" disabled={isLoading} className="w-full" size="lg">
                 {isLoading ? (
@@ -236,8 +233,8 @@ export default function ForgotPassword() {
                     New Password
                   </label>
                   <input
-                    id="password"
-                    name="password"
+                    id="newPassword"
+                    name="newPassword"
                     type="password"
                     required
                     className="block w-full px-4 py-3 border border-primary/20 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary bg-background transition-all duration-200 hover:border-primary/30"
@@ -262,6 +259,10 @@ export default function ForgotPassword() {
                   />
                 </div>
               </div>
+
+              <input name="code" type="hidden" value={verificationCode} />
+              <input name="email" type="hidden" value={email} />
+              <input name="flow" type="hidden" value="reset-verification" />
 
               <div className="flex gap-3">
                 <button
