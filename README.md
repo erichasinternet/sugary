@@ -140,6 +140,14 @@ npm run build
 npm run start
 ```
 
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details on how to get started.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 ## 🏢 About
 
 Sugary is built by [Gant Street LLC](mailto:eric@gantstreet.com) to help founders build products users actually want, one feature at a time.
