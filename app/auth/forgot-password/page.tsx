@@ -16,6 +16,7 @@ export default function ForgotPassword() {
   const [error, setError] = useState('');
   const [step, setStep] = useState<Step>('email');
   const [email, setEmail] = useState('');
+  const [verificationCode, setVerificationCode] = useState('');
 
   const handleEmailSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,8 +28,8 @@ export default function ForgotPassword() {
     setEmail(emailValue);
 
     try {
-      // Send password reset code using OTP
-      await signIn('resend-otp', { email: emailValue });
+      // Send password reset code using Password provider with reset flow
+      await signIn('password', { email: emailValue, flow: 'reset' });
       setStep('verify-code');
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Failed to send reset code');
@@ -46,8 +47,8 @@ export default function ForgotPassword() {
     const code = formData.get('code') as string;
 
     try {
-      // Verify the reset code
-      await signIn('resend-otp', { email, code });
+      // Store the code for the final step
+      setVerificationCode(code);
       setStep('new-password');
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Invalid reset code');
@@ -72,9 +73,13 @@ export default function ForgotPassword() {
     }
 
     try {
-      // Update password (this would require a custom mutation in a real implementation)
-      // For now, we'll treat this as setting a new password after email verification
-      await signIn('password', { email, password, flow: 'signUp' });
+      // Use the reset-verification flow to update the password
+      await signIn('password', { 
+        email, 
+        code: verificationCode,
+        password,
+        flow: 'reset-verification' 
+      });
       setStep('success');
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Failed to reset password');

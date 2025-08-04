@@ -23,12 +23,12 @@ export const ResendOTP = Email({
     const { error } = await resend.emails.send({
       from: "Sugary <noreply@sugary.dev>",
       to: [email],
-      subject: "Sign in to Sugary",
+      subject: "Verification code for Sugary",
       html: `
         <div style="font-family: system-ui, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h1 style="color: #333; margin-bottom: 20px;">Sign in to Sugary</h1>
+          <h1 style="color: #333; margin-bottom: 20px;">Verification code for Sugary</h1>
           <p style="color: #666; margin-bottom: 30px;">
-            Use the following verification code to sign in to your account:
+            Use the following verification code to continue:
           </p>
           <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 30px;">
             <span style="font-size: 32px; font-weight: bold; color: #333; letter-spacing: 8px;">
