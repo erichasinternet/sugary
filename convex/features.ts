@@ -2,6 +2,7 @@ import { v } from 'convex/values';
 import { internal } from './_generated/api';
 import { mutation, query } from './_generated/server';
 import { auth } from './auth';
+import { getPlanFromSubscriptionStatus, canCreateFeature } from '../lib/plans';
 
 export const getMyFeatures = query({
   args: {},
@@ -43,6 +44,45 @@ export const getMyFeatures = query({
   },
 });
 
+export const getUsageStats = query({
+  args: {},
+  handler: async (ctx) => {
+    const userId = await auth.getUserId(ctx);
+    if (!userId) return null;
+
+    // Get user's company
+    const company = await ctx.db
+      .query('companies')
+      .withIndex('by_owner', (q) => q.eq('ownerId', userId))
+      .first();
+
+    if (!company) return null;
+
+    // Get subscription status
+    const subscription = await ctx.db
+      .query('subscriptions')
+      .withIndex('by_user', (q) => q.eq('userId', userId))
+      .unique();
+    
+    const plan = getPlanFromSubscriptionStatus(subscription?.subscriptionStatus || null);
+
+    // Count features
+    const featureCount = await ctx.db
+      .query('features')
+      .withIndex('by_company', (q) => q.eq('companyId', company._id))
+      .collect()
+      .then(features => features.length);
+
+    return {
+      plan,
+      features: {
+        used: featureCount,
+        limit: plan === 'free' ? 3 : null, // null means unlimited
+      },
+    };
+  },
+});
+
 export const createFeature = mutation({
   args: {
     title: v.string(),
@@ -71,6 +111,24 @@ export const createFeature = mutation({
 
     if (existing) {
       throw new Error('Feature slug already exists for this company');
+    }
+
+    // Check plan limits
+    const subscription = await ctx.db
+      .query('subscriptions')
+      .withIndex('by_user', (q) => q.eq('userId', userId))
+      .unique();
+    
+    const plan = getPlanFromSubscriptionStatus(subscription?.subscriptionStatus || null);
+    
+    // Count existing features
+    const existingFeatures = await ctx.db
+      .query('features')
+      .withIndex('by_company', (q) => q.eq('companyId', company._id))
+      .collect();
+
+    if (!canCreateFeature(existingFeatures.length, plan)) {
+      throw new Error(`Feature limit reached. Free plan allows up to 3 features. Upgrade to Pro for unlimited features.`);
     }
 
     const now = Date.now();

@@ -1,6 +1,7 @@
 import { v } from 'convex/values';
 import { internal } from './_generated/api';
 import { mutation, query } from './_generated/server';
+import { getPlanFromSubscriptionStatus, canAddSubscriber } from '../lib/plans';
 
 export const subscribe = mutation({
   args: {
@@ -19,6 +20,35 @@ export const subscribe = mutation({
       throw new Error('Email is already subscribed to this feature');
     }
 
+    // Get feature and company info to check limits
+    const feature = await ctx.db.get(featureId);
+    if (!feature) {
+      throw new Error('Feature not found');
+    }
+
+    const company = await ctx.db.get(feature.companyId);
+    if (!company) {
+      throw new Error('Company not found');
+    }
+
+    // Check plan limits for the company owner
+    const subscription = await ctx.db
+      .query('subscriptions')
+      .withIndex('by_user', (q) => q.eq('userId', company.ownerId))
+      .unique();
+    
+    const plan = getPlanFromSubscriptionStatus(subscription?.subscriptionStatus || null);
+    
+    // Count existing subscribers for this feature
+    const existingSubscribers = await ctx.db
+      .query('subscribers')
+      .withIndex('by_feature', (q) => q.eq('featureId', featureId))
+      .collect();
+
+    if (!canAddSubscriber(existingSubscribers.length, plan)) {
+      throw new Error(`Subscriber limit reached for this feature. Free plan allows up to 50 subscribers per feature. Upgrade to Pro for unlimited subscribers.`);
+    }
+
     // Generate confirmation token
     const confirmationToken = crypto.randomUUID();
 
@@ -31,20 +61,13 @@ export const subscribe = mutation({
       subscribedAt: Date.now(),
     });
 
-    // Get feature and company info for the email
-    const feature = await ctx.db.get(featureId);
-    if (feature) {
-      const company = await ctx.db.get(feature.companyId);
-      if (company) {
-        // Schedule confirmation email
-        await ctx.scheduler.runAfter(0, internal.emails.sendConfirmationEmail, {
-          email,
-          featureTitle: feature.title,
-          companyName: company.name,
-          confirmationToken,
-        });
-      }
-    }
+    // Schedule confirmation email (feature and company already loaded above)
+    await ctx.scheduler.runAfter(0, internal.emails.sendConfirmationEmail, {
+      email,
+      featureTitle: feature.title,
+      companyName: company.name,
+      confirmationToken,
+    });
 
     return subscriberId;
   },
