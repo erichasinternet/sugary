@@ -3,18 +3,8 @@
 import { useQuery, useAction } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import GradientButton from '../../components/GradientButton';
-import { getPlanFromSubscriptionStatus, PLAN_LIMITS, getTrialDaysRemaining } from '@/lib/plans';
-import {
-  IconCheck,
-  IconX,
-  IconStar,
-  IconTrendingUp,
-  IconMail,
-  IconDownload,
-  IconUsers,
-  IconBolt,
-  IconChartBar,
-} from '@tabler/icons-react';
+import { PLAN_LIMITS } from '@/lib/plans';
+import { IconCheck, IconX, IconMail, IconUsers, IconBolt, IconChartBar } from '@tabler/icons-react';
 
 export default function BillingPage() {
   const subscriptionStatus = useQuery(api.stripe.getSubscriptionStatus);
@@ -89,76 +79,45 @@ export default function BillingPage() {
         {/* Usage Overview */}
         {usageStats && (
           <div className="glass-card rounded-2xl p-6 mb-8">
-            <h2 className="text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
-              <IconChartBar className="h-5 w-5" />
+            <h2 className="text-xl font-semibold text-foreground mb-4">
               Usage Overview
             </h2>
-            
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <IconBolt className="h-4 w-4 text-purple-500" />
-                      <span className="font-medium">Features Created</span>
-                    </div>
-                    <span className="font-bold">
-                      {usageStats.features.used} / {usageStats.features.limit === Infinity ? '∞' : usageStats.features.limit}
-                    </span>
-                  </div>
-                  {usageStats.features.limit !== Infinity && (
-                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                      <div 
-                        className="bg-purple-500 h-2 rounded-full transition-all" 
-                        style={{ width: `${Math.min((usageStats.features.used / usageStats.features.limit) * 100, 100)}%` }}
-                      ></div>
-                    </div>
-                  )}
-                </div>
-                
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <IconUsers className="h-4 w-4 text-blue-500" />
-                      <span className="font-medium">Total Subscribers</span>
-                    </div>
-                    <span className="font-bold">{usageStats.totalSubscribers}</span>
-                  </div>
-                  <p className="text-sm text-muted">
-                    Across all your features
-                  </p>
-                </div>
-              </div>
 
-              <div className="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-xl p-4">
-                <h3 className="font-semibold text-foreground mb-2">Current Plan Limits</h3>
-                {subscriptionStatus && (
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span>Plan:</span>
-                      <span className="font-medium">
-                        {getPlanFromSubscriptionStatus(subscriptionStatus.subscriptionStatus) === 'pro' ? 'Pro' : 'Free'}
-                        {subscriptionStatus.subscriptionStatus === 'trialing' && (
-                          <span className="text-blue-600 dark:text-blue-400 ml-1">
-                            (Trial - {subscriptionStatus.trialEndsAt ? getTrialDaysRemaining(subscriptionStatus.trialEndsAt) : 0}d left)
-                          </span>
-                        )}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Features:</span>
-                      <span className="font-medium">
-                        {getPlanFromSubscriptionStatus(subscriptionStatus.subscriptionStatus) === 'pro' ? 'Unlimited' : `Up to ${PLAN_LIMITS.free.maxFeatures}`}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Subscribers per feature:</span>
-                      <span className="font-medium">
-                        {getPlanFromSubscriptionStatus(subscriptionStatus.subscriptionStatus) === 'pro' ? 'Unlimited' : `Up to ${PLAN_LIMITS.free.maxSubscribersPerFeature}`}
-                      </span>
-                    </div>
+            <div className="space-y-4">
+              <div>
+                <div className="flex justify-between mb-2">
+                  <span className="font-medium">Features Created</span>
+                  <span className="font-bold">
+                    {usageStats.features.used} /{' '}
+                    {usageStats.features.limit === Infinity ? '∞' : usageStats.features.limit}
+                  </span>
+                </div>
+                {usageStats.features.limit !== Infinity && (
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                    <div
+                      className="bg-purple-500 h-2 rounded-full transition-all"
+                      style={{
+                        width: `${Math.min((usageStats.features.used / usageStats.features.limit) * 100, 100)}%`,
+                      }}
+                    ></div>
                   </div>
                 )}
+              </div>
+
+              <div>
+                <div className="flex justify-between mb-2">
+                  <span className="font-medium">Total Subscribers</span>
+                  <span className="font-bold">{usageStats.totalSubscribers}</span>
+                </div>
+                <p className="text-sm text-muted">Across all your features</p>
+              </div>
+
+              <div>
+                <div className="flex justify-between mb-2">
+                  <span className="font-medium">Updates Sent</span>
+                  <span className="font-bold">{usageStats.totalUpdates}</span>
+                </div>
+                <p className="text-sm text-muted">Total feature updates sent</p>
               </div>
             </div>
           </div>
@@ -337,21 +296,13 @@ export default function BillingPage() {
             {subscriptionStatus.subscriptionStatus === 'none' && !subscriptionStatus.isNewUser && (
               <div className="space-y-3">
                 <div className="text-center mb-4">
-                  <p className="text-sm text-muted">
-                    Ready to get back to unlimited features?
-                  </p>
+                  <p className="text-sm text-muted">Ready to get back to unlimited features?</p>
                 </div>
-                <GradientButton
-                  onClick={handleUpgrade}
-                  className="w-full"
-                  size="lg"
-                >
+                <GradientButton onClick={handleUpgrade} className="w-full" size="lg">
                   Upgrade to Pro - $9/month
                 </GradientButton>
                 <div className="text-center">
-                  <p className="text-xs text-muted">
-                    Cancel anytime • 30-day money-back guarantee
-                  </p>
+                  <p className="text-xs text-muted">Cancel anytime • 30-day money-back guarantee</p>
                 </div>
               </div>
             )}
@@ -366,18 +317,17 @@ export default function BillingPage() {
             {subscriptionStatus.subscriptionStatus === 'trialing' && (
               <div className="text-center">
                 <p className="text-sm text-muted mb-4">
-                  {subscriptionStatus.trialEndsAt && new Date(subscriptionStatus.trialEndsAt).getTime() - Date.now() < 3 * 24 * 60 * 60 * 1000 
+                  {subscriptionStatus.trialEndsAt &&
+                  new Date(subscriptionStatus.trialEndsAt).getTime() - Date.now() <
+                    3 * 24 * 60 * 60 * 1000
                     ? 'Your trial ends soon! Upgrade now to avoid service interruption.'
-                    : 'Enjoying your trial? Upgrade now to lock in Pro features.'
-                  }
+                    : 'Enjoying your trial? Upgrade now to lock in Pro features.'}
                 </p>
                 <GradientButton onClick={handleUpgrade} className="w-full" size="lg">
                   Upgrade to Pro - $9/month
                 </GradientButton>
                 <div className="text-center mt-2">
-                  <p className="text-xs text-muted">
-                    No payment required until trial ends
-                  </p>
+                  <p className="text-xs text-muted">No payment required until trial ends</p>
                 </div>
               </div>
             )}

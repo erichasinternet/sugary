@@ -66,19 +66,44 @@ export const getUsageStats = query({
     
     const plan = getPlanFromSubscriptionStatus(subscription?.subscriptionStatus || null);
 
-    // Count features
-    const featureCount = await ctx.db
+    // Get all features for the company
+    const features = await ctx.db
       .query('features')
       .withIndex('by_company', (q) => q.eq('companyId', company._id))
-      .collect()
-      .then(features => features.length);
+      .collect();
+
+    const featureCount = features.length;
+
+    // Count total subscribers across all features
+    let totalSubscribers = 0;
+    for (const feature of features) {
+      const subscriberCount = await ctx.db
+        .query('subscribers')
+        .withIndex('by_feature', (q) => q.eq('featureId', feature._id))
+        .collect()
+        .then((subs) => subs.length);
+      totalSubscribers += subscriberCount;
+    }
+
+    // Count total updates/messages sent across all features
+    let totalUpdates = 0;
+    for (const feature of features) {
+      const updateCount = await ctx.db
+        .query('updates')
+        .withIndex('by_feature', (q) => q.eq('featureId', feature._id))
+        .collect()
+        .then((updates) => updates.length);
+      totalUpdates += updateCount;
+    }
 
     return {
       plan,
       features: {
         used: featureCount,
-        limit: plan === 'free' ? 3 : null, // null means unlimited
+        limit: plan === 'free' ? 3 : Infinity, // Use Infinity instead of null for consistency
       },
+      totalSubscribers,
+      totalUpdates,
     };
   },
 });
