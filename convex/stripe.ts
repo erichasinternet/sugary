@@ -150,7 +150,7 @@ export const createBillingPortalSession = action({
     try {
       const session: any = await stripe.billingPortal.sessions.create({
         customer: subscription.stripeCustomerId,
-        return_url: `${process.env.SITE_URL}/dashboard/subscription`,
+        return_url: `${process.env.SITE_URL}/dashboard/billing`,
       });
 
       return { url: session.url };
