@@ -3,7 +3,7 @@
 import { useQuery, useAction } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import GradientButton from '../../components/GradientButton';
-import { getPlanFromSubscriptionStatus, PLAN_LIMITS } from '@/lib/plans';
+import { getPlanFromSubscriptionStatus, PLAN_LIMITS, getTrialDaysRemaining } from '@/lib/plans';
 import {
   IconCheck,
   IconX,
@@ -11,10 +11,14 @@ import {
   IconTrendingUp,
   IconMail,
   IconDownload,
+  IconUsers,
+  IconBolt,
+  IconChartBar,
 } from '@tabler/icons-react';
 
-export default function SubscriptionPage() {
+export default function BillingPage() {
   const subscriptionStatus = useQuery(api.stripe.getSubscriptionStatus);
+  const usageStats = useQuery(api.features.getUsageStats);
   const createCheckoutSession = useAction(api.stripe.createCheckoutSession);
   const createBillingPortalSession = useAction(api.stripe.createBillingPortalSession);
   const createTrialSubscription = useAction(api.stripe.createTrialSubscription);
@@ -78,9 +82,87 @@ export default function SubscriptionPage() {
     <div className="px-4 py-6">
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-foreground">Choose Your Plan</h1>
-          <p className="mt-2 text-muted">Start free, upgrade when you're ready to scale</p>
+          <h1 className="text-3xl font-bold text-foreground">Billing & Usage</h1>
+          <p className="mt-2 text-muted">Manage your subscription and track your usage</p>
         </div>
+
+        {/* Usage Overview */}
+        {usageStats && (
+          <div className="glass-card rounded-2xl p-6 mb-8">
+            <h2 className="text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
+              <IconChartBar className="h-5 w-5" />
+              Usage Overview
+            </h2>
+            
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <IconBolt className="h-4 w-4 text-purple-500" />
+                      <span className="font-medium">Features Created</span>
+                    </div>
+                    <span className="font-bold">
+                      {usageStats.features.used} / {usageStats.features.limit === Infinity ? '∞' : usageStats.features.limit}
+                    </span>
+                  </div>
+                  {usageStats.features.limit !== Infinity && (
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                      <div 
+                        className="bg-purple-500 h-2 rounded-full transition-all" 
+                        style={{ width: `${Math.min((usageStats.features.used / usageStats.features.limit) * 100, 100)}%` }}
+                      ></div>
+                    </div>
+                  )}
+                </div>
+                
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <IconUsers className="h-4 w-4 text-blue-500" />
+                      <span className="font-medium">Total Subscribers</span>
+                    </div>
+                    <span className="font-bold">{usageStats.totalSubscribers}</span>
+                  </div>
+                  <p className="text-sm text-muted">
+                    Across all your features
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-xl p-4">
+                <h3 className="font-semibold text-foreground mb-2">Current Plan Limits</h3>
+                {subscriptionStatus && (
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Plan:</span>
+                      <span className="font-medium">
+                        {getPlanFromSubscriptionStatus(subscriptionStatus.subscriptionStatus) === 'pro' ? 'Pro' : 'Free'}
+                        {subscriptionStatus.subscriptionStatus === 'trialing' && (
+                          <span className="text-blue-600 dark:text-blue-400 ml-1">
+                            (Trial - {subscriptionStatus.trialEndsAt ? getTrialDaysRemaining(subscriptionStatus.trialEndsAt) : 0}d left)
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Features:</span>
+                      <span className="font-medium">
+                        {getPlanFromSubscriptionStatus(subscriptionStatus.subscriptionStatus) === 'pro' ? 'Unlimited' : `Up to ${PLAN_LIMITS.free.maxFeatures}`}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Subscribers per feature:</span>
+                      <span className="font-medium">
+                        {getPlanFromSubscriptionStatus(subscriptionStatus.subscriptionStatus) === 'pro' ? 'Unlimited' : `Up to ${PLAN_LIMITS.free.maxSubscribersPerFeature}`}
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Plan Comparison */}
         <div className="grid md:grid-cols-2 gap-6 mb-8">
