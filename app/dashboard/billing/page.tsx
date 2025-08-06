@@ -79,9 +79,7 @@ export default function BillingPage() {
         {/* Usage Overview */}
         {usageStats && (
           <div className="glass-card rounded-2xl p-6 mb-8">
-            <h2 className="text-xl font-semibold text-foreground mb-4">
-              Usage Overview
-            </h2>
+            <h2 className="text-xl font-semibold text-foreground mb-4">Usage Overview</h2>
 
             <div className="space-y-4">
               <div>
@@ -117,7 +115,9 @@ export default function BillingPage() {
                   <span className="font-medium">Subscriber Updates This Month</span>
                   <span className="font-bold">
                     {usageStats.subscriberUpdates.usedThisMonth} /{' '}
-                    {usageStats.subscriberUpdates.limit === Infinity ? '∞' : usageStats.subscriberUpdates.limit}
+                    {usageStats.subscriberUpdates.limit === Infinity
+                      ? '∞'
+                      : usageStats.subscriberUpdates.limit}
                   </span>
                 </div>
                 {usageStats.subscriberUpdates.limit !== Infinity && (
@@ -143,11 +143,6 @@ export default function BillingPage() {
               <h3 className="text-xl font-bold text-foreground mb-2">Free Plan</h3>
               <div className="text-3xl font-bold text-foreground mb-1">$0</div>
               <div className="text-sm text-muted">Forever free</div>
-              {subscriptionStatus?.subscriptionStatus === 'none' && (
-                <div className="mt-3 px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-sm font-medium">
-                  Current Plan
-                </div>
-              )}
             </div>
 
             <div className="space-y-3 mb-6">
@@ -163,31 +158,35 @@ export default function BillingPage() {
               </div>
               <div className="flex items-center gap-3">
                 <IconCheck className="h-4 w-4 text-green-500 flex-shrink-0" />
-                <span className="text-sm">Up to {PLAN_LIMITS.free.maxSubscriberUpdatesPerMonth} subscriber updates per month</span>
+                <span className="text-sm">
+                  Up to {PLAN_LIMITS.free.maxSubscriberUpdatesPerMonth} subscriber updates per month
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <IconCheck className="h-4 w-4 text-green-500 flex-shrink-0" />
+                <span className="text-sm">Unlimited live chat</span>
               </div>
               <div className="flex items-center gap-3">
                 <IconX className="h-4 w-4 text-gray-400 flex-shrink-0" />
                 <span className="text-sm text-muted">Priority support</span>
               </div>
             </div>
+
+            {subscriptionStatus?.subscriptionStatus === 'none' && (
+              <div className="text-center mt-4">
+                <div className="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-sm font-medium inline-block">
+                  Current Plan
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Pro Plan */}
           <div className="glass-card rounded-2xl p-6 border-2 border-gradient-to-r from-purple-500 to-pink-500 relative overflow-hidden">
-            <div className="absolute top-0 right-0 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1 text-xs font-bold">
-              POPULAR
-            </div>
-
             <div className="text-center mb-6">
-              <h3 className="text-xl font-bold text-foreground mb-2">Pro Plan</h3>
+              <h3 className="text-xl font-bold text-pink-300 mb-2">Sugary Pro</h3>
               <div className="text-3xl font-bold text-foreground mb-1">$9</div>
               <div className="text-sm text-muted">per month</div>
-              {(subscriptionStatus?.subscriptionStatus === 'active' ||
-                subscriptionStatus?.subscriptionStatus === 'trialing') && (
-                <div className="mt-3 px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-sm font-medium">
-                  Current Plan
-                </div>
-              )}
             </div>
 
             <div className="space-y-3 mb-6">
@@ -204,10 +203,23 @@ export default function BillingPage() {
                 <span className="text-sm font-medium">Unlimited subscriber updates</span>
               </div>
               <div className="flex items-center gap-3">
+                <IconCheck className="h-4 w-4 text-green-500 flex-shrink-0" />
+                <span className="text-sm font-medium">Unlimited live chat</span>
+              </div>
+              <div className="flex items-center gap-3">
                 <IconMail className="h-4 w-4 text-purple-500 flex-shrink-0" />
                 <span className="text-sm font-medium">Priority support</span>
               </div>
             </div>
+
+            {(subscriptionStatus?.subscriptionStatus === 'active' ||
+              subscriptionStatus?.subscriptionStatus === 'trialing') && (
+              <div className="text-center mt-4">
+                <div className="px-3 py-1 bg-pink-100  text-black rounded-full text-sm font-medium inline-block">
+                  Current Plan
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -332,15 +344,12 @@ export default function BillingPage() {
                   {subscriptionStatus.trialEndsAt &&
                   new Date(subscriptionStatus.trialEndsAt).getTime() - Date.now() <
                     3 * 24 * 60 * 60 * 1000
-                    ? 'Your trial ends soon! Upgrade now to avoid service interruption.'
-                    : 'Enjoying your trial? Upgrade now to lock in Pro features.'}
+                    ? 'Your trial ends soon! Upgrade now to keep growing your business with Sugary Pro.'
+                    : 'Enjoying your trial? Upgrade now to keep growing your business with Sugary Pro.'}
                 </p>
                 <GradientButton onClick={handleUpgrade} className="w-full" size="lg">
                   Upgrade to Pro - $9/month
                 </GradientButton>
-                <div className="text-center mt-2">
-                  <p className="text-xs text-muted">No payment required until trial ends</p>
-                </div>
               </div>
             )}
 
