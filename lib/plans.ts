@@ -11,7 +11,21 @@ export const PLAN_LIMITS = {
 } as const;
 
 export function getPlanFromSubscriptionStatus(status: string | null): 'free' | 'pro' {
+  // Users are considered 'pro' during trial and active subscription
   return status === 'active' || status === 'trialing' ? 'pro' : 'free';
+}
+
+export function getTrialDaysRemaining(trialEndsAt: number | null): number {
+  if (!trialEndsAt) return 0;
+  const now = Date.now();
+  const daysRemaining = Math.ceil((trialEndsAt - now) / (1000 * 60 * 60 * 24));
+  return Math.max(0, daysRemaining);
+}
+
+export function isTrialExpiring(trialEndsAt: number | null, daysThreshold: number = 3): boolean {
+  if (!trialEndsAt) return false;
+  const daysRemaining = getTrialDaysRemaining(trialEndsAt);
+  return daysRemaining <= daysThreshold && daysRemaining > 0;
 }
 
 export function canCreateFeature(currentFeatureCount: number, plan: 'free' | 'pro'): boolean {

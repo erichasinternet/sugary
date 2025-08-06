@@ -10,7 +10,6 @@ export default function Onboarding() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const createCompany = useMutation(api.companies.createCompany);
-  const createTrialSubscription = useAction(api.stripe.createTrialSubscription);
   const currentUser = useQuery(api.users.getCurrentUser);
   const router = useRouter();
 
@@ -33,15 +32,8 @@ export default function Onboarding() {
     try {
       await createCompany({ name, slug });
       
-      // Automatically enroll user in 14-day trial
-      try {
-        await createTrialSubscription();
-      } catch (subscriptionError) {
-        // Don't block onboarding if trial creation fails
-        console.warn('Failed to create trial subscription:', subscriptionError);
-      }
-      
       // Redirect to feature creation to get immediate value
+      // (Trial subscription is automatically created during signup)
       router.push('/dashboard/features/new?first=true');
     } catch (error) {
       setError(error instanceof Error ? error.message : 'An error occurred');

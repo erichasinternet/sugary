@@ -82,15 +82,54 @@ export const getSubscriptionStatus = query({
         hasActiveSubscription: false,
         subscriptionStatus: "none",
         trialEndsAt: null,
+        isNewUser: true, // Users without subscriptions are considered new
+        hasPaymentMethod: false,
       };
     }
 
+    // Check if trial has expired and should be downgraded
+    const now = Date.now();
+    const trialExpired = subscription.trialEndsAt && now > subscription.trialEndsAt;
+    const shouldBeDowngraded = subscription.subscriptionStatus === "trialing" && trialExpired;
+
     return {
-      hasActiveSubscription: ["active", "trialing"].includes(subscription.subscriptionStatus),
-      subscriptionStatus: subscription.subscriptionStatus,
+      hasActiveSubscription: ["active", "trialing"].includes(subscription.subscriptionStatus) && !shouldBeDowngraded,
+      subscriptionStatus: shouldBeDowngraded ? "canceled" : subscription.subscriptionStatus,
       trialEndsAt: subscription.trialEndsAt,
       currentPeriodEnd: subscription.currentPeriodEnd,
+      trialExpired: shouldBeDowngraded,
+      isNewUser: false,
+      hasPaymentMethod: subscription.paymentMethodRequired || false, // This tracks if payment method is attached
+      stripeCustomerId: subscription.stripeCustomerId,
     };
+  },
+});
+
+// Action to check if customer has payment method
+export const checkPaymentMethod = action({
+  args: {},
+  handler: async (ctx): Promise<{ hasPaymentMethod: boolean }> => {
+    const userId = await auth.getUserId(ctx);
+    if (!userId) {
+      return { hasPaymentMethod: false };
+    }
+
+    const subscription = await ctx.runQuery(internal.stripe.getUserSubscription, { userId });
+    if (!subscription || !subscription.stripeCustomerId) {
+      return { hasPaymentMethod: false };
+    }
+
+    try {
+      const paymentMethods = await stripe.paymentMethods.list({
+        customer: subscription.stripeCustomerId,
+        type: 'card',
+      });
+
+      return { hasPaymentMethod: paymentMethods.data.length > 0 };
+    } catch (error) {
+      console.error('Failed to check payment methods:', error);
+      return { hasPaymentMethod: false };
+    }
   },
 });
 
@@ -122,7 +161,71 @@ export const createBillingPortalSession = action({
   },
 });
 
-// Action to create trial subscription (external API call)
+// Internal action to automatically create trial subscription for new users
+export const autoCreateTrialSubscription = internalAction({
+  args: { userId: v.id("users") },
+  handler: async (ctx, { userId }): Promise<{ subscriptionId: string | null }> => {
+    const user: any = await ctx.runQuery(internal.stripe.getUser, { userId });
+    if (!user) {
+      console.error("User not found for auto trial creation:", userId);
+      return { subscriptionId: null };
+    }
+
+    // Check if user already has a subscription
+    const existingSubscription = await ctx.runQuery(internal.stripe.getUserSubscription, { userId });
+    if (existingSubscription) {
+      return { subscriptionId: existingSubscription.stripeSubscriptionId || null };
+    }
+
+    try {
+      // Create customer in Stripe
+      const customer: any = await stripe.customers.create({
+        email: user.email,
+        name: user.name,
+        metadata: {
+          userId: userId,
+        },
+      });
+
+      // Create subscription with 14-day trial (no credit card required)
+      const subscription: any = await stripe.subscriptions.create({
+        customer: customer.id,
+        items: [{ price: process.env.STRIPE_PRICE_ID }],
+        trial_period_days: 14,
+        payment_behavior: "allow_incomplete",
+        payment_settings: { 
+          save_default_payment_method: "off" // Don't require payment method during trial
+        },
+        trial_settings: {
+          end_behavior: {
+            missing_payment_method: "cancel" // Cancel when trial ends without payment
+          }
+        },
+        expand: ["latest_invoice"],
+      });
+
+      // Store subscription in database via internal mutation
+      await ctx.runMutation(internal.stripe.createSubscriptionRecord, {
+        userId: userId,
+        stripeCustomerId: customer.id,
+        stripeSubscriptionId: subscription.id,
+        subscriptionStatus: "trialing" as const,
+        trialEndsAt: new Date(subscription.trial_end! * 1000).getTime(),
+        currentPeriodEnd: new Date(subscription.current_period_end * 1000).getTime(),
+      });
+
+      return { 
+        subscriptionId: subscription.id,
+      };
+    } catch (error) {
+      console.error("Failed to auto-create trial subscription:", error);
+      // Don't throw error - let user proceed without trial
+      return { subscriptionId: null };
+    }
+  },
+});
+
+// Action to create trial subscription (external API call) - kept for manual trial creation
 export const createTrialSubscription = action({
   args: {},
   handler: async (ctx): Promise<{ subscriptionId: string; clientSecret?: string }> => {
@@ -152,14 +255,21 @@ export const createTrialSubscription = action({
         },
       });
 
-      // Create subscription with 14-day trial
+      // Create subscription with 14-day trial (no credit card required)
       const subscription: any = await stripe.subscriptions.create({
         customer: customer.id,
         items: [{ price: process.env.STRIPE_PRICE_ID }],
         trial_period_days: 14,
-        payment_behavior: "default_incomplete",
-        payment_settings: { save_default_payment_method: "on_subscription" },
-        expand: ["latest_invoice.payment_intent"],
+        payment_behavior: "allow_incomplete",
+        payment_settings: { 
+          save_default_payment_method: "off" // Don't require payment method during trial
+        },
+        trial_settings: {
+          end_behavior: {
+            missing_payment_method: "cancel" // Cancel when trial ends without payment
+          }
+        },
+        expand: ["latest_invoice"],
       });
 
       // Store subscription in database via internal mutation
@@ -174,7 +284,7 @@ export const createTrialSubscription = action({
 
       return { 
         subscriptionId: subscription.id,
-        clientSecret: subscription.latest_invoice?.payment_intent?.client_secret,
+        // No client secret needed since no payment required
       };
     } catch (error) {
       console.error("Failed to create trial subscription:", error);
@@ -205,7 +315,10 @@ export const createSubscriptionRecord = internalMutation({
     const now = Date.now();
     await ctx.db.insert("subscriptions", {
       ...args,
+      trialStartedAt: now,
       cancelAtPeriodEnd: false,
+      paymentMethodRequired: false,
+      trialRemindersSent: [],
       createdAt: now,
       updatedAt: now,
     });
@@ -298,6 +411,12 @@ export const fulfillWebhook = internalAction({
             trialEnd: undefined,
             cancelAtPeriodEnd: false,
           });
+          break;
+        
+        case 'customer.subscription.trial_will_end':
+          // Handle trial ending soon (3 days before)
+          console.log(`Trial ending soon for subscription ${event.data.object.id}`);
+          // This could trigger reminder emails
           break;
         
         case 'invoice.payment_succeeded':

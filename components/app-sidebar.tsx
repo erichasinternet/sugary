@@ -28,7 +28,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const subscriptionStatus = useQuery(api.stripe.getSubscriptionStatus);
   const usageStats = useQuery(api.features.getUsageStats);
   const createCheckoutSession = useAction(api.stripe.createCheckoutSession);
-  const createTrialSubscription = useAction(api.stripe.createTrialSubscription);
+  const checkPaymentMethod = useAction(api.stripe.checkPaymentMethod);
+  
+  // Check if trial user has payment method
+  const [hasPaymentMethod, setHasPaymentMethod] = React.useState<boolean | null>(null);
+  
+  React.useEffect(() => {
+    if (subscriptionStatus?.subscriptionStatus === 'trialing' && subscriptionStatus?.stripeCustomerId) {
+      checkPaymentMethod().then(result => setHasPaymentMethod(result.hasPaymentMethod));
+    }
+  }, [subscriptionStatus, checkPaymentMethod]);
 
   const handleUpgrade = async () => {
     try {
@@ -42,13 +51,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     }
   };
 
-  const handleStartTrial = async () => {
-    try {
-      await createTrialSubscription();
-    } catch (error) {
-      console.error('Failed to start trial:', error);
-    }
-  };
 
   const data = {
     navMain: [
@@ -96,10 +98,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        {/* Trial/Subscription Banner */}
-        {subscriptionStatus && (
+        {/* Subscription status - Hide for active Pro subscribers and trial users with payment method */}
+        {subscriptionStatus && 
+         subscriptionStatus.subscriptionStatus !== 'active' && 
+         !(subscriptionStatus.subscriptionStatus === 'trialing' && hasPaymentMethod === true) && (
           <div className="px-2 mb-2">
-            {subscriptionStatus.subscriptionStatus === 'trialing' && (
+            {subscriptionStatus.subscriptionStatus === 'trialing' && hasPaymentMethod !== true && (
               <div style={{ background: 'var(--gradient-hero)' }} className="rounded-xl p-3 text-white">
                 <div className="flex items-center gap-2 mb-2">
                   <IconSparkles className="h-4 w-4 text-white" />
@@ -130,7 +134,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               </div>
             )}
 
-            {subscriptionStatus.subscriptionStatus === 'none' && (
+            {subscriptionStatus.subscriptionStatus === 'none' && !subscriptionStatus.trialExpired && (
               <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-3 border border-gray-200 dark:border-gray-700">
                 <div className="flex items-center gap-2 mb-2">
                   <IconCreditCard className="h-4 w-4 text-gray-500" />
@@ -158,38 +162,52 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <p>Up to 50 subscribers per feature</p>
                 </div>
                 <button
-                  onClick={handleStartTrial}
-                  style={{ background: 'var(--gradient-hero)' }}
-                  className="w-full text-white text-xs font-medium py-2 px-3 rounded-lg hover:opacity-90 transition-all mb-2"
-                >
-                  🎉 Start Free Trial
-                </button>
-                <button
                   onClick={handleUpgrade}
-                  className="w-full border border-gray-200 dark:border-gray-600 text-foreground text-xs font-medium py-1.5 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-all"
+                  style={{ background: 'var(--gradient-hero)' }}
+                  className="w-full text-white text-xs font-medium py-2 px-3 rounded-lg hover:opacity-90 transition-all"
                 >
-                  Upgrade to Pro
+                  Upgrade to Pro - $9/mo
                 </button>
               </div>
             )}
 
-            {subscriptionStatus.subscriptionStatus === 'active' && (
-              <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-3 border border-green-200 dark:border-green-800">
+            {subscriptionStatus.trialExpired && (
+              <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-3 border border-purple-200 dark:border-purple-800">
                 <div className="flex items-center gap-2 mb-2">
-                  <IconStar className="h-4 w-4 text-green-500" />
-                  <span className="text-sm font-semibold text-foreground">Pro Plan</span>
+                  <IconSparkles className="h-4 w-4 text-purple-500" />
+                  <span className="text-sm font-semibold text-purple-700 dark:text-purple-300">Trial Ended</span>
                 </div>
-                {usageStats && (
-                  <div className="text-xs text-green-600 dark:text-green-400 mb-2">
-                    <div className="flex justify-between items-center">
-                      <span>Features</span>
-                      <span>{usageStats.features.used}/∞</span>
+                <div className="text-xs text-purple-600 dark:text-purple-400 mb-3">
+                  {usageStats ? (
+                    <div className="mb-2">
+                      <div className="flex justify-between items-center">
+                        <span>Features</span>
+                        <span>{usageStats.features.used}/{usageStats.features.limit || '∞'}</span>
+                      </div>
+                      {usageStats.features.limit && (
+                        <div className="w-full bg-purple-200 dark:bg-purple-700 rounded-full h-1.5 mt-1">
+                          <div 
+                            className="bg-purple-400 h-1.5 rounded-full transition-all" 
+                            style={{ width: `${Math.min((usageStats.features.used / usageStats.features.limit) * 100, 100)}%` }}
+                          ></div>
+                        </div>
+                      )}
                     </div>
-                  </div>
-                )}
-                <p className="text-xs text-green-600 dark:text-green-400">$9/month • Unlimited everything</p>
+                  ) : (
+                    <div className="mb-2 text-purple-500">Loading usage...</div>
+                  )}
+                  <p>Back to Free limits. Upgrade anytime!</p>
+                </div>
+                <button
+                  onClick={handleUpgrade}
+                  style={{ background: 'var(--gradient-hero)' }}
+                  className="w-full text-white text-xs font-medium py-2 px-3 rounded-lg hover:opacity-90 transition-all"
+                >
+                  Upgrade to Pro - $9/mo
+                </button>
               </div>
             )}
+
           </div>
         )}
 

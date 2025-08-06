@@ -76,14 +76,18 @@ const schema = defineSchema({
       v.literal('unpaid')
     ),
     trialEndsAt: v.optional(v.number()),
+    trialStartedAt: v.optional(v.number()),
     currentPeriodEnd: v.optional(v.number()),
     cancelAtPeriodEnd: v.optional(v.boolean()),
+    paymentMethodRequired: v.optional(v.boolean()),
+    trialRemindersSent: v.optional(v.array(v.string())), // Array of reminder types sent
     createdAt: v.number(),
     updatedAt: v.number(),
   })
     .index('by_user', ['userId'])
     .index('by_stripe_customer', ['stripeCustomerId'])
-    .index('by_stripe_subscription', ['stripeSubscriptionId']),
+    .index('by_stripe_subscription', ['stripeSubscriptionId'])
+    .index('by_trial_end', ['trialEndsAt']),
 });
 
 export default schema;

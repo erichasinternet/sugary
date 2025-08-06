@@ -223,7 +223,7 @@ export default function SubscriptionPage() {
           </div>
 
           <div className="space-y-4">
-            {subscriptionStatus.subscriptionStatus === 'none' && (
+            {subscriptionStatus.subscriptionStatus === 'none' && subscriptionStatus.isNewUser && (
               <div className="space-y-3">
                 <GradientButton onClick={handleStartTrial} className="w-full" size="lg">
                   🎉 Start 14-Day Free Trial
@@ -252,6 +252,28 @@ export default function SubscriptionPage() {
               </div>
             )}
 
+            {subscriptionStatus.subscriptionStatus === 'none' && !subscriptionStatus.isNewUser && (
+              <div className="space-y-3">
+                <div className="text-center mb-4">
+                  <p className="text-sm text-muted">
+                    Ready to get back to unlimited features?
+                  </p>
+                </div>
+                <GradientButton
+                  onClick={handleUpgrade}
+                  className="w-full"
+                  size="lg"
+                >
+                  Upgrade to Pro - $9/month
+                </GradientButton>
+                <div className="text-center">
+                  <p className="text-xs text-muted">
+                    Cancel anytime • 30-day money-back guarantee
+                  </p>
+                </div>
+              </div>
+            )}
+
             {!subscriptionStatus.hasActiveSubscription &&
               subscriptionStatus.subscriptionStatus !== 'none' && (
                 <GradientButton onClick={handleUpgrade} className="w-full" size="lg">
@@ -262,11 +284,19 @@ export default function SubscriptionPage() {
             {subscriptionStatus.subscriptionStatus === 'trialing' && (
               <div className="text-center">
                 <p className="text-sm text-muted mb-4">
-                  Upgrade now to ensure uninterrupted service when your trial ends
+                  {subscriptionStatus.trialEndsAt && new Date(subscriptionStatus.trialEndsAt).getTime() - Date.now() < 3 * 24 * 60 * 60 * 1000 
+                    ? 'Your trial ends soon! Upgrade now to avoid service interruption.'
+                    : 'Enjoying your trial? Upgrade now to lock in Pro features.'
+                  }
                 </p>
                 <GradientButton onClick={handleUpgrade} className="w-full" size="lg">
-                  Upgrade to Pro Now - $9/month
+                  Upgrade to Pro - $9/month
                 </GradientButton>
+                <div className="text-center mt-2">
+                  <p className="text-xs text-muted">
+                    No payment required until trial ends
+                  </p>
+                </div>
               </div>
             )}
 

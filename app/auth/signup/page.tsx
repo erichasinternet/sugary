@@ -1,16 +1,19 @@
 'use client';
 
 import { useAuthActions } from '@convex-dev/auth/react';
+import { useAction } from 'convex/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import SugaryLogo from '../../components/SugaryLogo';
 import GradientButton from '../../components/GradientButton';
+import { api } from '@/convex/_generated/api';
 
 type Step = 'info' | 'verify-email' | 'set-password';
 
 export default function SignUp() {
   const { signIn } = useAuthActions();
+  const handlePostSignup = useAction(api.users.handlePostSignup);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -70,7 +73,18 @@ export default function SignUp() {
 
     try {
       // Set password and complete signup
-      await signIn('password', { email, password, flow: 'signUp', name });
+      const result = await signIn('password', { email, password, flow: 'signUp', name });
+      
+      // Get the user ID from the result to trigger post-signup actions
+      if (result && 'userId' in result) {
+        try {
+          await handlePostSignup({ userId: result.userId });
+        } catch (postSignupError) {
+          console.warn('Post-signup actions failed:', postSignupError);
+          // Don't block the user flow if trial creation fails
+        }
+      }
+      
       router.push('/dashboard/onboarding');
     } catch (error) {
       setError(error instanceof Error ? error.message : 'An error occurred');
