@@ -3,10 +3,12 @@ export const PLAN_LIMITS = {
   free: {
     maxFeatures: 3,
     maxSubscribersPerFeature: 50,
+    maxSubscriberUpdatesPerMonth: 5,
   },
   pro: {
     maxFeatures: Infinity,
     maxSubscribersPerFeature: Infinity,
+    maxSubscriberUpdatesPerMonth: Infinity,
   }
 } as const;
 
@@ -34,4 +36,8 @@ export function canCreateFeature(currentFeatureCount: number, plan: 'free' | 'pr
 
 export function canAddSubscriber(currentSubscriberCount: number, plan: 'free' | 'pro'): boolean {
   return currentSubscriberCount < PLAN_LIMITS[plan].maxSubscribersPerFeature;
+}
+
+export function canSendSubscriberUpdate(currentSubscriberUpdatesThisMonth: number, plan: 'free' | 'pro'): boolean {
+  return currentSubscriberUpdatesThisMonth < PLAN_LIMITS[plan].maxSubscriberUpdatesPerMonth;
 }

@@ -114,10 +114,22 @@ export default function BillingPage() {
 
               <div>
                 <div className="flex justify-between mb-2">
-                  <span className="font-medium">Updates Sent</span>
-                  <span className="font-bold">{usageStats.totalUpdates}</span>
+                  <span className="font-medium">Subscriber Updates This Month</span>
+                  <span className="font-bold">
+                    {usageStats.subscriberUpdates.usedThisMonth} /{' '}
+                    {usageStats.subscriberUpdates.limit === Infinity ? '∞' : usageStats.subscriberUpdates.limit}
+                  </span>
                 </div>
-                <p className="text-sm text-muted">Total feature updates sent</p>
+                {usageStats.subscriberUpdates.limit !== Infinity && (
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                    <div
+                      className="bg-green-500 h-2 rounded-full transition-all"
+                      style={{
+                        width: `${Math.min((usageStats.subscriberUpdates.usedThisMonth / usageStats.subscriberUpdates.limit) * 100, 100)}%`,
+                      }}
+                    ></div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -151,7 +163,7 @@ export default function BillingPage() {
               </div>
               <div className="flex items-center gap-3">
                 <IconCheck className="h-4 w-4 text-green-500 flex-shrink-0" />
-                <span className="text-sm">Unlimited updates & messaging</span>
+                <span className="text-sm">Up to {PLAN_LIMITS.free.maxSubscriberUpdatesPerMonth} subscriber updates per month</span>
               </div>
               <div className="flex items-center gap-3">
                 <IconX className="h-4 w-4 text-gray-400 flex-shrink-0" />
@@ -189,7 +201,7 @@ export default function BillingPage() {
               </div>
               <div className="flex items-center gap-3">
                 <IconCheck className="h-4 w-4 text-green-500 flex-shrink-0" />
-                <span className="text-sm font-medium">Unlimited updates & messaging</span>
+                <span className="text-sm font-medium">Unlimited subscriber updates</span>
               </div>
               <div className="flex items-center gap-3">
                 <IconMail className="h-4 w-4 text-purple-500 flex-shrink-0" />
