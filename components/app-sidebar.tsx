@@ -116,7 +116,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     className="rounded-xl p-3 text-white"
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-semibold text-white">Sugary Pro Trial</span>
+                      <span className="text-sm font-bold text-pink-300">Sugary Pro Trial</span>
                       <div className="flex items-center gap-1">
                         <IconClock className="h-3 w-3 text-white/80" />
                         <span className="text-xs text-white/80 font-medium">
@@ -144,7 +144,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     </p>
                     <button
                       onClick={handleUpgrade}
-                      className="w-full bg-white/20 backdrop-blur text-white text-xs font-medium py-2 px-3 rounded-lg hover:bg-white/30 transition-all border border-white/20"
+                      className="w-full bg-pink-500/20 backdrop-blur text-white text-xs font-medium py-2 px-3 rounded-lg hover:bg-pink-500/30 transition-all border border-white/20"
                     >
                       Add Payment
                     </button>
