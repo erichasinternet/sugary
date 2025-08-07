@@ -185,13 +185,14 @@ export default function BillingPage() {
                 <span className="text-sm text-muted">Priority support</span>
               </div>
             </div>
-
           </div>
 
           {/* Pro Monthly Plan */}
           <div className="glass-card rounded-2xl p-6 border-2 border-blue-200 dark:border-blue-700 relative overflow-hidden">
             <div className="text-center mb-6">
-              <h3 className="text-xl font-bold text-blue-600 dark:text-blue-400 mb-2">Pro Monthly</h3>
+              <h3 className="text-xl font-bold text-blue-600 dark:text-blue-400 mb-2">
+                Pro Monthly
+              </h3>
               <div className="text-3xl font-bold text-foreground mb-1">$20</div>
               <div className="text-sm text-muted">per month</div>
             </div>
@@ -219,12 +220,15 @@ export default function BillingPage() {
               </div>
             </div>
 
-            {subscriptionStatus?.subscriptionStatus === 'none' && (
+            {(subscriptionStatus?.subscriptionStatus === 'none' ||
+              subscriptionStatus?.subscriptionStatus === 'canceled') && (
               <GradientButton
                 onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID!)}
                 className="w-full"
               >
-                Start Monthly Plan
+                {subscriptionStatus?.subscriptionStatus === 'canceled'
+                  ? 'Restart Monthly Plan'
+                  : 'Start Monthly Plan'}
               </GradientButton>
             )}
           </div>
@@ -266,178 +270,196 @@ export default function BillingPage() {
               </div>
             </div>
 
-            {subscriptionStatus?.subscriptionStatus === 'none' && (
+            {(subscriptionStatus?.subscriptionStatus === 'none' ||
+              subscriptionStatus?.subscriptionStatus === 'canceled') && (
               <GradientButton
                 onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_ANNUAL_PRICE_ID!)}
                 className="w-full"
               >
-                Start Annual Plan
+                {subscriptionStatus?.subscriptionStatus === 'canceled'
+                  ? 'Restart Annual Plan'
+                  : 'Start Annual Plan'}
               </GradientButton>
             )}
           </div>
         </div>
 
-        <div className="glass-card rounded-2xl p-8">
-          <div className="mb-6">
-            <h2 className="text-xl font-semibold text-foreground mb-4">Current Status</h2>
+        <div className="glass-card rounded-2xl p-6 sm:p-8 relative overflow-hidden">
+          <div className="absolute inset-0 rounded-2xl"></div>
+          <div className="relative z-10">
+            <div className="mb-6 sm:mb-8">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-4 bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
+                Billing
+              </h2>
 
-            {subscriptionStatus.subscriptionStatus === 'trialing' && (
-              <div className="bg-pink/10 border border-pink-200 rounded-xl p-4 mb-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-semibold text-pink-300">Free Trial Active</h3>
-                    <p className="text-grey text-sm">
-                      {subscriptionStatus.trialEndsAt &&
-                        `Your trial ends on ${formatDate(subscriptionStatus.trialEndsAt)}`}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-grey">$0.00</div>
-                    <div className="text-xs text-grey">14-day trial</div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {subscriptionStatus.subscriptionStatus === 'active' && (
-              <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4 mb-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-semibold text-green-800 dark:text-green-300">
-                      ✅ Pro Plan
-                    </h3>
-                    <p className="text-green-600 dark:text-green-400 text-sm">
-                      {subscriptionStatus.currentPeriodEnd &&
-                        `Next billing: ${formatDate(subscriptionStatus.currentPeriodEnd)}`}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-green-800 dark:text-green-300">
-                      Pro Plan
+              {subscriptionStatus.subscriptionStatus === 'trialing' && (
+                <div className=" border border-pink-200/50 dark:border-pink-200/50 rounded-xl p-4 sm:p-6 mb-4 sm:mb-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="font-bold text-pink-300 mb-1">
+                        Pro Trial Active
+                      </h3>
+                      <p className="text-muted text-sm">
+                        {subscriptionStatus.trialEndsAt &&
+                          `Your trial ends on ${formatDate(subscriptionStatus.trialEndsAt)}`}
+                      </p>
                     </div>
-                    <div className="text-xs text-green-600 dark:text-green-400">Active subscription</div>
+                    <div className="text-right">
+                      <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-pink-300 to-pink-400 bg-clip-text text-transparent">
+                        $0.00
+                      </div>
+                      <div className="text-xs text-muted">14-day trial</div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            )}
-
-            {subscriptionStatus.subscriptionStatus === 'none' && (
-              <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 mb-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-semibold text-gray-800 dark:text-gray-300">Free Plan</h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm">
-                      Limited features available
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-gray-800 dark:text-gray-300">$0.00</div>
-                    <div className="text-xs text-gray-600 dark:text-gray-400">forever</div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className="space-y-4">
-            {subscriptionStatus.subscriptionStatus === 'none' && subscriptionStatus.isNewUser && (
-              <div className="space-y-3">
-                <GradientButton onClick={handleStartTrial} className="w-full" size="lg">
-                  🎉 Start 14-Day Free Trial
-                </GradientButton>
-                <div className="text-center">
-                  <p className="text-xs text-muted">
-                    No payment required • Cancel anytime during trial
-                  </p>
-                </div>
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t" />
-                  </div>
-                  <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-background px-2 text-muted-foreground">or</span>
-                  </div>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <GradientButton
-                    onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_ANNUAL_PRICE_ID!)}
-                    className="w-full"
-                    size="lg"
-                    variant="outline"
-                  >
-                    Upgrade Annual - $15/month
-                  </GradientButton>
-                  <GradientButton
-                    onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID!)}
-                    className="w-full"
-                    size="sm"
-                    variant="outline"
-                  >
-                    Upgrade Monthly - $20/month
-                  </GradientButton>
-                </div>
-              </div>
-            )}
-
-            {subscriptionStatus.subscriptionStatus === 'none' && !subscriptionStatus.isNewUser && (
-              <div className="space-y-3">
-                <div className="text-center mb-4">
-                  <p className="text-sm text-muted">Ready to get back to unlimited features?</p>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <GradientButton onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_ANNUAL_PRICE_ID!)} className="w-full" size="lg">
-                    Upgrade Annual - $15/month
-                  </GradientButton>
-                  <GradientButton onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID!)} className="w-full" size="sm">
-                    Upgrade Monthly - $20/month
-                  </GradientButton>
-                </div>
-                <div className="text-center">
-                  <p className="text-xs text-muted">Cancel anytime • 30-day money-back guarantee</p>
-                </div>
-              </div>
-            )}
-
-            {!subscriptionStatus.hasActiveSubscription &&
-              subscriptionStatus.subscriptionStatus !== 'none' && (
-                <div className="flex flex-col gap-2">
-                  <GradientButton onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_ANNUAL_PRICE_ID!)} className="w-full" size="lg">
-                    Upgrade Annual - $15/month
-                  </GradientButton>
-                  <GradientButton onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID!)} className="w-full" size="sm">
-                    Upgrade Monthly - $20/month
-                  </GradientButton>
                 </div>
               )}
 
-            {subscriptionStatus.subscriptionStatus === 'trialing' && (
-              <div className="text-center">
-                <p className="text-sm text-muted mb-4">
-                  {subscriptionStatus.trialEndsAt &&
-                  new Date(subscriptionStatus.trialEndsAt).getTime() - Date.now() <
-                    3 * 24 * 60 * 60 * 1000
-                    ? 'Your trial ends soon! Upgrade now to keep growing your business with Sugary Pro.'
-                    : 'Enjoying your trial? Upgrade now to keep growing your business with Sugary Pro.'}
-                </p>
-                <div className="flex flex-col gap-2">
-                  <GradientButton onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_ANNUAL_PRICE_ID!)} className="w-full" size="lg">
-                    Upgrade Annual - $15/month
-                  </GradientButton>
-                  <GradientButton onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID!)} className="w-full" size="sm">
-                    Upgrade Monthly - $20/month
-                  </GradientButton>
+              {subscriptionStatus.subscriptionStatus === 'active' && (
+                <div className="bg-gradient-to-r from-slate-50/50 to-slate-50/50 dark:from-slate-950/30 dark:to-slate-950/30 border border-slate-200/50 dark:border-slate-800/50 rounded-xl p-4 sm:p-6 mb-4 sm:mb-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="font-bold text-pink-300 mb-1">Sugary Pro</h3>
+                      <p className="text-muted text-sm">
+                        {subscriptionStatus.currentPeriodEnd &&
+                          `Next billing: ${formatDate(subscriptionStatus.currentPeriodEnd)}`}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-pink-300 to-pink-400 bg-clip-text text-transparent">
+                        Pro
+                      </div>
+                      <div className="text-xs text-muted">Active subscription</div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {subscriptionStatus.hasActiveSubscription && (
-              <div className="space-y-4">
-                <GradientButton onClick={handleManageBilling} className="w-full" size="lg">
-                  Manage Billing & Subscription
-                </GradientButton>
-                <div className="text-center"></div>
-              </div>
-            )}
+              {(subscriptionStatus.subscriptionStatus === 'canceled' ||
+                subscriptionStatus.subscriptionStatus === 'none') && (
+                <div className="bg-gradient-to-r from-neutral-50/50 to-slate-50/50 dark:from-neutral-950/30 dark:to-slate-950/30 border border-neutral-200/50 dark:border-neutral-700/50 rounded-xl p-4 sm:p-6 mb-4 sm:mb-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="font-bold text-foreground mb-1">Free Plan</h3>
+                      <p className="text-muted text-sm">
+                        Want to grow your business faster? Upgrade to a Pro Plan
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-neutral-600 to-slate-600 bg-clip-text text-transparent">
+                        $0.00
+                      </div>
+                      <div className="text-xs text-muted">forever</div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="space-y-4">
+              {subscriptionStatus.subscriptionStatus === 'none' && subscriptionStatus.isNewUser && (
+                <div className="space-y-3">
+                  <GradientButton onClick={handleStartTrial} className="w-full" size="lg">
+                    🎉 Start 14-Day Free Trial
+                  </GradientButton>
+                  <div className="text-center">
+                    <p className="text-xs text-muted">
+                      No payment required • Cancel anytime during trial
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {subscriptionStatus.subscriptionStatus === 'none' &&
+                !subscriptionStatus.isNewUser && (
+                  <div>
+                    {subscriptionStatus.stripeCustomerId ? (
+                      <>
+                        <button
+                          onClick={handleManageBilling}
+                          className="group w-full bg-gradient-to-r from-primary to-secondary text-white px-6 py-3 sm:py-4 rounded-lg font-semibold text-sm sm:text-base hover:shadow-lg hover:scale-[1.02] transition-all duration-300 relative overflow-hidden"
+                        >
+                          <span className="relative z-10">Manage Billing</span>
+                          <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                        </button>
+                        <div className="text-center mt-2">
+                          <p className="text-xs text-muted">
+                            View billing history and payment methods
+                          </p>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="text-center">
+                        <p className="text-sm text-muted">
+                          You're currently on the free plan with no billing history.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+              {!subscriptionStatus.hasActiveSubscription &&
+                subscriptionStatus.subscriptionStatus !== 'none' && (
+                  <div>
+                    <button
+                      onClick={handleManageBilling}
+                      className="group w-full bg-gradient-to-r from-primary to-secondary text-white px-6 py-3 sm:py-4 rounded-lg font-semibold text-sm sm:text-base hover:shadow-lg hover:scale-[1.02] transition-all duration-300 relative overflow-hidden"
+                    >
+                      <span className="relative z-10">Manage Billing</span>
+                      <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                    </button>
+                    <div className="text-center mt-2">
+                      <p className="text-xs text-muted">View billing history and payment methods</p>
+                    </div>
+                  </div>
+                )}
+
+              {subscriptionStatus.subscriptionStatus === 'trialing' && (
+                <div className="text-center">
+                  <p className="text-sm text-muted mb-4">
+                    {subscriptionStatus.trialEndsAt &&
+                    new Date(subscriptionStatus.trialEndsAt).getTime() - Date.now() <
+                      3 * 24 * 60 * 60 * 1000
+                      ? 'Your trial ends soon! Upgrade now to keep growing your business with Sugary Pro.'
+                      : 'Enjoying your trial? Upgrade now to keep growing your business with Sugary Pro.'}
+                  </p>
+                  <div className="flex flex-col gap-2">
+                    <GradientButton
+                      onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_ANNUAL_PRICE_ID!)}
+                      className="w-full"
+                      size="lg"
+                    >
+                      Upgrade Annual - $15/month
+                    </GradientButton>
+                    <GradientButton
+                      onClick={() =>
+                        handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID!)
+                      }
+                      className="w-full"
+                      size="sm"
+                    >
+                      Upgrade Monthly - $20/month
+                    </GradientButton>
+                  </div>
+                </div>
+              )}
+
+              {subscriptionStatus.hasActiveSubscription && (
+                <div>
+                  <button
+                    onClick={handleManageBilling}
+                    className="group w-full bg-gradient-to-r from-primary to-secondary text-white px-6 py-4 sm:py-5 rounded-lg font-semibold text-base sm:text-lg hover:shadow-lg hover:scale-[1.02] transition-all duration-300 relative overflow-hidden"
+                  >
+                    <span className="relative z-10">Manage Billing</span>
+                    <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                  </button>
+                  <div className="text-center mt-2">
+                    <p className="text-xs text-muted">
+                      Update payment method, view invoices, or cancel subscription
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
