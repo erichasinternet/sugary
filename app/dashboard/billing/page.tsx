@@ -19,7 +19,9 @@ export default function BillingPage() {
         priceId,
         mode: 'subscription',
       });
-      window.location.href = url;
+      if (url) {
+        window.location.href = url;
+      }
     } catch (error) {
       console.error('Failed to create checkout session:', error);
     }
@@ -28,7 +30,9 @@ export default function BillingPage() {
   const handleManageBilling = async () => {
     try {
       const { url } = await createBillingPortalSession();
-      window.location.href = url;
+      if (url) {
+        window.location.href = url;
+      }
     } catch (error) {
       console.error('Failed to create billing portal session:', error);
     }

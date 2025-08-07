@@ -11,7 +11,8 @@ import { auth } from './auth';
 import { internal } from './_generated/api';
 
 // Initialize Stripe with the secret key
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+import Stripe from 'stripe';
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 // Action to create checkout session (external API call)
 export const createCheckoutSession = action({
@@ -400,7 +401,7 @@ export const fulfillWebhook = action({
     let event;
 
     try {
-      event = stripe.webhooks.constructEvent(payload, signature, process.env.STRIPE_WEBHOOK_SECRET);
+      event = stripe.webhooks.constructEvent(payload, signature, process.env.STRIPE_WEBHOOK_SECRET!);
     } catch (err: any) {
       console.log(`Webhook signature verification failed.`, err.message);
       return { success: false };
@@ -410,20 +411,22 @@ export const fulfillWebhook = action({
       switch (event.type) {
         case 'customer.subscription.created':
         case 'customer.subscription.updated':
+          const subscription = event.data.object as any;
           await ctx.runMutation(internal.stripe.updateSubscriptionFromWebhook, {
-            stripeSubscriptionId: event.data.object.id,
-            status: event.data.object.status,
-            currentPeriodEnd: event.data.object.current_period_end * 1000,
-            trialEnd: event.data.object.trial_end ? event.data.object.trial_end * 1000 : undefined,
-            cancelAtPeriodEnd: event.data.object.cancel_at_period_end,
+            stripeSubscriptionId: subscription.id,
+            status: subscription.status,
+            currentPeriodEnd: subscription.current_period_end * 1000,
+            trialEnd: subscription.trial_end ? subscription.trial_end * 1000 : undefined,
+            cancelAtPeriodEnd: subscription.cancel_at_period_end,
           });
           break;
 
         case 'customer.subscription.deleted':
+          const deletedSubscription = event.data.object as any;
           await ctx.runMutation(internal.stripe.updateSubscriptionFromWebhook, {
-            stripeSubscriptionId: event.data.object.id,
+            stripeSubscriptionId: deletedSubscription.id,
             status: 'canceled',
-            currentPeriodEnd: event.data.object.current_period_end * 1000,
+            currentPeriodEnd: deletedSubscription.current_period_end * 1000,
             trialEnd: undefined,
             cancelAtPeriodEnd: false,
           });
@@ -431,15 +434,15 @@ export const fulfillWebhook = action({
 
         case 'customer.subscription.trial_will_end':
           // Handle trial ending soon (3 days before)
-          console.log(`Trial ending soon for subscription ${event.data.object.id}`);
+          const trialSubscription = event.data.object as any;
+          console.log(`Trial ending soon for subscription ${trialSubscription.id}`);
           // This could trigger reminder emails
           break;
 
         case 'invoice.payment_succeeded':
-          if (event.data.object.subscription) {
-            const subscription = await stripe.subscriptions.retrieve(
-              event.data.object.subscription,
-            );
+          const invoice = event.data.object as any;
+          if (invoice.subscription) {
+            const subscription = await stripe.subscriptions.retrieve(invoice.subscription) as any;
             await ctx.runMutation(internal.stripe.updateSubscriptionFromWebhook, {
               stripeSubscriptionId: subscription.id,
               status: subscription.status,
@@ -451,10 +454,9 @@ export const fulfillWebhook = action({
           break;
 
         case 'invoice.payment_failed':
-          if (event.data.object.subscription) {
-            const subscription = await stripe.subscriptions.retrieve(
-              event.data.object.subscription,
-            );
+          const failedInvoice = event.data.object as any;
+          if (failedInvoice.subscription) {
+            const subscription = await stripe.subscriptions.retrieve(failedInvoice.subscription) as any;
             await ctx.runMutation(internal.stripe.updateSubscriptionFromWebhook, {
               stripeSubscriptionId: subscription.id,
               status: subscription.status,
