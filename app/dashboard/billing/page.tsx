@@ -150,9 +150,9 @@ export default function BillingPage() {
         )}
 
         {/* Plan Comparison */}
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
+        <div className="grid md:grid-cols-2 gap-12 mb-8">
           {/* Free Plan */}
-          <div className="glass-card rounded-2xl p-6 border-2 border-gray-200 dark:border-gray-700">
+          {/* <div className="glass-card rounded-2xl p-6 border-2 border-gray-200 dark:border-gray-700">
             <div className="text-center mb-6">
               <h3 className="text-xl font-bold text-foreground mb-2">Free Plan</h3>
               <div className="text-3xl font-bold text-foreground mb-1">$0</div>
@@ -185,7 +185,7 @@ export default function BillingPage() {
                 <span className="text-sm text-muted">Priority support</span>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Pro Monthly Plan */}
           <div className="glass-card rounded-2xl p-6 border-2 border-blue-200 dark:border-blue-700 relative overflow-hidden">
@@ -234,9 +234,9 @@ export default function BillingPage() {
           </div>
 
           {/* Pro Annual Plan */}
-          <div className="glass-card rounded-2xl p-6 border-2 border-gradient-to-r from-purple-500 to-pink-500 relative overflow-hidden">
+          <div className="glass-card rounded-2xl p-6 border-2 border-gradient-to-r from-pink-300 to-pink-400 relative overflow-hidden">
             <div className="absolute top-3 right-3">
-              <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs px-2 py-1 rounded-full font-medium">
+              <span className="bg-gradient-to-r from-pink-400/90 to-pink-500/90 text-white text-xs px-2 py-1 rounded-full font-medium">
                 Save 25%
               </span>
             </div>
@@ -244,7 +244,7 @@ export default function BillingPage() {
               <h3 className="text-xl font-bold text-pink-300 mb-2">Pro Annual</h3>
               <div className="text-3xl font-bold text-foreground mb-1">$15</div>
               <div className="text-sm text-muted">per month</div>
-              <div className="text-xs text-muted mt-1">Billed annually ($180/year)</div>
+              <div className="text-xs text-muted mt-1">billed annually ($180/year)</div>
             </div>
 
             <div className="space-y-3 mb-6">
