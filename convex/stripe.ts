@@ -199,7 +199,7 @@ export const autoCreateTrialSubscription = internalAction({
       // Create subscription with 14-day trial (no credit card required)
       const subscription: any = await stripe.subscriptions.create({
         customer: customer.id,
-        items: [{ price: process.env.STRIPE_PRICE_ID }],
+        items: [{ price: process.env.STRIPE_ANNUAL_PRICE_ID }],
         trial_period_days: 14,
         payment_behavior: 'allow_incomplete',
         payment_settings: {
@@ -269,7 +269,7 @@ export const createTrialSubscription = action({
       // Create subscription with 14-day trial (no credit card required)
       const subscription: any = await stripe.subscriptions.create({
         customer: customer.id,
-        items: [{ price: process.env.STRIPE_PRICE_ID }],
+        items: [{ price: process.env.STRIPE_ANNUAL_PRICE_ID }],
         trial_period_days: 14,
         payment_behavior: 'allow_incomplete',
         payment_settings: {

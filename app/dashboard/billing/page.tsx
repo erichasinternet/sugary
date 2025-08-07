@@ -13,10 +13,10 @@ export default function BillingPage() {
   const createBillingPortalSession = useAction(api.stripe.createBillingPortalSession);
   const createTrialSubscription = useAction(api.stripe.createTrialSubscription);
 
-  const handleUpgrade = async () => {
+  const handleUpgrade = async (priceId: string) => {
     try {
       const { url } = await createCheckoutSession({
-        priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID!,
+        priceId,
         mode: 'subscription',
       });
       window.location.href = url;
@@ -91,9 +91,9 @@ export default function BillingPage() {
                   </span>
                 </div>
                 {usageStats.features.limit !== Infinity && (
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                  <div className="w-full bg-gray-700 rounded-full h-2">
                     <div
-                      className="bg-purple-500 h-2 rounded-full transition-all"
+                      className="bg-pink-300 h-2 rounded-full transition-all"
                       style={{
                         width: `${Math.min((usageStats.features.used / usageStats.features.limit) * 100, 100)}%`,
                       }}
@@ -113,9 +113,9 @@ export default function BillingPage() {
                   </span>
                 </div>
                 {usageStats.totalSubscribers.limit !== Infinity && (
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                  <div className="w-full bg-gray-700 rounded-full h-2">
                     <div
-                      className="bg-blue-500 h-2 rounded-full transition-all"
+                      className="bg-pink-300 h-2 rounded-full transition-all"
                       style={{
                         width: `${Math.min((usageStats.totalSubscribers.used / usageStats.totalSubscribers.limit) * 100, 100)}%`,
                       }}
@@ -137,7 +137,7 @@ export default function BillingPage() {
                 {usageStats.subscriberUpdates.limit !== Infinity && (
                   <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                     <div
-                      className="bg-green-500 h-2 rounded-full transition-all"
+                      className="bg-pink-300 h-2 rounded-full transition-all"
                       style={{
                         width: `${Math.min((usageStats.subscriberUpdates.usedThisMonth / usageStats.subscriberUpdates.limit) * 100, 100)}%`,
                       }}
@@ -150,7 +150,7 @@ export default function BillingPage() {
         )}
 
         {/* Plan Comparison */}
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
           {/* Free Plan */}
           <div className="glass-card rounded-2xl p-6 border-2 border-gray-200 dark:border-gray-700">
             <div className="text-center mb-6">
@@ -186,21 +186,61 @@ export default function BillingPage() {
               </div>
             </div>
 
-            {subscriptionStatus?.subscriptionStatus === 'none' && (
-              <div className="text-center mt-4">
-                <div className="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-sm font-medium inline-block">
-                  Current Plan
-                </div>
+          </div>
+
+          {/* Pro Monthly Plan */}
+          <div className="glass-card rounded-2xl p-6 border-2 border-blue-200 dark:border-blue-700 relative overflow-hidden">
+            <div className="text-center mb-6">
+              <h3 className="text-xl font-bold text-blue-600 dark:text-blue-400 mb-2">Pro Monthly</h3>
+              <div className="text-3xl font-bold text-foreground mb-1">$20</div>
+              <div className="text-sm text-muted">per month</div>
+            </div>
+
+            <div className="space-y-3 mb-6">
+              <div className="flex items-center gap-3">
+                <IconCheck className="h-4 w-4 text-green-500 flex-shrink-0" />
+                <span className="text-sm font-medium">Unlimited features</span>
               </div>
+              <div className="flex items-center gap-3">
+                <IconCheck className="h-4 w-4 text-green-500 flex-shrink-0" />
+                <span className="text-sm font-medium">Unlimited subscribers</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <IconCheck className="h-4 w-4 text-green-500 flex-shrink-0" />
+                <span className="text-sm font-medium">Unlimited email campaigns</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <IconCheck className="h-4 w-4 text-green-500 flex-shrink-0" />
+                <span className="text-sm font-medium">Unlimited live chat</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <IconMail className="h-4 w-4 text-blue-500 flex-shrink-0" />
+                <span className="text-sm font-medium">Priority support</span>
+              </div>
+            </div>
+
+            {subscriptionStatus?.subscriptionStatus === 'none' && (
+              <GradientButton
+                onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID!)}
+                className="w-full"
+              >
+                Start Monthly Plan
+              </GradientButton>
             )}
           </div>
 
-          {/* Pro Plan */}
+          {/* Pro Annual Plan */}
           <div className="glass-card rounded-2xl p-6 border-2 border-gradient-to-r from-purple-500 to-pink-500 relative overflow-hidden">
+            <div className="absolute top-3 right-3">
+              <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs px-2 py-1 rounded-full font-medium">
+                Save 25%
+              </span>
+            </div>
             <div className="text-center mb-6">
-              <h3 className="text-xl font-bold text-pink-300 mb-2">Sugary Pro</h3>
-              <div className="text-3xl font-bold text-foreground mb-1">$9</div>
+              <h3 className="text-xl font-bold text-pink-300 mb-2">Pro Annual</h3>
+              <div className="text-3xl font-bold text-foreground mb-1">$15</div>
               <div className="text-sm text-muted">per month</div>
+              <div className="text-xs text-muted mt-1">Billed annually ($180/year)</div>
             </div>
 
             <div className="space-y-3 mb-6">
@@ -226,13 +266,13 @@ export default function BillingPage() {
               </div>
             </div>
 
-            {(subscriptionStatus?.subscriptionStatus === 'active' ||
-              subscriptionStatus?.subscriptionStatus === 'trialing') && (
-              <div className="text-center mt-4">
-                <div className="px-3 py-1 bg-pink-100  text-black rounded-full text-sm font-medium inline-block">
-                  Current Plan
-                </div>
-              </div>
+            {subscriptionStatus?.subscriptionStatus === 'none' && (
+              <GradientButton
+                onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_ANNUAL_PRICE_ID!)}
+                className="w-full"
+              >
+                Start Annual Plan
+              </GradientButton>
             )}
           </div>
         </div>
@@ -273,9 +313,9 @@ export default function BillingPage() {
                   </div>
                   <div className="text-right">
                     <div className="text-2xl font-bold text-green-800 dark:text-green-300">
-                      $9.00
+                      Pro Plan
                     </div>
-                    <div className="text-xs text-green-600 dark:text-green-400">per month</div>
+                    <div className="text-xs text-green-600 dark:text-green-400">Active subscription</div>
                   </div>
                 </div>
               </div>
@@ -318,14 +358,24 @@ export default function BillingPage() {
                     <span className="bg-background px-2 text-muted-foreground">or</span>
                   </div>
                 </div>
-                <GradientButton
-                  onClick={handleUpgrade}
-                  className="w-full"
-                  size="lg"
-                  variant="outline"
-                >
-                  Upgrade to Pro - $9/month
-                </GradientButton>
+                <div className="flex flex-col gap-2">
+                  <GradientButton
+                    onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_ANNUAL_PRICE_ID!)}
+                    className="w-full"
+                    size="lg"
+                    variant="outline"
+                  >
+                    Upgrade Annual - $15/month
+                  </GradientButton>
+                  <GradientButton
+                    onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID!)}
+                    className="w-full"
+                    size="sm"
+                    variant="outline"
+                  >
+                    Upgrade Monthly - $20/month
+                  </GradientButton>
+                </div>
               </div>
             )}
 
@@ -334,9 +384,14 @@ export default function BillingPage() {
                 <div className="text-center mb-4">
                   <p className="text-sm text-muted">Ready to get back to unlimited features?</p>
                 </div>
-                <GradientButton onClick={handleUpgrade} className="w-full" size="lg">
-                  Upgrade to Pro - $9/month
-                </GradientButton>
+                <div className="flex flex-col gap-2">
+                  <GradientButton onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_ANNUAL_PRICE_ID!)} className="w-full" size="lg">
+                    Upgrade Annual - $15/month
+                  </GradientButton>
+                  <GradientButton onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID!)} className="w-full" size="sm">
+                    Upgrade Monthly - $20/month
+                  </GradientButton>
+                </div>
                 <div className="text-center">
                   <p className="text-xs text-muted">Cancel anytime • 30-day money-back guarantee</p>
                 </div>
@@ -345,9 +400,14 @@ export default function BillingPage() {
 
             {!subscriptionStatus.hasActiveSubscription &&
               subscriptionStatus.subscriptionStatus !== 'none' && (
-                <GradientButton onClick={handleUpgrade} className="w-full" size="lg">
-                  Upgrade to Pro - $9/month
-                </GradientButton>
+                <div className="flex flex-col gap-2">
+                  <GradientButton onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_ANNUAL_PRICE_ID!)} className="w-full" size="lg">
+                    Upgrade Annual - $15/month
+                  </GradientButton>
+                  <GradientButton onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID!)} className="w-full" size="sm">
+                    Upgrade Monthly - $20/month
+                  </GradientButton>
+                </div>
               )}
 
             {subscriptionStatus.subscriptionStatus === 'trialing' && (
@@ -359,9 +419,14 @@ export default function BillingPage() {
                     ? 'Your trial ends soon! Upgrade now to keep growing your business with Sugary Pro.'
                     : 'Enjoying your trial? Upgrade now to keep growing your business with Sugary Pro.'}
                 </p>
-                <GradientButton onClick={handleUpgrade} className="w-full" size="lg">
-                  Upgrade to Pro - $9/month
-                </GradientButton>
+                <div className="flex flex-col gap-2">
+                  <GradientButton onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_ANNUAL_PRICE_ID!)} className="w-full" size="lg">
+                    Upgrade Annual - $15/month
+                  </GradientButton>
+                  <GradientButton onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID!)} className="w-full" size="sm">
+                    Upgrade Monthly - $20/month
+                  </GradientButton>
+                </div>
               </div>
             )}
 

@@ -47,15 +47,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   }, [subscriptionStatus, checkPaymentMethod]);
 
   const handleUpgrade = async () => {
-    try {
-      const { url } = await createCheckoutSession({
-        priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID!,
-        mode: 'subscription',
-      });
-      window.location.href = url;
-    } catch (error) {
-      console.error('Failed to create checkout session:', error);
-    }
+    // Redirect to billing page for plan selection
+    window.location.href = '/dashboard/billing';
   };
 
   const data = {
