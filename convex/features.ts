@@ -2,6 +2,7 @@ import { v } from 'convex/values';
 import { internal } from './_generated/api';
 import { mutation, query } from './_generated/server';
 import { auth } from './auth';
+import { getPlanFromSubscriptionStatus, canCreateFeature, canSendSubscriberUpdate, PLAN_LIMITS } from '../lib/plans';
 
 export const getMyFeatures = query({
   args: {},
@@ -43,6 +44,87 @@ export const getMyFeatures = query({
   },
 });
 
+export const getUsageStats = query({
+  args: {},
+  handler: async (ctx) => {
+    const userId = await auth.getUserId(ctx);
+    if (!userId) return null;
+
+    // Get user's company
+    const company = await ctx.db
+      .query('companies')
+      .withIndex('by_owner', (q) => q.eq('ownerId', userId))
+      .first();
+
+    if (!company) return null;
+
+    // Get subscription status
+    const subscription = await ctx.db
+      .query('subscriptions')
+      .withIndex('by_user', (q) => q.eq('userId', userId))
+      .unique();
+    
+    const plan = getPlanFromSubscriptionStatus(subscription?.subscriptionStatus || null);
+
+    // Get all features for the company
+    const features = await ctx.db
+      .query('features')
+      .withIndex('by_company', (q) => q.eq('companyId', company._id))
+      .collect();
+
+    const featureCount = features.length;
+
+    // Count total subscribers across all features
+    let totalSubscribers = 0;
+    for (const feature of features) {
+      const subscriberCount = await ctx.db
+        .query('subscribers')
+        .withIndex('by_feature', (q) => q.eq('featureId', feature._id))
+        .collect()
+        .then((subs) => subs.length);
+      totalSubscribers += subscriberCount;
+    }
+
+    // Count total subscriber updates sent across all features
+    let totalSubscriberUpdates = 0;
+    let subscriberUpdatesThisMonth = 0;
+    const startOfMonth = new Date();
+    startOfMonth.setDate(1);
+    startOfMonth.setHours(0, 0, 0, 0);
+    const startOfMonthTimestamp = startOfMonth.getTime();
+
+    for (const feature of features) {
+      const updates = await ctx.db
+        .query('updates')
+        .withIndex('by_feature', (q) => q.eq('featureId', feature._id))
+        .collect();
+      
+      totalSubscriberUpdates += updates.length;
+      
+      // Count subscriber updates sent this month
+      const monthlyUpdates = updates.filter(update => update.sentAt >= startOfMonthTimestamp);
+      subscriberUpdatesThisMonth += monthlyUpdates.length;
+    }
+
+    return {
+      plan,
+      features: {
+        used: featureCount,
+        limit: PLAN_LIMITS[plan].maxFeatures,
+      },
+      totalSubscribers: {
+        used: totalSubscribers,
+        limit: PLAN_LIMITS[plan].maxTotalSubscribers,
+      },
+      totalSubscriberUpdates,
+      subscriberUpdates: {
+        usedThisMonth: subscriberUpdatesThisMonth,
+        limit: PLAN_LIMITS[plan].maxSubscriberUpdatesPerMonth,
+      },
+    };
+  },
+});
+
 export const createFeature = mutation({
   args: {
     title: v.string(),
@@ -71,6 +153,24 @@ export const createFeature = mutation({
 
     if (existing) {
       throw new Error('Feature slug already exists for this company');
+    }
+
+    // Check plan limits
+    const subscription = await ctx.db
+      .query('subscriptions')
+      .withIndex('by_user', (q) => q.eq('userId', userId))
+      .unique();
+    
+    const plan = getPlanFromSubscriptionStatus(subscription?.subscriptionStatus || null);
+    
+    // Count existing features
+    const existingFeatures = await ctx.db
+      .query('features')
+      .withIndex('by_company', (q) => q.eq('companyId', company._id))
+      .collect();
+
+    if (!canCreateFeature(existingFeatures.length, plan)) {
+      throw new Error(`Feature limit reached. Free plan allows up to 3 features. Upgrade to Pro for unlimited features.`);
     }
 
     const now = Date.now();
@@ -191,6 +291,41 @@ export const sendFeatureUpdate = mutation({
     const company = await ctx.db.get(feature.companyId);
     if (!company || company.ownerId !== userId) {
       throw new Error('Not authorized to update this feature');
+    }
+
+    // Check subscriber update limits for free plan users
+    const subscription = await ctx.db
+      .query('subscriptions')
+      .withIndex('by_user', (q) => q.eq('userId', userId))
+      .unique();
+    
+    const plan = getPlanFromSubscriptionStatus(subscription?.subscriptionStatus || null);
+    
+    if (plan === 'free') {
+      // Count subscriber updates sent this month across all user's features
+      const startOfMonth = new Date();
+      startOfMonth.setDate(1);
+      startOfMonth.setHours(0, 0, 0, 0);
+      const startOfMonthTimestamp = startOfMonth.getTime();
+
+      const userFeatures = await ctx.db
+        .query('features')
+        .withIndex('by_company', (q) => q.eq('companyId', company._id))
+        .collect();
+
+      let subscriberUpdatesThisMonth = 0;
+      for (const userFeature of userFeatures) {
+        const monthlySubscriberUpdates = await ctx.db
+          .query('updates')
+          .withIndex('by_feature', (q) => q.eq('featureId', userFeature._id))
+          .filter((q) => q.gte(q.field('sentAt'), startOfMonthTimestamp))
+          .collect();
+        subscriberUpdatesThisMonth += monthlySubscriberUpdates.length;
+      }
+
+      if (!canSendSubscriberUpdate(subscriberUpdatesThisMonth, plan)) {
+        throw new Error('Email campaign limit reached. Free plan allows up to 5 email campaigns per month. Upgrade to Pro for unlimited email campaigns.');
+      }
     }
 
     // Get confirmed subscribers

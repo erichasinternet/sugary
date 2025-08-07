@@ -1,6 +1,7 @@
 import { v } from 'convex/values';
-import { mutation, query } from './_generated/server';
+import { mutation, query, action } from './_generated/server';
 import { auth } from './auth';
+import { internal } from './_generated/api';
 
 export const getCurrentUser = query({
   args: {},
@@ -27,5 +28,19 @@ export const createUserProfile = mutation({
     await ctx.db.patch(userId, { name });
 
     return userId;
+  },
+});
+
+// Action to handle post-signup operations including trial creation
+export const handlePostSignup = action({
+  args: { userId: v.id("users") },
+  handler: async (ctx, { userId }) => {
+    try {
+      // Automatically create trial subscription for new user
+      await ctx.runAction(internal.stripe.autoCreateTrialSubscription, { userId });
+    } catch (error) {
+      console.error("Failed to create trial during signup:", error);
+      // Don't block signup if trial creation fails
+    }
   },
 });

@@ -1,6 +1,6 @@
 'use client';
 
-import { useMutation, useQuery } from 'convex/react';
+import { useMutation, useQuery, useAction } from 'convex/react';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { api } from '@/convex/_generated/api';
@@ -31,7 +31,9 @@ export default function Onboarding() {
 
     try {
       await createCompany({ name, slug });
+      
       // Redirect to feature creation to get immediate value
+      // (Trial subscription is automatically created during signup)
       router.push('/dashboard/features/new?first=true');
     } catch (error) {
       setError(error instanceof Error ? error.message : 'An error occurred');

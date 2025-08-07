@@ -61,6 +61,33 @@ const schema = defineSchema({
   })
     .index('by_feature', ['featureId'])
     .index('by_feature_and_time', ['featureId', 'createdAt']),
+
+  subscriptions: defineTable({
+    userId: v.id('users'),
+    stripeCustomerId: v.optional(v.string()),
+    stripeSubscriptionId: v.optional(v.string()),
+    subscriptionStatus: v.union(
+      v.literal('trialing'),
+      v.literal('active'),
+      v.literal('canceled'),
+      v.literal('incomplete'),
+      v.literal('incomplete_expired'),
+      v.literal('past_due'),
+      v.literal('unpaid')
+    ),
+    trialEndsAt: v.optional(v.number()),
+    trialStartedAt: v.optional(v.number()),
+    currentPeriodEnd: v.optional(v.number()),
+    cancelAtPeriodEnd: v.optional(v.boolean()),
+    paymentMethodRequired: v.optional(v.boolean()),
+    trialRemindersSent: v.optional(v.array(v.string())), // Array of reminder types sent
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index('by_user', ['userId'])
+    .index('by_stripe_customer', ['stripeCustomerId'])
+    .index('by_stripe_subscription', ['stripeSubscriptionId'])
+    .index('by_trial_end', ['trialEndsAt']),
 });
 
 export default schema;
