@@ -201,7 +201,7 @@ export function ChartAreaInteractive() {
             />
             <Area
               dataKey="signups"
-              type="natural"
+              type="monotone"
               fill="url(#fillSignups)"
               stroke="var(--color-signups)"
             />

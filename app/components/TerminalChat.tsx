@@ -13,6 +13,7 @@ interface TerminalChatProps {
 export default function TerminalChat({ featureId, className = '' }: TerminalChatProps) {
   const [input, setInput] = useState('');
   const [name, setName] = useState('');
+  const [hasJoined, setHasJoined] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -132,7 +133,7 @@ export default function TerminalChat({ featureId, className = '' }: TerminalChat
       {/* Input */}
       <div className="border-t border-primary/10 p-4 bg-gradient-to-r from-primary/5 to-secondary/5 rounded-b-2xl">
         <form onSubmit={handleSubmit} className="space-y-3">
-          {!name ? (
+          {!hasJoined ? (
             <div className="flex gap-2">
               <input
                 type="text"
@@ -145,7 +146,11 @@ export default function TerminalChat({ featureId, className = '' }: TerminalChat
               />
               <button
                 type="button"
-                onClick={() => name.trim() && setName(name.trim())}
+                onClick={() => {
+                  if (name.trim()) {
+                    setHasJoined(true);
+                  }
+                }}
                 disabled={!name.trim()}
                 className="px-4 py-2 bg-gradient-to-r from-primary to-secondary text-white font-mono text-sm rounded-lg font-medium disabled:opacity-50 hover:shadow-md transition-all duration-200"
               >
@@ -180,7 +185,7 @@ export default function TerminalChat({ featureId, className = '' }: TerminalChat
 
           <div className="flex justify-between font-mono text-xs text-muted">
             <span>Messages are public • Be respectful</span>
-            {name && <span>{input.length}/200</span>}
+            {hasJoined && <span>{input.length}/200</span>}
           </div>
         </form>
       </div>
