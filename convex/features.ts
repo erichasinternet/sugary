@@ -324,7 +324,7 @@ export const sendFeatureUpdate = mutation({
       }
 
       if (!canSendSubscriberUpdate(subscriberUpdatesThisMonth, plan)) {
-        throw new Error('Subscriber update limit reached. Free plan allows up to 5 subscriber updates per month. Upgrade to Pro for unlimited subscriber updates.');
+        throw new Error('Email campaign limit reached. Free plan allows up to 5 email campaigns per month. Upgrade to Pro for unlimited email campaigns.');
       }
     }
 

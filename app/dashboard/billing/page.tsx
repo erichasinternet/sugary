@@ -126,7 +126,7 @@ export default function BillingPage() {
 
               <div>
                 <div className="flex justify-between mb-2">
-                  <span className="font-medium">Subscriber Updates This Month</span>
+                  <span className="font-medium">Email Campaigns This Month</span>
                   <span className="font-bold">
                     {usageStats.subscriberUpdates.usedThisMonth} /{' '}
                     {usageStats.subscriberUpdates.limit === Infinity
@@ -173,7 +173,7 @@ export default function BillingPage() {
               <div className="flex items-center gap-3">
                 <IconCheck className="h-4 w-4 text-green-500 flex-shrink-0" />
                 <span className="text-sm">
-                  Up to {PLAN_LIMITS.free.maxSubscriberUpdatesPerMonth} subscriber updates per month
+                  Up to {PLAN_LIMITS.free.maxSubscriberUpdatesPerMonth} email campaigns per month
                 </span>
               </div>
               <div className="flex items-center gap-3">
@@ -214,7 +214,7 @@ export default function BillingPage() {
               </div>
               <div className="flex items-center gap-3">
                 <IconCheck className="h-4 w-4 text-green-500 flex-shrink-0" />
-                <span className="text-sm font-medium">Unlimited subscriber updates</span>
+                <span className="text-sm font-medium">Unlimited email campaigns</span>
               </div>
               <div className="flex items-center gap-3">
                 <IconCheck className="h-4 w-4 text-green-500 flex-shrink-0" />
