@@ -107,7 +107,9 @@ export default function BillingPage() {
                   <span className="font-medium">Total Subscribers</span>
                   <span className="font-bold">
                     {usageStats.totalSubscribers.used} /{' '}
-                    {usageStats.totalSubscribers.limit === Infinity ? '∞' : usageStats.totalSubscribers.limit}
+                    {usageStats.totalSubscribers.limit === Infinity
+                      ? '∞'
+                      : usageStats.totalSubscribers.limit}
                   </span>
                 </div>
                 {usageStats.totalSubscribers.limit !== Infinity && (
@@ -240,20 +242,18 @@ export default function BillingPage() {
             <h2 className="text-xl font-semibold text-foreground mb-4">Current Status</h2>
 
             {subscriptionStatus.subscriptionStatus === 'trialing' && (
-              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4 mb-4">
+              <div className="bg-pink/10 border border-pink-200 rounded-xl p-4 mb-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-semibold text-blue-800 dark:text-blue-300">
-                      🎉 Free Trial Active
-                    </h3>
-                    <p className="text-blue-600 dark:text-blue-400 text-sm">
+                    <h3 className="font-semibold text-pink-300">Free Trial Active</h3>
+                    <p className="text-grey text-sm">
                       {subscriptionStatus.trialEndsAt &&
                         `Your trial ends on ${formatDate(subscriptionStatus.trialEndsAt)}`}
                     </p>
                   </div>
                   <div className="text-right">
-                    <div className="text-2xl font-bold text-blue-800 dark:text-blue-300">$0.00</div>
-                    <div className="text-xs text-blue-600 dark:text-blue-400">14-day trial</div>
+                    <div className="text-2xl font-bold text-grey">$0.00</div>
+                    <div className="text-xs text-grey">14-day trial</div>
                   </div>
                 </div>
               </div>
