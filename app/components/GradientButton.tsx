@@ -38,7 +38,7 @@ export default function GradientButton({
       className={`
         ${variantClasses[variant]}
         ${sizeClasses[size]}
-        font-semibold rounded-xl
+        font-semibold rounded-xl cursor-pointer
         ${variant === 'secondary' ? 'hover:shadow-lg hover:scale-[1.02] transition-all duration-300' : ''}
         disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
         ${className}

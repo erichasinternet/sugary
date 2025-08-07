@@ -379,7 +379,7 @@ export default function BillingPage() {
                       <>
                         <button
                           onClick={handleManageBilling}
-                          className="group w-full bg-gradient-to-r from-primary to-secondary text-white px-6 py-3 sm:py-4 rounded-lg font-semibold text-sm sm:text-base hover:shadow-lg hover:scale-[1.02] transition-all duration-300 relative overflow-hidden"
+                          className="group w-full bg-gradient-to-r from-primary to-secondary text-white px-6 py-3 sm:py-4 rounded-lg font-semibold text-sm sm:text-base hover:shadow-lg hover:scale-[1.02] transition-all duration-300 relative overflow-hidden cursor-pointer"
                         >
                           <span className="relative z-10">Manage Billing</span>
                           <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
@@ -405,7 +405,7 @@ export default function BillingPage() {
                   <div>
                     <button
                       onClick={handleManageBilling}
-                      className="group w-full bg-gradient-to-r from-primary to-secondary text-white px-6 py-3 sm:py-4 rounded-lg font-semibold text-sm sm:text-base hover:shadow-lg hover:scale-[1.02] transition-all duration-300 relative overflow-hidden"
+                      className="group w-full bg-gradient-to-r from-primary to-secondary text-white px-6 py-3 sm:py-4 rounded-lg font-semibold text-sm sm:text-base hover:shadow-lg hover:scale-[1.02] transition-all duration-300 relative overflow-hidden cursor-pointer"
                     >
                       <span className="relative z-10">Manage Billing</span>
                       <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
@@ -432,7 +432,7 @@ export default function BillingPage() {
                 <div>
                   <button
                     onClick={handleManageBilling}
-                    className="group w-full bg-gradient-to-r from-primary to-secondary text-white px-6 py-4 sm:py-5 rounded-lg font-semibold text-base sm:text-lg hover:shadow-lg hover:scale-[1.02] transition-all duration-300 relative overflow-hidden"
+                    className="group w-full bg-gradient-to-r from-primary to-secondary text-white px-6 py-4 sm:py-5 rounded-lg font-semibold text-base sm:text-lg hover:shadow-lg hover:scale-[1.02] transition-all duration-300 relative overflow-hidden cursor-pointer"
                   >
                     <span className="relative z-10">Manage Billing</span>
                     <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>

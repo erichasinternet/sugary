@@ -137,7 +137,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     </p>
                     <button
                       onClick={handleUpgrade}
-                      className="w-full bg-pink-500/20 backdrop-blur text-white text-xs font-medium py-2 px-3 rounded-lg hover:bg-pink-500/30 transition-all border border-white/20"
+                      className="w-full bg-pink-500/20 backdrop-blur text-white text-xs font-medium py-2 px-3 rounded-lg hover:bg-pink-500/30 transition-all border border-white/20 cursor-pointer"
                     >
                       Add Payment
                     </button>
@@ -157,7 +157,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     <button
                       onClick={handleUpgrade}
                       style={{ background: 'var(--gradient-hero)' }}
-                      className="w-full text-white text-xs font-medium py-2 px-3 rounded-lg hover:opacity-90 transition-all"
+                      className="w-full text-white text-xs font-medium py-2 px-3 rounded-lg hover:opacity-90 transition-all cursor-pointer"
                     >
                       Upgrade to Pro
                     </button>
@@ -178,7 +178,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <button
                     onClick={handleUpgrade}
                     style={{ background: 'var(--gradient-hero)' }}
-                    className="w-full text-white text-xs font-medium py-2 px-3 rounded-lg hover:opacity-90 transition-all"
+                    className="w-full text-white text-xs font-medium py-2 px-3 rounded-lg hover:opacity-90 transition-all cursor-pointer"
                   >
                     Upgrade to Pro
                   </button>
