@@ -229,11 +229,7 @@ export default function BillingPage() {
                   onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID!)}
                   className="w-full"
                 >
-                  {subscriptionStatus?.subscriptionStatus === 'canceled'
-                    ? 'Resume Pro'
-                    : subscriptionStatus?.subscriptionStatus === 'trialing'
-                      ? 'Continue Pro'
-                      : 'Go Pro Monthly'}
+                  Subscribe
                 </GradientButton>
               )}
             </div>
@@ -284,11 +280,7 @@ export default function BillingPage() {
                   onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_ANNUAL_PRICE_ID!)}
                   className="w-full"
                 >
-                  {subscriptionStatus?.subscriptionStatus === 'canceled'
-                    ? 'Resume Pro'
-                    : subscriptionStatus?.subscriptionStatus === 'trialing'
-                      ? 'Continue Pro'
-                      : 'Go Pro Yearly'}
+                  Subscribe
                 </GradientButton>
               )}
             </div>
@@ -371,9 +363,7 @@ export default function BillingPage() {
                     🎉 Start 14-Day Free Trial
                   </GradientButton>
                   <div className="text-center">
-                    <p className="text-xs text-muted">
-                      No credit card required • 14 days free
-                    </p>
+                    <p className="text-xs text-muted">No credit card required • 14 days free</p>
                   </div>
                 </div>
               )}
