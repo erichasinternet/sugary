@@ -364,7 +364,7 @@ export default function BillingPage() {
               {subscriptionStatus.subscriptionStatus === 'none' && subscriptionStatus.isNewUser && (
                 <div className="space-y-3">
                   <GradientButton onClick={handleStartTrial} className="w-full" size="lg">
-                    🎉 Start 14-Day Free Trial
+                    Start 14-Day Free Trial
                   </GradientButton>
                   <div className="text-center">
                     <p className="text-xs text-muted">No credit card required • 14 days free</p>
