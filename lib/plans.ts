@@ -1,7 +1,7 @@
 // Plan limits and features configuration
 export const PLAN_LIMITS = {
   free: {
-    maxFeatures: 3,
+    maxFeatures: 15,
     maxSubscribersPerFeature: 50,
     maxTotalSubscribers: 50,
     maxSubscriberUpdatesPerMonth: 5,
