@@ -150,7 +150,7 @@ export default function BillingPage() {
         )}
 
         {/* Plan Comparison */}
-        <div className="grid md:grid-cols-2 gap-12 mb-8">
+        <div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-8 items-stretch">
           {/* Free Plan */}
           {/* <div className="glass-card rounded-2xl p-6 border-2 border-gray-200 dark:border-gray-700">
             <div className="text-center mb-6">
@@ -188,16 +188,17 @@ export default function BillingPage() {
           </div> */}
 
           {/* Pro Monthly Plan */}
-          <div className="glass-card rounded-2xl p-6 border-2 border-blue-200 dark:border-blue-700 relative overflow-hidden">
-            <div className="text-center mb-6">
-              <h3 className="text-xl font-bold text-blue-600 dark:text-blue-400 mb-2">
+          <div className="glass-card rounded-2xl p-6 border-2 relative overflow-hidden flex flex-col h-full">
+            <div className="text-center mb-6 h-24 flex flex-col justify-center">
+              <h3 className="text-xl font-bold text-pink-300/70 dark:text-pink-300/70 mb-2">
                 Pro Monthly
               </h3>
               <div className="text-3xl font-bold text-foreground mb-1">$20</div>
               <div className="text-sm text-muted">per month</div>
+              <div className="text-xs text-muted mt-1 invisible">placeholder</div>
             </div>
 
-            <div className="space-y-3 mb-6">
+            <div className="space-y-3 mb-6 flex-grow">
               <div className="flex items-center gap-3">
                 <IconCheck className="h-4 w-4 text-green-500 flex-shrink-0" />
                 <span className="text-sm font-medium">Unlimited features</span>
@@ -215,39 +216,44 @@ export default function BillingPage() {
                 <span className="text-sm font-medium">Unlimited live chat</span>
               </div>
               <div className="flex items-center gap-3">
-                <IconMail className="h-4 w-4 text-blue-500 flex-shrink-0" />
+                <IconMail className="h-4 w-4 text-pink-300 flex-shrink-0" />
                 <span className="text-sm font-medium">Priority support</span>
               </div>
             </div>
 
-            {(subscriptionStatus?.subscriptionStatus === 'none' ||
-              subscriptionStatus?.subscriptionStatus === 'canceled') && (
-              <GradientButton
-                onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID!)}
-                className="w-full"
-              >
-                {subscriptionStatus?.subscriptionStatus === 'canceled'
-                  ? 'Restart Monthly Plan'
-                  : 'Start Monthly Plan'}
-              </GradientButton>
-            )}
+            <div className="mt-auto">
+              {(subscriptionStatus?.subscriptionStatus === 'none' ||
+                subscriptionStatus?.subscriptionStatus === 'canceled' ||
+                subscriptionStatus?.subscriptionStatus === 'trialing') && (
+                <GradientButton
+                  onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID!)}
+                  className="w-full"
+                >
+                  {subscriptionStatus?.subscriptionStatus === 'canceled'
+                    ? 'Resume Pro'
+                    : subscriptionStatus?.subscriptionStatus === 'trialing'
+                      ? 'Continue Pro'
+                      : 'Go Pro Monthly'}
+                </GradientButton>
+              )}
+            </div>
           </div>
 
           {/* Pro Annual Plan */}
-          <div className="glass-card rounded-2xl p-6 border-2 border-gradient-to-r from-pink-300 to-pink-400 relative overflow-hidden">
+          <div className="glass-card rounded-2xl p-6 border-2 border-gradient-to-r from-pink-300 to-pink-400 relative overflow-hidden flex flex-col h-full">
             <div className="absolute top-3 right-3">
               <span className="bg-gradient-to-r from-pink-400/90 to-pink-500/90 text-white text-xs px-2 py-1 rounded-full font-medium">
                 Save 25%
               </span>
             </div>
-            <div className="text-center mb-6">
+            <div className="text-center mb-6 h-24 flex flex-col justify-center">
               <h3 className="text-xl font-bold text-pink-300 mb-2">Pro Annual</h3>
               <div className="text-3xl font-bold text-foreground mb-1">$15</div>
               <div className="text-sm text-muted">per month</div>
               <div className="text-xs text-muted mt-1">billed annually ($180/year)</div>
             </div>
 
-            <div className="space-y-3 mb-6">
+            <div className="space-y-3 mb-6 flex-grow">
               <div className="flex items-center gap-3">
                 <IconCheck className="h-4 w-4 text-green-500 flex-shrink-0" />
                 <span className="text-sm font-medium">Unlimited features</span>
@@ -265,22 +271,27 @@ export default function BillingPage() {
                 <span className="text-sm font-medium">Unlimited live chat</span>
               </div>
               <div className="flex items-center gap-3">
-                <IconMail className="h-4 w-4 text-purple-500 flex-shrink-0" />
+                <IconMail className="h-4 w-4 text-pink-300 flex-shrink-0" />
                 <span className="text-sm font-medium">Priority support</span>
               </div>
             </div>
 
-            {(subscriptionStatus?.subscriptionStatus === 'none' ||
-              subscriptionStatus?.subscriptionStatus === 'canceled') && (
-              <GradientButton
-                onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_ANNUAL_PRICE_ID!)}
-                className="w-full"
-              >
-                {subscriptionStatus?.subscriptionStatus === 'canceled'
-                  ? 'Restart Annual Plan'
-                  : 'Start Annual Plan'}
-              </GradientButton>
-            )}
+            <div className="mt-auto">
+              {(subscriptionStatus?.subscriptionStatus === 'none' ||
+                subscriptionStatus?.subscriptionStatus === 'canceled' ||
+                subscriptionStatus?.subscriptionStatus === 'trialing') && (
+                <GradientButton
+                  onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_ANNUAL_PRICE_ID!)}
+                  className="w-full"
+                >
+                  {subscriptionStatus?.subscriptionStatus === 'canceled'
+                    ? 'Resume Pro'
+                    : subscriptionStatus?.subscriptionStatus === 'trialing'
+                      ? 'Continue Pro'
+                      : 'Go Pro Yearly'}
+                </GradientButton>
+              )}
+            </div>
           </div>
         </div>
 
@@ -296,9 +307,7 @@ export default function BillingPage() {
                 <div className=" border border-pink-200/50 dark:border-pink-200/50 rounded-xl p-4 sm:p-6 mb-4 sm:mb-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="font-bold text-pink-300 mb-1">
-                        Pro Trial Active
-                      </h3>
+                      <h3 className="font-bold text-pink-300 mb-1">Pro Trial Active</h3>
                       <p className="text-muted text-sm">
                         {subscriptionStatus.trialEndsAt &&
                           `Your trial ends on ${formatDate(subscriptionStatus.trialEndsAt)}`}
@@ -363,7 +372,7 @@ export default function BillingPage() {
                   </GradientButton>
                   <div className="text-center">
                     <p className="text-xs text-muted">
-                      No payment required • Cancel anytime during trial
+                      No credit card required • 14 days free
                     </p>
                   </div>
                 </div>
@@ -422,24 +431,6 @@ export default function BillingPage() {
                       ? 'Your trial ends soon! Upgrade now to keep growing your business with Sugary Pro.'
                       : 'Enjoying your trial? Upgrade now to keep growing your business with Sugary Pro.'}
                   </p>
-                  <div className="flex flex-col gap-2">
-                    <GradientButton
-                      onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_ANNUAL_PRICE_ID!)}
-                      className="w-full"
-                      size="lg"
-                    >
-                      Upgrade Annual - $15/month
-                    </GradientButton>
-                    <GradientButton
-                      onClick={() =>
-                        handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID!)
-                      }
-                      className="w-full"
-                      size="sm"
-                    >
-                      Upgrade Monthly - $20/month
-                    </GradientButton>
-                  </div>
                 </div>
               )}
 
