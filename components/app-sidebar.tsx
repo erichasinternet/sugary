@@ -152,7 +152,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       <span className="text-sm font-semibold text-foreground">Free Plan</span>
                     </div>
                     <p className="text-xs text-muted mb-3">
-                      Up to 3 features • 50 subscribers per feature
+                      Up to 15 features • 50 total subscribers
                     </p>
                     <button
                       onClick={handleUpgrade}
