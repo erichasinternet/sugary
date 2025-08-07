@@ -1,8 +1,14 @@
-import { v } from "convex/values";
-import { action, internalAction, internalMutation, internalQuery, mutation, query } from "./_generated/server";
-import { ConvexError } from "convex/values";
-import { auth } from "./auth";
-import { internal } from "./_generated/api";
+import { v } from 'convex/values';
+import {
+  action,
+  internalAction,
+  internalMutation,
+  internalQuery,
+  query,
+} from './_generated/server';
+import { ConvexError } from 'convex/values';
+import { auth } from './auth';
+import { internal } from './_generated/api';
 
 // Initialize Stripe with the secret key
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
@@ -11,18 +17,18 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 export const createCheckoutSession = action({
   args: {
     priceId: v.string(),
-    mode: v.union(v.literal("subscription"), v.literal("payment")),
+    mode: v.union(v.literal('subscription'), v.literal('payment')),
     trialPeriodDays: v.optional(v.number()),
   },
   handler: async (ctx, { priceId, mode, trialPeriodDays }) => {
     const userId = await auth.getUserId(ctx);
     if (!userId) {
-      throw new ConvexError("Not authenticated");
+      throw new ConvexError('Not authenticated');
     }
 
     const user = await ctx.runQuery(internal.stripe.getUser, { userId });
     if (!user) {
-      throw new ConvexError("User not found");
+      throw new ConvexError('User not found');
     }
 
     try {
@@ -42,7 +48,7 @@ export const createCheckoutSession = action({
         },
       };
 
-      if (mode === "subscription" && trialPeriodDays) {
+      if (mode === 'subscription' && trialPeriodDays) {
         sessionConfig.subscription_data = {
           trial_period_days: trialPeriodDays,
         };
@@ -52,8 +58,8 @@ export const createCheckoutSession = action({
 
       return { url: session.url };
     } catch (error) {
-      console.error("Stripe checkout session creation failed:", error);
-      throw new ConvexError("Failed to create checkout session");
+      console.error('Stripe checkout session creation failed:', error);
+      throw new ConvexError('Failed to create checkout session');
     }
   },
 });
@@ -73,14 +79,14 @@ export const getSubscriptionStatus = query({
     }
 
     const subscription = await ctx.db
-      .query("subscriptions")
-      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .query('subscriptions')
+      .withIndex('by_user', (q) => q.eq('userId', userId))
       .unique();
 
     if (!subscription) {
       return {
         hasActiveSubscription: false,
-        subscriptionStatus: "none",
+        subscriptionStatus: 'none',
         trialEndsAt: null,
         isNewUser: true, // Users without subscriptions are considered new
         hasPaymentMethod: false,
@@ -90,11 +96,12 @@ export const getSubscriptionStatus = query({
     // Check if trial has expired and should be downgraded
     const now = Date.now();
     const trialExpired = subscription.trialEndsAt && now > subscription.trialEndsAt;
-    const shouldBeDowngraded = subscription.subscriptionStatus === "trialing" && trialExpired;
+    const shouldBeDowngraded = subscription.subscriptionStatus === 'trialing' && trialExpired;
 
     return {
-      hasActiveSubscription: ["active", "trialing"].includes(subscription.subscriptionStatus) && !shouldBeDowngraded,
-      subscriptionStatus: shouldBeDowngraded ? "canceled" : subscription.subscriptionStatus,
+      hasActiveSubscription:
+        ['active', 'trialing'].includes(subscription.subscriptionStatus) && !shouldBeDowngraded,
+      subscriptionStatus: shouldBeDowngraded ? 'canceled' : subscription.subscriptionStatus,
       trialEndsAt: subscription.trialEndsAt,
       currentPeriodEnd: subscription.currentPeriodEnd,
       trialExpired: shouldBeDowngraded,
@@ -139,12 +146,12 @@ export const createBillingPortalSession = action({
   handler: async (ctx): Promise<{ url: string }> => {
     const userId = await auth.getUserId(ctx);
     if (!userId) {
-      throw new ConvexError("Not authenticated");
+      throw new ConvexError('Not authenticated');
     }
 
     const subscription = await ctx.runQuery(internal.stripe.getUserSubscription, { userId });
     if (!subscription || !subscription.stripeCustomerId) {
-      throw new ConvexError("No subscription found");
+      throw new ConvexError('No subscription found');
     }
 
     try {
@@ -155,24 +162,26 @@ export const createBillingPortalSession = action({
 
       return { url: session.url };
     } catch (error) {
-      console.error("Failed to create billing portal session:", error);
-      throw new ConvexError("Failed to create billing portal session");
+      console.error('Failed to create billing portal session:', error);
+      throw new ConvexError('Failed to create billing portal session');
     }
   },
 });
 
 // Internal action to automatically create trial subscription for new users
 export const autoCreateTrialSubscription = internalAction({
-  args: { userId: v.id("users") },
+  args: { userId: v.id('users') },
   handler: async (ctx, { userId }): Promise<{ subscriptionId: string | null }> => {
     const user: any = await ctx.runQuery(internal.stripe.getUser, { userId });
     if (!user) {
-      console.error("User not found for auto trial creation:", userId);
+      console.error('User not found for auto trial creation:', userId);
       return { subscriptionId: null };
     }
 
     // Check if user already has a subscription
-    const existingSubscription = await ctx.runQuery(internal.stripe.getUserSubscription, { userId });
+    const existingSubscription = await ctx.runQuery(internal.stripe.getUserSubscription, {
+      userId,
+    });
     if (existingSubscription) {
       return { subscriptionId: existingSubscription.stripeSubscriptionId || null };
     }
@@ -192,16 +201,16 @@ export const autoCreateTrialSubscription = internalAction({
         customer: customer.id,
         items: [{ price: process.env.STRIPE_PRICE_ID }],
         trial_period_days: 14,
-        payment_behavior: "allow_incomplete",
-        payment_settings: { 
-          save_default_payment_method: "off" // Don't require payment method during trial
+        payment_behavior: 'allow_incomplete',
+        payment_settings: {
+          save_default_payment_method: 'off', // Don't require payment method during trial
         },
         trial_settings: {
           end_behavior: {
-            missing_payment_method: "cancel" // Cancel when trial ends without payment
-          }
+            missing_payment_method: 'cancel', // Cancel when trial ends without payment
+          },
         },
-        expand: ["latest_invoice"],
+        expand: ['latest_invoice'],
       });
 
       // Store subscription in database via internal mutation
@@ -209,16 +218,16 @@ export const autoCreateTrialSubscription = internalAction({
         userId: userId,
         stripeCustomerId: customer.id,
         stripeSubscriptionId: subscription.id,
-        subscriptionStatus: "trialing" as const,
+        subscriptionStatus: 'trialing' as const,
         trialEndsAt: new Date(subscription.trial_end! * 1000).getTime(),
         currentPeriodEnd: new Date(subscription.current_period_end * 1000).getTime(),
       });
 
-      return { 
+      return {
         subscriptionId: subscription.id,
       };
     } catch (error) {
-      console.error("Failed to auto-create trial subscription:", error);
+      console.error('Failed to auto-create trial subscription:', error);
       // Don't throw error - let user proceed without trial
       return { subscriptionId: null };
     }
@@ -231,18 +240,20 @@ export const createTrialSubscription = action({
   handler: async (ctx): Promise<{ subscriptionId: string; clientSecret?: string }> => {
     const userId = await auth.getUserId(ctx);
     if (!userId) {
-      throw new ConvexError("Not authenticated");
+      throw new ConvexError('Not authenticated');
     }
 
     const user: any = await ctx.runQuery(internal.stripe.getUser, { userId });
     if (!user) {
-      throw new ConvexError("User not found");
+      throw new ConvexError('User not found');
     }
 
     // Check if user already has a subscription
-    const existingSubscription = await ctx.runQuery(internal.stripe.getUserSubscription, { userId });
+    const existingSubscription = await ctx.runQuery(internal.stripe.getUserSubscription, {
+      userId,
+    });
     if (existingSubscription) {
-      throw new ConvexError("User already has a subscription");
+      throw new ConvexError('User already has a subscription');
     }
 
     try {
@@ -260,16 +271,16 @@ export const createTrialSubscription = action({
         customer: customer.id,
         items: [{ price: process.env.STRIPE_PRICE_ID }],
         trial_period_days: 14,
-        payment_behavior: "allow_incomplete",
-        payment_settings: { 
-          save_default_payment_method: "off" // Don't require payment method during trial
+        payment_behavior: 'allow_incomplete',
+        payment_settings: {
+          save_default_payment_method: 'off', // Don't require payment method during trial
         },
         trial_settings: {
           end_behavior: {
-            missing_payment_method: "cancel" // Cancel when trial ends without payment
-          }
+            missing_payment_method: 'cancel', // Cancel when trial ends without payment
+          },
         },
-        expand: ["latest_invoice"],
+        expand: ['latest_invoice'],
       });
 
       // Store subscription in database via internal mutation
@@ -277,18 +288,18 @@ export const createTrialSubscription = action({
         userId: userId,
         stripeCustomerId: customer.id,
         stripeSubscriptionId: subscription.id,
-        subscriptionStatus: "trialing" as const,
+        subscriptionStatus: 'trialing' as const,
         trialEndsAt: new Date(subscription.trial_end! * 1000).getTime(),
         currentPeriodEnd: new Date(subscription.current_period_end * 1000).getTime(),
       });
 
-      return { 
+      return {
         subscriptionId: subscription.id,
         // No client secret needed since no payment required
       };
     } catch (error) {
-      console.error("Failed to create trial subscription:", error);
-      throw new ConvexError("Failed to create trial subscription");
+      console.error('Failed to create trial subscription:', error);
+      throw new ConvexError('Failed to create trial subscription');
     }
   },
 });
@@ -296,7 +307,7 @@ export const createTrialSubscription = action({
 // Internal mutation to create subscription record
 export const createSubscriptionRecord = internalMutation({
   args: {
-    userId: v.id("users"),
+    userId: v.id('users'),
     stripeCustomerId: v.string(),
     stripeSubscriptionId: v.string(),
     subscriptionStatus: v.union(
@@ -306,14 +317,14 @@ export const createSubscriptionRecord = internalMutation({
       v.literal('incomplete'),
       v.literal('incomplete_expired'),
       v.literal('past_due'),
-      v.literal('unpaid')
+      v.literal('unpaid'),
     ),
     trialEndsAt: v.number(),
     currentPeriodEnd: v.number(),
   },
   handler: async (ctx, args) => {
     const now = Date.now();
-    await ctx.db.insert("subscriptions", {
+    await ctx.db.insert('subscriptions', {
       ...args,
       trialStartedAt: now,
       cancelAtPeriodEnd: false,
@@ -327,7 +338,7 @@ export const createSubscriptionRecord = internalMutation({
 
 // Internal query to get user
 export const getUser = internalQuery({
-  args: { userId: v.id("users") },
+  args: { userId: v.id('users') },
   handler: async (ctx, { userId }) => {
     return await ctx.db.get(userId);
   },
@@ -335,11 +346,11 @@ export const getUser = internalQuery({
 
 // Internal query to get user subscription
 export const getUserSubscription = internalQuery({
-  args: { userId: v.id("users") },
+  args: { userId: v.id('users') },
   handler: async (ctx, { userId }) => {
     return await ctx.db
-      .query("subscriptions")
-      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .query('subscriptions')
+      .withIndex('by_user', (q) => q.eq('userId', userId))
       .unique();
   },
 });
@@ -353,14 +364,19 @@ export const updateSubscriptionFromWebhook = internalMutation({
     trialEnd: v.optional(v.number()),
     cancelAtPeriodEnd: v.boolean(),
   },
-  handler: async (ctx, { stripeSubscriptionId, status, currentPeriodEnd, trialEnd, cancelAtPeriodEnd }) => {
+  handler: async (
+    ctx,
+    { stripeSubscriptionId, status, currentPeriodEnd, trialEnd, cancelAtPeriodEnd },
+  ) => {
     const subscription = await ctx.db
-      .query("subscriptions")
-      .withIndex("by_stripe_subscription", (q) => q.eq("stripeSubscriptionId", stripeSubscriptionId))
+      .query('subscriptions')
+      .withIndex('by_stripe_subscription', (q) =>
+        q.eq('stripeSubscriptionId', stripeSubscriptionId),
+      )
       .unique();
 
     if (!subscription) {
-      console.error("Subscription not found for Stripe ID:", stripeSubscriptionId);
+      console.error('Subscription not found for Stripe ID:', stripeSubscriptionId);
       return;
     }
 
@@ -402,7 +418,7 @@ export const fulfillWebhook = internalAction({
             cancelAtPeriodEnd: event.data.object.cancel_at_period_end,
           });
           break;
-        
+
         case 'customer.subscription.deleted':
           await ctx.runMutation(internal.stripe.updateSubscriptionFromWebhook, {
             stripeSubscriptionId: event.data.object.id,
@@ -412,16 +428,18 @@ export const fulfillWebhook = internalAction({
             cancelAtPeriodEnd: false,
           });
           break;
-        
+
         case 'customer.subscription.trial_will_end':
           // Handle trial ending soon (3 days before)
           console.log(`Trial ending soon for subscription ${event.data.object.id}`);
           // This could trigger reminder emails
           break;
-        
+
         case 'invoice.payment_succeeded':
           if (event.data.object.subscription) {
-            const subscription = await stripe.subscriptions.retrieve(event.data.object.subscription);
+            const subscription = await stripe.subscriptions.retrieve(
+              event.data.object.subscription,
+            );
             await ctx.runMutation(internal.stripe.updateSubscriptionFromWebhook, {
               stripeSubscriptionId: subscription.id,
               status: subscription.status,
@@ -431,10 +449,12 @@ export const fulfillWebhook = internalAction({
             });
           }
           break;
-        
+
         case 'invoice.payment_failed':
           if (event.data.object.subscription) {
-            const subscription = await stripe.subscriptions.retrieve(event.data.object.subscription);
+            const subscription = await stripe.subscriptions.retrieve(
+              event.data.object.subscription,
+            );
             await ctx.runMutation(internal.stripe.updateSubscriptionFromWebhook, {
               stripeSubscriptionId: subscription.id,
               status: subscription.status,
@@ -444,7 +464,7 @@ export const fulfillWebhook = internalAction({
             });
           }
           break;
-        
+
         default:
           console.log(`Unhandled event type ${event.type}`);
       }
