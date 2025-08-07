@@ -167,7 +167,7 @@ export default function BillingPage() {
               <div className="flex items-center gap-3">
                 <IconCheck className="h-4 w-4 text-green-500 flex-shrink-0" />
                 <span className="text-sm">
-                  Up to {PLAN_LIMITS.free.maxSubscribersPerFeature} subscribers per feature
+                  Up to {PLAN_LIMITS.free.maxTotalSubscribers} total subscribers
                 </span>
               </div>
               <div className="flex items-center gap-3">
