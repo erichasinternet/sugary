@@ -2,7 +2,7 @@ import { v } from 'convex/values';
 import { internal } from './_generated/api';
 import { mutation, query } from './_generated/server';
 import { auth } from './auth';
-import { getPlanFromSubscriptionStatus, canCreateFeature, canSendSubscriberUpdate } from '../lib/plans';
+import { getPlanFromSubscriptionStatus, canCreateFeature, canSendSubscriberUpdate, PLAN_LIMITS } from '../lib/plans';
 
 export const getMyFeatures = query({
   args: {},
@@ -110,13 +110,16 @@ export const getUsageStats = query({
       plan,
       features: {
         used: featureCount,
-        limit: plan === 'free' ? 3 : Infinity, // Use Infinity instead of null for consistency
+        limit: PLAN_LIMITS[plan].maxFeatures,
       },
-      totalSubscribers,
+      totalSubscribers: {
+        used: totalSubscribers,
+        limit: PLAN_LIMITS[plan].maxTotalSubscribers,
+      },
       totalSubscriberUpdates,
       subscriberUpdates: {
         usedThisMonth: subscriberUpdatesThisMonth,
-        limit: plan === 'free' ? 5 : Infinity,
+        limit: PLAN_LIMITS[plan].maxSubscriberUpdatesPerMonth,
       },
     };
   },

@@ -105,9 +105,21 @@ export default function BillingPage() {
               <div>
                 <div className="flex justify-between mb-2">
                   <span className="font-medium">Total Subscribers</span>
-                  <span className="font-bold">{usageStats.totalSubscribers}</span>
+                  <span className="font-bold">
+                    {usageStats.totalSubscribers.used} /{' '}
+                    {usageStats.totalSubscribers.limit === Infinity ? '∞' : usageStats.totalSubscribers.limit}
+                  </span>
                 </div>
-                <p className="text-sm text-muted">Across all your features</p>
+                {usageStats.totalSubscribers.limit !== Infinity && (
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                    <div
+                      className="bg-blue-500 h-2 rounded-full transition-all"
+                      style={{
+                        width: `${Math.min((usageStats.totalSubscribers.used / usageStats.totalSubscribers.limit) * 100, 100)}%`,
+                      }}
+                    ></div>
+                  </div>
+                )}
               </div>
 
               <div>

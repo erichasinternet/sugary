@@ -1,7 +1,7 @@
 import { v } from 'convex/values';
 import { internal } from './_generated/api';
 import { mutation, query } from './_generated/server';
-import { getPlanFromSubscriptionStatus, canAddSubscriber } from '../lib/plans';
+import { getPlanFromSubscriptionStatus, canAddSubscriber, canAddTotalSubscriber } from '../lib/plans';
 
 export const subscribe = mutation({
   args: {
@@ -47,6 +47,25 @@ export const subscribe = mutation({
 
     if (!canAddSubscriber(existingSubscribers.length, plan)) {
       throw new Error(`Subscriber limit reached for this feature. Free plan allows up to 50 subscribers per feature. Upgrade to Pro for unlimited subscribers.`);
+    }
+
+    // Count total subscribers across all company features
+    const companyFeatures = await ctx.db
+      .query('features')
+      .withIndex('by_company', (q) => q.eq('companyId', feature.companyId))
+      .collect();
+
+    let totalCompanySubscribers = 0;
+    for (const companyFeature of companyFeatures) {
+      const featureSubscribers = await ctx.db
+        .query('subscribers')
+        .withIndex('by_feature', (q) => q.eq('featureId', companyFeature._id))
+        .collect();
+      totalCompanySubscribers += featureSubscribers.length;
+    }
+
+    if (!canAddTotalSubscriber(totalCompanySubscribers, plan)) {
+      throw new Error(`Total subscriber limit reached. Free plan allows up to 50 total subscribers. Upgrade to Pro for unlimited subscribers.`);
     }
 
     // Generate confirmation token
