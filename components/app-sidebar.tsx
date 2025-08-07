@@ -159,7 +159,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       style={{ background: 'var(--gradient-hero)' }}
                       className="w-full text-white text-xs font-medium py-2 px-3 rounded-lg hover:opacity-90 transition-all"
                     >
-                      Upgrade to Pro - $9/mo
+                      Upgrade to Pro
                     </button>
                   </div>
                 )}
@@ -180,7 +180,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     style={{ background: 'var(--gradient-hero)' }}
                     className="w-full text-white text-xs font-medium py-2 px-3 rounded-lg hover:opacity-90 transition-all"
                   >
-                    Upgrade to Pro - $9/mo
+                    Upgrade to Pro
                   </button>
                 </div>
               )}
