@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Allow crawling of public feature pages
+Allow: /*/
+
+# Block sensitive areas
+Disallow: /api/
+Disallow: /dashboard/
+Disallow: /auth/
+Disallow: /confirm/
+
+# Sitemap location
+Sitemap: https://sugary.dev/sitemap.xml
