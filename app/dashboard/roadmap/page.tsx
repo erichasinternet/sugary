@@ -16,6 +16,7 @@ import { api } from '@/convex/_generated/api'
 import type { Id } from '@/convex/_generated/dataModel'
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { IconExternalLink, IconShare } from '@tabler/icons-react'
 import { KanbanColumn } from './components/KanbanColumn'
 import { FeatureCard } from './components/FeatureCard'
 
@@ -29,6 +30,7 @@ const COLUMNS = [
 
 export default function RoadmapPage() {
   const features = useQuery(api.features.getMyFeatures)
+  const company = useQuery(api.companies.getMyCompany)
   const updateFeatureStatus = useMutation(api.features.updateFeatureStatus)
   const [activeFeature, setActiveFeature] = useState<any>(null)
 
@@ -159,8 +161,18 @@ export default function RoadmapPage() {
               Drag features between columns to update their status
             </p>
           </div>
-          <div className="text-xs text-muted">
-            {features?.length || 0} total features
+          <div className="flex items-center gap-3">
+            {company && (
+              <a
+                href={`/${company.slug}/roadmap`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 px-3 py-2 text-sm text-primary hover:text-primary-dark bg-primary/10 hover:bg-primary/20 rounded-lg transition-colors"
+              >
+                <IconExternalLink className="h-4 w-4" />
+                View Public Roadmap
+              </a>
+            )}
           </div>
         </div>
       </div>
