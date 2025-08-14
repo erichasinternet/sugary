@@ -58,16 +58,20 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
             <div className="mt-4 sm:mt-0 flex items-center gap-3">
               <span
                 className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${
-                  feature.status === 'completed'
+                  feature.status === 'done'
                     ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
                     : feature.status === 'in_progress'
                       ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'
-                      : feature.status === 'cancelled'
-                        ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300'
-                        : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+                      : feature.status === 'requested'
+                        ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'
+                        : feature.status === 'cancelled'
+                          ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300'
+                          : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
                 }`}
               >
-                {feature.status.replace('_', ' ')}
+                {feature.status === 'todo' ? 'To Do' : 
+                 feature.status === 'in_progress' ? 'In Progress' :
+                 feature.status.charAt(0).toUpperCase() + feature.status.slice(1)}
               </span>
               <GradientButton
                 onClick={() => setShowUpdateModal(true)}

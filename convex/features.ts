@@ -179,7 +179,7 @@ export const createFeature = mutation({
       slug,
       description,
       companyId: company._id,
-      status: 'planning',
+      status: 'todo',
       createdAt: now,
       updatedAt: now,
     });
@@ -249,7 +249,7 @@ export const getFeatureDetails = query({
 export const updateFeatureStatus = mutation({
   args: {
     featureId: v.id('features'),
-    status: v.union(v.literal('planning'), v.literal('in_progress'), v.literal('completed'), v.literal('cancelled')),
+    status: v.union(v.literal('todo'), v.literal('requested'), v.literal('in_progress'), v.literal('done'), v.literal('cancelled')),
   },
   handler: async (ctx, { featureId, status }) => {
     const userId = await auth.getUserId(ctx);

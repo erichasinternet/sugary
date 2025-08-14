@@ -85,9 +85,10 @@ export function FeatureDetailSheet({ featureId, open, onOpenChange }: FeatureDet
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="rounded-xl">
-                      <SelectItem value="planning" className="focus:bg-primary/10 focus:text-primary">Planning</SelectItem>
+                      <SelectItem value="todo" className="focus:bg-primary/10 focus:text-primary">To Do</SelectItem>
+                      <SelectItem value="requested" className="focus:bg-primary/10 focus:text-primary">Requested</SelectItem>
                       <SelectItem value="in_progress" className="focus:bg-primary/10 focus:text-primary">In Progress</SelectItem>
-                      <SelectItem value="completed" className="focus:bg-primary/10 focus:text-primary">Completed</SelectItem>
+                      <SelectItem value="done" className="focus:bg-primary/10 focus:text-primary">Done</SelectItem>
                       <SelectItem value="cancelled" className="focus:bg-primary/10 focus:text-primary">Cancelled</SelectItem>
                     </SelectContent>
                   </Select>

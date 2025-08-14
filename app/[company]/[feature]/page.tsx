@@ -146,16 +146,24 @@ export default function FeatureSignup({
               <div className="flex items-center">
                 <div
                   className={`w-3 h-3 rounded-full mr-2 ${
-                    featureData.status === 'completed'
+                    featureData.status === 'done'
                       ? 'bg-green-400'
                       : featureData.status === 'in_progress'
                         ? 'bg-yellow-400'
-                        : featureData.status === 'cancelled'
-                          ? 'bg-red-400'
-                          : 'bg-gray-400'
+                        : featureData.status === 'requested'
+                          ? 'bg-blue-400'
+                          : featureData.status === 'cancelled'
+                            ? 'bg-red-400'
+                            : 'bg-blue-400' // For 'todo', show as 'requested' publicly
                   }`}
                 ></div>
-                <span className="capitalize">{featureData.status.replace('_', ' ')}</span>
+                <span className="capitalize">
+                  {featureData.status === 'todo' ? 'Requested' :
+                   featureData.status === 'in_progress' ? 'In Progress' :
+                   featureData.status === 'done' ? 'Done' :
+                   featureData.status === 'cancelled' ? 'Cancelled' :
+                   'Requested'}
+                </span>
               </div>
             </div>
           </div>

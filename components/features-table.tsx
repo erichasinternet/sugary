@@ -127,14 +127,17 @@ export function FeaturesTable() {
                   <TableCell>
                     <Badge 
                       variant={
-                        feature.status === 'completed' ? 'default' :
+                        feature.status === 'done' ? 'default' :
                         feature.status === 'in_progress' ? 'secondary' :
+                        feature.status === 'requested' ? 'secondary' :
                         feature.status === 'cancelled' ? 'destructive' :
                         'outline'
                       }
                       className="capitalize"
                     >
-                      {feature.status.replace('_', ' ')}
+                      {feature.status === 'todo' ? 'To Do' : 
+                       feature.status === 'in_progress' ? 'In Progress' :
+                       feature.status.charAt(0).toUpperCase() + feature.status.slice(1)}
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right font-medium">

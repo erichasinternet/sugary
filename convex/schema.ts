@@ -20,9 +20,10 @@ const schema = defineSchema({
     description: v.optional(v.string()),
     companyId: v.id('companies'),
     status: v.union(
-      v.literal('planning'),
+      v.literal('todo'),
+      v.literal('requested'),
       v.literal('in_progress'),
-      v.literal('completed'),
+      v.literal('done'),
       v.literal('cancelled'),
     ),
     createdAt: v.number(),
