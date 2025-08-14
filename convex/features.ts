@@ -24,18 +24,32 @@ export const getMyFeatures = query({
       .withIndex('by_company', (q) => q.eq('companyId', company._id))
       .collect();
 
-    // Add subscriber count to each feature
+    // Add subscriber count, upvote count, and recent updates to each feature
     const featuresWithCounts = await Promise.all(
       features.map(async (feature) => {
-        const subscriberCount = await ctx.db
-          .query('subscribers')
-          .withIndex('by_feature', (q) => q.eq('featureId', feature._id))
-          .collect()
-          .then((subs) => subs.length);
+        const [subscriberCount, upvoteCount, recentUpdate] = await Promise.all([
+          ctx.db
+            .query('subscribers')
+            .withIndex('by_feature', (q) => q.eq('featureId', feature._id))
+            .collect()
+            .then((subs) => subs.length),
+          ctx.db
+            .query('upvotes')
+            .withIndex('by_feature', (q) => q.eq('featureId', feature._id))
+            .collect()
+            .then((votes) => votes.length),
+          ctx.db
+            .query('updates')
+            .withIndex('by_feature', (q) => q.eq('featureId', feature._id))
+            .order('desc')
+            .first()
+        ]);
 
         return {
           ...feature,
           subscriberCount,
+          upvoteCount,
+          recentUpdate,
         };
       }),
     );
@@ -179,7 +193,7 @@ export const createFeature = mutation({
       slug,
       description,
       companyId: company._id,
-      status: 'planning',
+      status: 'todo',
       createdAt: now,
       updatedAt: now,
     });
@@ -249,7 +263,7 @@ export const getFeatureDetails = query({
 export const updateFeatureStatus = mutation({
   args: {
     featureId: v.id('features'),
-    status: v.union(v.literal('planning'), v.literal('in_progress'), v.literal('completed'), v.literal('cancelled')),
+    status: v.union(v.literal('todo'), v.literal('requested'), v.literal('in_progress'), v.literal('done'), v.literal('cancelled')),
   },
   handler: async (ctx, { featureId, status }) => {
     const userId = await auth.getUserId(ctx);
@@ -273,6 +287,7 @@ export const updateFeatureStatus = mutation({
     return { success: true };
   },
 });
+
 
 export const sendFeatureUpdate = mutation({
   args: {

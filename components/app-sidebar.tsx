@@ -8,6 +8,7 @@ import {
   IconCreditCard,
   IconClock,
   IconSparkles,
+  IconLayoutKanban
 } from '@tabler/icons-react';
 import { useQuery, useAction } from 'convex/react';
 import { api } from '@/convex/_generated/api';
@@ -62,6 +63,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         title: 'Features',
         url: '/dashboard/features',
         icon: IconStar,
+      },
+      {
+        title: 'Roadmap',
+        url: '/dashboard/roadmap',
+        icon: IconLayoutKanban,
       },
       {
         title: 'Billing',

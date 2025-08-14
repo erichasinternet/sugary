@@ -20,9 +20,10 @@ const schema = defineSchema({
     description: v.optional(v.string()),
     companyId: v.id('companies'),
     status: v.union(
-      v.literal('planning'),
+      v.literal('todo'),
+      v.literal('requested'),
       v.literal('in_progress'),
-      v.literal('completed'),
+      v.literal('done'),
       v.literal('cancelled'),
     ),
     createdAt: v.number(),
@@ -30,6 +31,19 @@ const schema = defineSchema({
   })
     .index('by_company', ['companyId'])
     .index('by_company_and_slug', ['companyId', 'slug']),
+
+  upvotes: defineTable({
+    featureId: v.id('features'),
+    voterEmail: v.optional(v.string()), // For email capture and notifications
+    voterIp: v.optional(v.string()), // For anonymous voting duplicate prevention
+    sessionId: v.string(), // Browser session for immediate duplicate prevention
+    notifyOnShip: v.optional(v.boolean()), // Whether user wants notifications
+    createdAt: v.number(),
+  })
+    .index('by_feature', ['featureId'])
+    .index('by_session_and_feature', ['sessionId', 'featureId'])
+    .index('by_email_and_feature', ['voterEmail', 'featureId'])
+    .index('by_ip_and_feature', ['voterIp', 'featureId']),
 
   subscribers: defineTable({
     email: v.string(),

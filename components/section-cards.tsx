@@ -35,7 +35,7 @@ export function SectionCards() {
 
   const totalFeatures = features.length;
   const activeFeatures = features.filter(
-    (f) => f.status !== 'cancelled' && f.status !== 'completed',
+    (f) => f.status !== 'done',
   ).length;
   const totalSubscribers = features.reduce((sum, f) => sum + f.subscriberCount, 0);
   const monthlySignups = signupTrends.reduce((sum, day) => sum + day.count, 0);
