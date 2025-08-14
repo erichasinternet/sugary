@@ -35,7 +35,7 @@ export function FeatureCard({ feature, isDragging = false }: FeatureCardProps) {
   const cardClasses = `
     glass-card-subtle cursor-grab active:cursor-grabbing transition-all duration-200 
     hover:shadow-md border border-transparent hover:border-primary/20
-    ${isDragging || isDraggableActive ? 'opacity-50 rotate-1 scale-105 shadow-lg border-primary/30' : ''}
+    ${isDragging || isDraggableActive ? '!opacity-90' : ''}
   `
 
   return (

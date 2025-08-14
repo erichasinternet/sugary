@@ -56,7 +56,7 @@ export function KanbanColumn({ id, title, count, children }: KanbanColumnProps) 
       className={`
         glass-card-subtle rounded-xl border transition-all duration-200 min-h-[400px]
         ${getColumnStyles(id)}
-        ${isOver ? 'border-primary/40 ring-2 ring-primary/20' : 'border-transparent'}
+        ${isOver ? '!border-primary !bg-primary/10 ring-4 ring-primary/40 shadow-xl !shadow-primary/20' : 'border-transparent'}
       `}
     >
       {/* Column Header */}
