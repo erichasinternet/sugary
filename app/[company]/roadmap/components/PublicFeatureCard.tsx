@@ -16,13 +16,15 @@ interface PublicFeatureCardProps {
     upvoteCount: number
     subscriberCount: number
     createdAt: number
-    recentUpdate?: {
-      _id: string
+    recentUpdate: {
+      _id: Id<'updates'>
+      _creationTime: number
       title: string
+      featureId: Id<'features'>
       content: string
       sentAt: number
       recipientCount: number
-    }
+    } | null
   }
   sessionId: string
 }

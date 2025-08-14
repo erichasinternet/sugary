@@ -4,10 +4,11 @@ import { useDraggable } from '@dnd-kit/core'
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { IconGripVertical, IconUsers, IconHeart, IconBell } from '@tabler/icons-react'
+import type { Id } from '@/convex/_generated/dataModel'
 
 interface FeatureCardProps {
   feature: {
-    _id: string
+    _id: Id<'features'>
     title: string
     slug: string
     description?: string
@@ -16,13 +17,15 @@ interface FeatureCardProps {
     status: string
     createdAt: number
     updatedAt: number
-    recentUpdate?: {
-      _id: string
+    recentUpdate: {
+      _id: Id<'updates'>
+      _creationTime: number
       title: string
+      featureId: Id<'features'>
       content: string
       sentAt: number
       recipientCount: number
-    }
+    } | null
   }
   isDragging?: boolean
 }
