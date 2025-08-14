@@ -22,6 +22,7 @@ const schema = defineSchema({
     status: v.union(
       v.literal('todo'),
       v.literal('requested'),
+      v.literal('planning'),
       v.literal('in_progress'),
       v.literal('done'),
       v.literal('cancelled'),
