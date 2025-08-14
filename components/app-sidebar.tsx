@@ -64,6 +64,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         icon: IconStar,
       },
       {
+        title: 'Roadmap',
+        url: '/dashboard/roadmap',
+        icon: IconPlus,
+      },
+      {
         title: 'Billing',
         url: '/dashboard/billing',
         icon: IconCreditCard,
