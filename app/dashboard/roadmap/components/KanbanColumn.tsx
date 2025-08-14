@@ -12,18 +12,18 @@ interface KanbanColumnProps {
 
 const getColumnStyles = (id: string) => {
   switch (id) {
-    case 'todo':
-      return 'border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50'
-    case 'requested':
-      return 'border-blue-200 dark:border-blue-700 bg-blue-50/50 dark:bg-blue-900/20'
-    case 'in_progress':
-      return 'border-yellow-200 dark:border-yellow-700 bg-yellow-50/50 dark:bg-yellow-900/20'
-    case 'done':
-      return 'border-green-200 dark:border-green-700 bg-green-50/50 dark:bg-green-900/20'
     case 'cancelled':
-      return 'border-red-200 dark:border-red-700 bg-red-50/50 dark:bg-red-900/20'
+      return 'bg-gradient-to-br from-red-50/80 to-red-100/60 dark:from-red-950/40 dark:to-red-900/30 border-red-200/60 dark:border-red-800/50'
+    case 'todo':
+      return 'bg-gradient-to-br from-gray-50/80 to-gray-100/60 dark:from-gray-900/40 dark:to-gray-800/30 border-gray-200/60 dark:border-gray-700/50'
+    case 'requested':
+      return 'bg-gradient-to-br from-blue-50/80 to-blue-100/60 dark:from-blue-950/40 dark:to-blue-900/30 border-blue-200/60 dark:border-blue-800/50'
+    case 'in_progress':
+      return 'bg-gradient-to-br from-yellow-50/80 to-yellow-100/60 dark:from-yellow-950/40 dark:to-yellow-900/30 border-yellow-200/60 dark:border-yellow-800/50'
+    case 'done':
+      return 'bg-gradient-to-br from-green-50/80 to-green-100/60 dark:from-green-950/40 dark:to-green-900/30 border-green-200/60 dark:border-green-800/50'
     default:
-      return 'border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50'
+      return 'bg-gradient-to-br from-gray-50/80 to-gray-100/60 dark:from-gray-900/40 dark:to-gray-800/30 border-gray-200/60 dark:border-gray-700/50'
   }
 }
 
@@ -44,6 +44,7 @@ const getBadgeVariant = (id: string) => {
   }
 }
 
+
 export function KanbanColumn({ id, title, count, children }: KanbanColumnProps) {
   const { setNodeRef, isOver } = useDroppable({
     id,
@@ -53,22 +54,39 @@ export function KanbanColumn({ id, title, count, children }: KanbanColumnProps) 
     <div
       ref={setNodeRef}
       className={`
-        rounded-xl border-2 transition-all duration-200 min-h-[400px]
+        glass-card-subtle rounded-xl border transition-all duration-200 min-h-[400px]
         ${getColumnStyles(id)}
-        ${isOver ? 'border-primary bg-primary/5' : ''}
+        ${isOver ? 'border-primary/40 ring-2 ring-primary/20' : 'border-transparent'}
       `}
     >
-      <div className="p-4 border-b border-current/10">
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="font-semibold text-foreground">{title}</h3>
-          <Badge variant={getBadgeVariant(id)} className="text-xs">
+      {/* Column Header */}
+      <div className="p-4 border-b border-border/50">
+        <div className="flex items-center justify-between">
+          <h3 className="font-medium text-foreground text-sm">{title}</h3>
+          <Badge 
+            variant={getBadgeVariant(id)} 
+            className="text-xs px-1.5 py-0.5"
+          >
             {count}
           </Badge>
         </div>
       </div>
       
-      <div className="p-4">
-        {children}
+      {/* Column Content */}
+      <div className="p-3">
+        {count === 0 ? (
+          <div className="text-center py-6">
+            <p className="text-xs text-muted">
+              {id === 'cancelled' ? 'No cancelled features' :
+               id === 'todo' ? 'No pending features' :
+               id === 'requested' ? 'No requested features' :
+               id === 'in_progress' ? 'No features in progress' :
+               'No completed features'}
+            </p>
+          </div>
+        ) : (
+          children
+        )}
       </div>
     </div>
   )

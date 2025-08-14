@@ -33,44 +33,44 @@ export function FeatureCard({ feature, isDragging = false }: FeatureCardProps) {
   } : undefined
 
   const cardClasses = `
-    cursor-grab active:cursor-grabbing transition-all duration-200
-    ${isDragging || isDraggableActive ? 'opacity-50 rotate-2 scale-105' : ''}
-    ${isDragging ? 'shadow-2xl' : 'hover:shadow-md'}
+    glass-card-subtle cursor-grab active:cursor-grabbing transition-all duration-200 
+    hover:shadow-md border border-transparent hover:border-primary/20
+    ${isDragging || isDraggableActive ? 'opacity-50 rotate-1 scale-105 shadow-lg border-primary/30' : ''}
   `
 
   return (
-    <Card
+    <div
       ref={setNodeRef}
       style={style}
       className={cardClasses}
       {...attributes}
       {...listeners}
     >
-      <CardContent className="p-4">
+      <div className="p-3">
         <div className="flex items-start justify-between mb-2">
-          <h4 className="font-medium text-foreground text-sm leading-snug flex-1 pr-2">
+          <h4 className="font-medium text-foreground text-sm leading-tight flex-1 pr-2">
             {feature.title}
           </h4>
-          <IconGripVertical className="h-4 w-4 text-muted flex-shrink-0" />
+          <IconGripVertical className="h-3 w-3 text-muted opacity-50 flex-shrink-0 mt-0.5" />
         </div>
         
         {feature.description && (
-          <p className="text-xs text-muted line-clamp-2 mb-3">
+          <p className="text-xs text-muted line-clamp-2 mb-3 leading-normal">
             {feature.description}
           </p>
         )}
         
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1 text-xs text-muted">
+        <div className="flex items-center justify-between text-xs">
+          <div className="flex items-center gap-1 text-muted">
             <IconUsers className="h-3 w-3" />
             <span>{feature.subscriberCount}</span>
           </div>
           
-          <code className="text-xs text-muted bg-muted/30 px-1.5 py-0.5 rounded">
+          <code className="text-muted font-mono">
             {feature.slug}
           </code>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }

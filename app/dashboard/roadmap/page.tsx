@@ -102,21 +102,42 @@ export default function RoadmapPage() {
 
   if (features === undefined) {
     return (
-      <div className="px-4 py-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold gradient-text">Roadmap</h1>
-            <p className="text-muted mt-2">
-              Manage your feature development pipeline with drag & drop
-            </p>
+      <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+        {/* Header */}
+        <div className="px-4 lg:px-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-foreground">Roadmap</h1>
+              <p className="text-sm text-muted mt-1">
+                Drag features between columns to update their status
+              </p>
+            </div>
+            <div className="h-4 bg-muted rounded w-16 animate-pulse"></div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+        </div>
+
+        {/* Loading Kanban */}
+        <div className="px-4 lg:px-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {COLUMNS.map((column) => (
-              <div key={column.id} className="glass-card rounded-xl p-4">
-                <div className="h-8 bg-muted rounded w-20 animate-pulse mb-4"></div>
+              <div key={column.id} className="glass-card-subtle rounded-xl p-4 min-h-[400px]">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-5 h-5 bg-muted rounded animate-pulse"></div>
+                  <div className="h-4 bg-muted rounded w-16 animate-pulse"></div>
+                  <div className="ml-auto w-6 h-5 bg-muted rounded-full animate-pulse"></div>
+                </div>
                 <div className="space-y-3">
                   {[...Array(2)].map((_, i) => (
-                    <div key={i} className="h-24 bg-muted rounded animate-pulse"></div>
+                    <div key={i} className="glass-card-subtle rounded-lg p-3 h-20">
+                      <div className="space-y-2">
+                        <div className="h-3 bg-muted rounded w-3/4 animate-pulse"></div>
+                        <div className="h-2 bg-muted rounded w-1/2 animate-pulse"></div>
+                        <div className="flex justify-between items-center">
+                          <div className="h-4 w-8 bg-muted rounded-full animate-pulse"></div>
+                          <div className="h-3 w-12 bg-muted rounded animate-pulse"></div>
+                        </div>
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -128,22 +149,31 @@ export default function RoadmapPage() {
   }
 
   return (
-    <div className="px-4 py-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold gradient-text">Roadmap</h1>
-          <p className="text-muted mt-2">
-            Manage your feature development pipeline with drag & drop
-          </p>
+    <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+      {/* Header */}
+      <div className="px-4 lg:px-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-foreground">Roadmap</h1>
+            <p className="text-sm text-muted mt-1">
+              Drag features between columns to update their status
+            </p>
+          </div>
+          <div className="text-xs text-muted">
+            {features?.length || 0} total features
+          </div>
         </div>
+      </div>
 
+      {/* Kanban Board */}
+      <div className="px-4 lg:px-6">
         <DndContext
           sensors={sensors}
           collisionDetection={rectIntersection}
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
         >
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {COLUMNS.map((column) => {
               const columnFeatures = groupedFeatures[column.status] || []
               
