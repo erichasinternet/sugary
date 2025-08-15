@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useQuery, useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import type { Id } from '@/convex/_generated/dataModel'
-import { IconHeart, IconHeartFilled, IconUsers, IconMail, IconBell } from '@tabler/icons-react'
+import { IconArrowUp, IconUsers, IconMail, IconBell } from '@tabler/icons-react'
 import { Badge } from '@/components/ui/badge'
 
 interface PublicFeatureCardProps {
@@ -242,25 +242,29 @@ export function PublicFeatureCard({ feature, sessionId }: PublicFeatureCardProps
           {feature.upvoteCount > 0 ? (
             <span>{feature.upvoteCount} {feature.upvoteCount === 1 ? 'person wants' : 'people want'} this</span>
           ) : (
-            <span>Be the first to vote</span>
+            <span>Be the first to upvote</span>
           )}
         </div>
         <button
           onClick={handleUpvoteClick}
+          aria-label={hasVoted ? `Remove upvote (${feature.upvoteCount} votes)` : `Upvote this feature (${feature.upvoteCount} votes)`}
           className={`
-            flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all border
+            flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 border group
             ${hasVoted 
-              ? 'bg-primary text-white border-primary hover:bg-primary-dark shadow-sm' 
-              : 'bg-white border-gray-300 text-gray-700 hover:border-primary hover:text-primary hover:bg-primary/5 dark:bg-slate-800 dark:border-slate-600 dark:text-slate-300'
+              ? 'bg-primary text-white border-primary hover:bg-primary/90 shadow-sm transform active:scale-95' 
+              : 'bg-white border-gray-300 text-gray-700 hover:border-primary hover:text-primary hover:bg-primary/5 hover:shadow-sm dark:bg-slate-800 dark:border-slate-600 dark:text-slate-300 dark:hover:border-primary dark:hover:bg-primary/10 transform active:scale-95'
             }
           `}
         >
-          {hasVoted ? (
-            <IconHeartFilled className="h-3 w-3" />
-          ) : (
-            <IconHeart className="h-3 w-3" />
-          )}
-          <span>{hasVoted ? 'Voted' : 'Upvote'}</span>
+          <IconArrowUp className={`h-3 w-3 transition-transform duration-200 ${hasVoted ? 'text-white' : 'group-hover:scale-110'}`} />
+          <span className="flex items-center gap-1">
+            {hasVoted ? 'Upvoted' : 'Upvote'}
+            {feature.upvoteCount > 0 && (
+              <span className={`font-semibold ${hasVoted ? 'text-white' : 'text-primary'}`}>
+                {feature.upvoteCount}
+              </span>
+            )}
+          </span>
         </button>
       </div>
     </div>
