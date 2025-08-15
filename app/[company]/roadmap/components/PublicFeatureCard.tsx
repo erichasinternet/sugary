@@ -125,10 +125,10 @@ export function PublicFeatureCard({ feature, sessionId }: PublicFeatureCardProps
         <form onSubmit={handleSubmitVote} className="space-y-4">
           <div>
             <h4 className="font-medium text-foreground text-sm mb-2">
-              Vote for "{feature.title}"
+              Thanks for upvoting "{feature.title}"!
             </h4>
             <p className="text-xs text-muted mb-3">
-              Get notified when this feature ships (optional)
+              Want updates when this ships? (optional)
             </p>
           </div>
 
@@ -160,14 +160,14 @@ export function PublicFeatureCard({ feature, sessionId }: PublicFeatureCardProps
               disabled={isSubmitting}
               className="flex-1 bg-gradient-to-r from-primary to-secondary text-white px-3 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
             >
-              {isSubmitting ? 'Voting...' : 'Vote'}
+              {isSubmitting ? 'Subscribing...' : 'Get Updates'}
             </button>
             <button
               type="button"
               onClick={() => setShowEmailCapture(false)}
               className="px-3 py-2 text-sm text-muted hover:text-foreground transition-colors"
             >
-              Cancel
+              Skip
             </button>
           </div>
         </form>
