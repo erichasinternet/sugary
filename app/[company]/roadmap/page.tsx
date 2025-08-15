@@ -7,7 +7,7 @@ import { api } from '@/convex/_generated/api'
 import type { Id } from '@/convex/_generated/dataModel'
 import SugaryLogo from '../../components/SugaryLogo'
 import { PublicFeatureCard } from './components/PublicFeatureCard'
-import { IconSearch, IconShare } from '@tabler/icons-react'
+import { IconSearch } from '@tabler/icons-react'
 
 const PUBLIC_COLUMNS = [
   { id: 'requested', title: 'Requested', description: 'Features we\'re considering' },
@@ -62,18 +62,6 @@ export default function PublicRoadmap({
     }, {} as Record<string, typeof filtered>)
   }, [roadmapData?.features, searchQuery])
 
-  const handleShare = async () => {
-    if (navigator.share) {
-      await navigator.share({
-        title: `${roadmapData?.company.name} Roadmap`,
-        text: `Check out what ${roadmapData?.company.name} is building next!`,
-        url: window.location.href,
-      })
-    } else {
-      await navigator.clipboard.writeText(window.location.href)
-      // You could add a toast notification here
-    }
-  }
 
   if (roadmapData === undefined) {
     return (
@@ -113,13 +101,6 @@ export default function PublicRoadmap({
               <p className="text-sm text-muted">Product Roadmap</p>
             </div>
             <div className="flex items-center gap-3">
-              <button
-                onClick={handleShare}
-                className="flex items-center gap-2 px-3 py-2 text-sm text-muted hover:text-primary transition-colors"
-              >
-                <IconShare className="h-4 w-4" />
-                Share
-              </button>
               <SugaryLogo href="/" size="sm" className="text-sm" />
             </div>
           </div>
