@@ -42,7 +42,7 @@ const chartConfig = {
 export function ChartAreaInteractive() {
   const isMobile = useIsMobile()
   const [timeRange, setTimeRange] = React.useState("30d")
-  const signupTrends = useQuery(api.analytics.getSignupTrends)
+  const signupTrends = useQuery(api.features.getSignupTrends)
 
   React.useEffect(() => {
     if (isMobile) {

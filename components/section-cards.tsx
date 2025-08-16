@@ -16,7 +16,7 @@ import {
 
 export function SectionCards() {
   const features = useQuery(api.features.getMyFeatures);
-  const signupTrends = useQuery(api.analytics.getSignupTrends);
+  const signupTrends = useQuery(api.features.getSignupTrends);
 
   if (features === undefined || signupTrends === undefined) {
     return (

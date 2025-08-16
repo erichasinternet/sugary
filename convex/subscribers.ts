@@ -2,6 +2,7 @@ import { v } from 'convex/values';
 import { internal } from './_generated/api';
 import { mutation, query } from './_generated/server';
 import { getPlanFromSubscriptionStatus, canAddSubscriber, canAddTotalSubscriber } from '../lib/plans';
+import { getUserSubscription } from './utils';
 
 export const subscribe = mutation({
   args: {
@@ -32,11 +33,7 @@ export const subscribe = mutation({
     }
 
     // Check plan limits for the company owner
-    const subscription = await ctx.db
-      .query('subscriptions')
-      .withIndex('by_user', (q) => q.eq('userId', company.ownerId))
-      .unique();
-    
+    const subscription = await getUserSubscription(ctx, company.ownerId);
     const plan = getPlanFromSubscriptionStatus(subscription?.subscriptionStatus || null);
     
     // Count existing subscribers for this feature

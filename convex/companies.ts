@@ -1,6 +1,7 @@
 import { v } from 'convex/values';
 import { mutation, query } from './_generated/server';
 import { auth } from './auth';
+import { getUserCompany } from './utils';
 
 export const getMyCompany = query({
   args: {},
@@ -8,10 +9,7 @@ export const getMyCompany = query({
     const userId = await auth.getUserId(ctx);
     if (!userId) return null;
 
-    return await ctx.db
-      .query('companies')
-      .withIndex('by_owner', (q) => q.eq('ownerId', userId))
-      .first();
+    return await getUserCompany(ctx, userId);
   },
 });
 
@@ -35,10 +33,7 @@ export const createCompany = mutation({
     }
 
     // Check if user already has a company
-    const userCompany = await ctx.db
-      .query('companies')
-      .withIndex('by_owner', (q) => q.eq('ownerId', userId))
-      .first();
+    const userCompany = await getUserCompany(ctx, userId);
 
     if (userCompany) {
       throw new Error('User already has a company');

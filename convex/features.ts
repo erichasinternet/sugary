@@ -3,6 +3,7 @@ import { internal } from './_generated/api';
 import { mutation, query } from './_generated/server';
 import { auth } from './auth';
 import { getPlanFromSubscriptionStatus, canCreateFeature, canSendSubscriberUpdate, PLAN_LIMITS } from '../lib/plans';
+import { getUserCompany, requireAuth, requireUserCompany, getUserPlan, getUserSubscription, getOwnedFeature } from './utils';
 
 export const getMyFeatures = query({
   args: {},
@@ -10,12 +11,7 @@ export const getMyFeatures = query({
     const userId = await auth.getUserId(ctx);
     if (!userId) return [];
 
-    // Get user's company
-    const company = await ctx.db
-      .query('companies')
-      .withIndex('by_owner', (q) => q.eq('ownerId', userId))
-      .first();
-
+    const company = await getUserCompany(ctx, userId);
     if (!company) return [];
 
     // Get all features for the company with subscriber counts
@@ -64,21 +60,10 @@ export const getUsageStats = query({
     const userId = await auth.getUserId(ctx);
     if (!userId) return null;
 
-    // Get user's company
-    const company = await ctx.db
-      .query('companies')
-      .withIndex('by_owner', (q) => q.eq('ownerId', userId))
-      .first();
-
+    const company = await getUserCompany(ctx, userId);
     if (!company) return null;
 
-    // Get subscription status
-    const subscription = await ctx.db
-      .query('subscriptions')
-      .withIndex('by_user', (q) => q.eq('userId', userId))
-      .unique();
-    
-    const plan = getPlanFromSubscriptionStatus(subscription?.subscriptionStatus || null);
+    const plan = await getUserPlan(ctx, userId);
 
     // Get all features for the company
     const features = await ctx.db
@@ -147,17 +132,7 @@ export const createFeature = mutation({
   },
   handler: async (ctx, { title, slug, description }) => {
     const userId = await auth.getUserId(ctx);
-    if (!userId) throw new Error('Not authenticated');
-
-    // Get user's company
-    const company = await ctx.db
-      .query('companies')
-      .withIndex('by_owner', (q) => q.eq('ownerId', userId))
-      .first();
-
-    if (!company) {
-      throw new Error('No company found. Please create a company first.');
-    }
+    const company = await requireUserCompany(ctx, userId);
 
     // Check if feature slug already exists for this company
     const existing = await ctx.db
@@ -170,12 +145,7 @@ export const createFeature = mutation({
     }
 
     // Check plan limits
-    const subscription = await ctx.db
-      .query('subscriptions')
-      .withIndex('by_user', (q) => q.eq('userId', userId))
-      .unique();
-    
-    const plan = getPlanFromSubscriptionStatus(subscription?.subscriptionStatus || null);
+    const plan = await getUserPlan(ctx, userId);
     
     // Count existing features
     const existingFeatures = await ctx.db
@@ -235,16 +205,13 @@ export const getFeatureDetails = query({
   args: { featureId: v.id('features') },
   handler: async (ctx, { featureId }) => {
     const userId = await auth.getUserId(ctx);
-    if (!userId) throw new Error('Not authenticated');
-
-    const feature = await ctx.db.get(featureId);
-    if (!feature) return null;
-
-    // Verify user owns this feature's company
-    const company = await ctx.db.get(feature.companyId);
-    if (!company || company.ownerId !== userId) {
-      throw new Error('Not authorized to view this feature');
+    const ownedFeature = await getOwnedFeature(ctx, requireAuth(userId), featureId);
+    
+    if (!ownedFeature) {
+      throw new Error('Feature not found or not authorized to view this feature');
     }
+
+    const { feature, company } = ownedFeature;
 
     // Get subscribers
     const subscribers = await ctx.db
@@ -267,16 +234,13 @@ export const updateFeatureStatus = mutation({
   },
   handler: async (ctx, { featureId, status }) => {
     const userId = await auth.getUserId(ctx);
-    if (!userId) throw new Error('Not authenticated');
-
-    const feature = await ctx.db.get(featureId);
-    if (!feature) throw new Error('Feature not found');
-
-    // Verify user owns this feature's company
-    const company = await ctx.db.get(feature.companyId);
-    if (!company || company.ownerId !== userId) {
-      throw new Error('Not authorized to update this feature');
+    const ownedFeature = await getOwnedFeature(ctx, requireAuth(userId), featureId);
+    
+    if (!ownedFeature) {
+      throw new Error('Feature not found or not authorized to update this feature');
     }
+
+    const { feature } = ownedFeature;
 
     // Update the feature status
     await ctx.db.patch(featureId, {
@@ -297,24 +261,16 @@ export const sendFeatureUpdate = mutation({
   },
   handler: async (ctx, { featureId, title, content }) => {
     const userId = await auth.getUserId(ctx);
-    if (!userId) throw new Error('Not authenticated');
-
-    const feature = await ctx.db.get(featureId);
-    if (!feature) throw new Error('Feature not found');
-
-    // Verify user owns this feature's company
-    const company = await ctx.db.get(feature.companyId);
-    if (!company || company.ownerId !== userId) {
-      throw new Error('Not authorized to update this feature');
+    const ownedFeature = await getOwnedFeature(ctx, requireAuth(userId), featureId);
+    
+    if (!ownedFeature) {
+      throw new Error('Feature not found or not authorized to update this feature');
     }
 
+    const { feature, company } = ownedFeature;
+
     // Check subscriber update limits for free plan users
-    const subscription = await ctx.db
-      .query('subscriptions')
-      .withIndex('by_user', (q) => q.eq('userId', userId))
-      .unique();
-    
-    const plan = getPlanFromSubscriptionStatus(subscription?.subscriptionStatus || null);
+    const plan = await getUserPlan(ctx, userId);
     
     if (plan === 'free') {
       // Count subscriber updates sent this month across all user's features
@@ -373,5 +329,51 @@ export const sendFeatureUpdate = mutation({
     });
 
     return { updateId, recipientCount: confirmedEmails.length };
+  },
+});
+
+export const getSignupTrends = query({
+  args: {},
+  handler: async (ctx) => {
+    const userId = await auth.getUserId(ctx);
+    const company = await requireUserCompany(ctx, userId);
+
+    // Get all features for the company
+    const features = await ctx.db
+      .query('features')
+      .withIndex('by_company', (q) => q.eq('companyId', company._id))
+      .collect();
+
+    const featureIds = features.map((f) => f._id);
+
+    // Get all subscribers for company's features
+    const subscribers = await ctx.db.query('subscribers').collect();
+
+    const companySubscribers = subscribers.filter((s) => featureIds.includes(s.featureId));
+
+    // Group by day for the last 30 days
+    const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
+    const recentSubscribers = companySubscribers.filter((s) => s.subscribedAt >= thirtyDaysAgo);
+
+    // Create daily buckets
+    const dailySignups: Record<string, number> = {};
+
+    for (let i = 0; i < 30; i++) {
+      const date = new Date(Date.now() - i * 24 * 60 * 60 * 1000);
+      const dateKey = date.toISOString().split('T')[0];
+      dailySignups[dateKey] = 0;
+    }
+
+    recentSubscribers.forEach((subscriber) => {
+      const date = new Date(subscriber.subscribedAt);
+      const dateKey = date.toISOString().split('T')[0];
+      if (dailySignups[dateKey] !== undefined) {
+        dailySignups[dateKey]++;
+      }
+    });
+
+    return Object.entries(dailySignups)
+      .map(([date, count]) => ({ date, count }))
+      .sort((a, b) => a.date.localeCompare(b.date));
   },
 });
