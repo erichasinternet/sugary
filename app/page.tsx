@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/a11y/useButtonType: They aren't interactable buttons. They serve as a visual example. */
 import Link from 'next/link';
 import MobileNav from './components/MobileNav';
 import SugaryLogo from './components/SugaryLogo';
