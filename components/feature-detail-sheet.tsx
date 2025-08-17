@@ -3,7 +3,7 @@
 import { useQuery, useMutation } from 'convex/react'
 import { useState } from 'react'
 import { api } from '@/convex/_generated/api'
-import type { Id } from '@/convex/_generated/dataModel'
+import type { Id, Doc } from '@/convex/_generated/dataModel'
 import { Badge } from "@/components/ui/badge"
 import {
   Dialog,
@@ -135,7 +135,7 @@ export function FeatureDetailSheet({ featureId, open, onOpenChange }: FeatureDet
                           Subscribers
                         </dt>
                         <dd className="text-sm font-medium text-foreground">
-                          {subscribers.filter((s) => s.confirmed).length}
+                          {subscribers.filter((s: Doc<'subscribers'>) => s.confirmed).length}
                         </dd>
                       </dl>
                     </div>
@@ -216,7 +216,7 @@ export function FeatureDetailSheet({ featureId, open, onOpenChange }: FeatureDet
                 </div>
               ) : (
                 <div className="space-y-1 max-h-64 overflow-y-auto p-2">
-                  {subscribers.map((subscriber) => (
+                  {subscribers.map((subscriber: Doc<'subscribers'>) => (
                     <div key={subscriber._id} className="glass-card-subtle rounded-lg p-3 hover:glass-card transition-all">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center min-w-0 flex-1">
@@ -265,7 +265,7 @@ export function FeatureDetailSheet({ featureId, open, onOpenChange }: FeatureDet
         onClose={() => setShowUpdateModal(false)}
         featureId={featureId}
         featureTitle={feature.title}
-        subscriberCount={subscribers.filter((s) => s.confirmed).length}
+        subscriberCount={subscribers.filter((s: Doc<'subscribers'>) => s.confirmed).length}
       />
     </>
   )

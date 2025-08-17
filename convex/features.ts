@@ -145,7 +145,7 @@ export const createFeature = mutation({
     }
 
     // Check plan limits
-    const plan = await getUserPlan(ctx, userId);
+    const plan = await getUserPlan(ctx, requireAuth(userId));
     
     // Count existing features
     const existingFeatures = await ctx.db
@@ -270,7 +270,7 @@ export const sendFeatureUpdate = mutation({
     const { feature, company } = ownedFeature;
 
     // Check subscriber update limits for free plan users
-    const plan = await getUserPlan(ctx, userId);
+    const plan = await getUserPlan(ctx, requireAuth(userId));
     
     if (plan === 'free') {
       // Count subscriber updates sent this month across all user's features

@@ -2,7 +2,7 @@ import { QueryCtx, MutationCtx, ActionCtx } from './_generated/server';
 import { Id } from './_generated/dataModel';
 import { getPlanFromSubscriptionStatus } from '../lib/plans';
 
-type DatabaseCtx = QueryCtx | MutationCtx | ActionCtx;
+type DatabaseCtx = QueryCtx | MutationCtx;
 
 /**
  * Get the user's company by their user ID

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { use, useState } from 'react';
 import { SendUpdateModal } from '@/app/components/SendUpdateModal';
 import { api } from '@/convex/_generated/api';
-import type { Id } from '@/convex/_generated/dataModel';
+import type { Id, Doc } from '@/convex/_generated/dataModel';
 import GradientButton from '../../../components/GradientButton';
 
 export default function FeatureDetail({ params }: { params: Promise<{ id: string }> }) {
@@ -121,7 +121,7 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
                       Confirmed
                     </dt>
                     <dd className="text-lg font-medium text-foreground">
-                      {subscribers.filter((s) => s.confirmed).length}
+                      {subscribers.filter((s: Doc<'subscribers'>) => s.confirmed).length}
                     </dd>
                   </dl>
                 </div>
@@ -189,7 +189,7 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
             </div>
           ) : (
             <div className="divide-y divide-primary/10">
-              {subscribers.map((subscriber) => (
+              {subscribers.map((subscriber: Doc<'subscribers'>) => (
                 <div key={subscriber._id} className="px-6 py-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
@@ -238,7 +238,7 @@ export default function FeatureDetail({ params }: { params: Promise<{ id: string
         onClose={() => setShowUpdateModal(false)}
         featureId={featureId}
         featureTitle={feature.title}
-        subscriberCount={subscribers.filter((s) => s.confirmed).length}
+        subscriberCount={subscribers.filter((s: Doc<'subscribers'>) => s.confirmed).length}
       />
     </div>
   );
