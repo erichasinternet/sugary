@@ -9,7 +9,6 @@
  */
 
 import type * as ResendOTP from "../ResendOTP.js";
-import type * as analytics from "../analytics.js";
 import type * as auth from "../auth.js";
 import type * as chat from "../chat.js";
 import type * as companies from "../companies.js";
@@ -20,6 +19,7 @@ import type * as publicRoadmap from "../publicRoadmap.js";
 import type * as stripe from "../stripe.js";
 import type * as subscribers from "../subscribers.js";
 import type * as users from "../users.js";
+import type * as utils from "../utils.js";
 
 import type {
   ApiFromModules,
@@ -37,7 +37,6 @@ import type {
  */
 declare const fullApi: ApiFromModules<{
   ResendOTP: typeof ResendOTP;
-  analytics: typeof analytics;
   auth: typeof auth;
   chat: typeof chat;
   companies: typeof companies;
@@ -48,6 +47,7 @@ declare const fullApi: ApiFromModules<{
   stripe: typeof stripe;
   subscribers: typeof subscribers;
   users: typeof users;
+  utils: typeof utils;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
 
@@ -80,6 +80,18 @@ export declare const components: {
         "internal",
         { olderThan?: number },
         null
+      >;
+      createManualEmail: FunctionReference<
+        "mutation",
+        "internal",
+        {
+          from: string;
+          headers?: Array<{ name: string; value: string }>;
+          replyTo?: Array<string>;
+          subject: string;
+          to: string;
+        },
+        string
       >;
       get: FunctionReference<
         "query",
@@ -156,6 +168,25 @@ export declare const components: {
           to: string;
         },
         string
+      >;
+      updateManualEmail: FunctionReference<
+        "mutation",
+        "internal",
+        {
+          emailId: string;
+          errorMessage?: string;
+          resendId?: string;
+          status:
+            | "waiting"
+            | "queued"
+            | "cancelled"
+            | "sent"
+            | "delivered"
+            | "delivery_delayed"
+            | "bounced"
+            | "failed";
+        },
+        null
       >;
     };
   };

@@ -26,7 +26,16 @@ export default function SignIn() {
       await signIn('password', { email, password, flow: 'signIn' });
       router.push('/dashboard');
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'An error occurred');
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred';
+      
+      // Check for password validation errors
+      if (errorMessage.includes('validatePasswordRequirements')) {
+        setError('Password must be at least 8 characters long');
+      } else if (errorMessage.includes('Server Error Called by client')) {
+        setError('Invalid email or password. Please check your credentials and try again.');
+      } else {
+        setError(errorMessage);
+      }
     } finally {
       setIsLoading(false);
     }

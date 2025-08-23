@@ -88,7 +88,16 @@ export default function SignUp() {
       
       router.push('/dashboard/onboarding');
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'An error occurred');
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred';
+      
+      // Check for password validation errors
+      if (errorMessage.includes('validatePasswordRequirements')) {
+        setError('Password must be at least 8 characters long');
+      } else if (errorMessage.includes('Server Error Called by client')) {
+        setError('There was an issue with your password. Please ensure it meets the requirements.');
+      } else {
+        setError(errorMessage);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -273,7 +282,7 @@ export default function SignUp() {
                     placeholder="Choose a secure password"
                   />
                   <p className="text-sm text-muted mt-2">
-                    Choose a strong password for your account
+                    Password must be at least 8 characters long
                   </p>
                 </div>
               </div>
