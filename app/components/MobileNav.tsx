@@ -22,9 +22,9 @@ export default function MobileNav() {
             >
               Sign In
             </Link>
-            <GradientButton>
-              <Link href="/auth/signup">Get Started</Link>
-            </GradientButton>
+            <Link href="/auth/signup">
+              <GradientButton>Get Started</GradientButton>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -51,11 +51,11 @@ export default function MobileNav() {
               >
                 Sign In
               </Link>
-              <GradientButton className="w-full" onClick={() => setIsOpen(false)}>
-                <Link href="/auth/signup" className="block w-full">
+              <Link href="/auth/signup" className="block w-full" onClick={() => setIsOpen(false)}>
+                <GradientButton className="w-full">
                   Get Started
-                </Link>
-              </GradientButton>
+                </GradientButton>
+              </Link>
             </div>
           </div>
         )}
