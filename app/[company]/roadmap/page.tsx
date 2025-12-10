@@ -21,7 +21,12 @@ const getSessionId = () => {
   if (!sessionId) {
     // Use cryptographically secure random values (16 bytes hex)
     const array = new Uint8Array(16)
-    window.crypto.getRandomValues(array)
+    if (window.crypto && typeof window.crypto.getRandomValues === 'function') {
+      window.crypto.getRandomValues(array)
+    } else {
+      // Fallback: This should rarely happen in modern browsers
+      throw new Error('Crypto API not available')
+    }
     sessionId = Array.from(array, b => b.toString(16).padStart(2, '0')).join('')
     localStorage.setItem('sugary_session_id', sessionId)
   }
