@@ -19,7 +19,10 @@ const PUBLIC_COLUMNS = [
 const getSessionId = () => {
   let sessionId = localStorage.getItem('sugary_session_id')
   if (!sessionId) {
-    sessionId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+    // Use cryptographically secure random values (16 bytes hex)
+    const array = new Uint8Array(16)
+    window.crypto.getRandomValues(array)
+    sessionId = Array.from(array, b => b.toString(16).padStart(2, '0')).join('')
     localStorage.setItem('sugary_session_id', sessionId)
   }
   return sessionId
