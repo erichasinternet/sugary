@@ -17,9 +17,25 @@ const PUBLIC_COLUMNS = [
 
 // Generate a session ID for vote tracking
 const getSessionId = () => {
+  const createSecureId = () => {
+    const cryptoObj = typeof crypto !== 'undefined' ? crypto : undefined
+    if (cryptoObj?.randomUUID) {
+      return cryptoObj.randomUUID()
+    }
+
+    if (cryptoObj?.getRandomValues) {
+      const bytes = new Uint8Array(16)
+      cryptoObj.getRandomValues(bytes)
+      return Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('')
+    }
+
+    // Fall back to a timestamp-based ID if crypto is unavailable (very rare in browsers)
+    return `${Date.now().toString(36)}-${performance.now().toString(36)}`
+  }
+
   let sessionId = localStorage.getItem('sugary_session_id')
   if (!sessionId) {
-    sessionId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+    sessionId = createSecureId()
     localStorage.setItem('sugary_session_id', sessionId)
   }
   return sessionId
